@@ -4,63 +4,78 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>تفريغ المحاضرات</title>
-<meta name="description" content="تحويل مقطع صوت أو فيديو إلى نص مكتوب مع ملخص">
+<meta name="description" content="تحويل مقطع المحاضرة إلى نص مكتوب مع ملخص ورسالة جاهزة للواتساب">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="تفريغ">
-<meta name="theme-color" content="#0f766e">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16141f" media="(prefers-color-scheme: dark)">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" type="image/png" href="icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;700;800&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap">
 <style>
   :root {
-    --bg: #f6f4ef;
+    --paper: #fbfaf8;
     --surface: #ffffff;
-    --text: #1c1917;
-    --muted: #57534e;
-    --border: #e2ded8;
-    --primary: #0f766e;
-    --primary-press: #115e59;
-    --on-primary: #ffffff;
-    --accent: #0f766e;
-    --soft: #e6f2f0;
-    --warn-bg: #fdf3d8;
+    --sunk: #f1eee9;
+    --ink: #1e1b2e;
+    --muted: #615b6b;
+    --line: #e4dfd7;
+    --madder: #9b2226;
+    --madder-press: #7c1a1e;
+    --madder-text: #9b2226;
+    --saffron: #c98a1c;
+    --quote: #7a5208;
+    --tint: #f7ecea;
+    --thread-ink: #1e1b2e;
+    --thread-wool: #f5f0e6;
+    --warn-bg: #fbf1dc;
     --warn-text: #6b4a0b;
-    --danger: #b42318;
+    --read-size: 21px;
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #141312;
-      --surface: #1f1d1b;
-      --text: #f4f2ef;
-      --muted: #b4ada6;
-      --border: #3a3633;
-      --primary: #0f766e;
-      --primary-press: #0b5d57;
-      --on-primary: #ffffff;
-      --accent: #5eead4;
-      --soft: #1d2d2b;
-      --warn-bg: #3a2f17;
-      --warn-text: #f3dfae;
-      --danger: #f97066;
+      --paper: #16141f;
+      --surface: #201d2c;
+      --sunk: #1b1926;
+      --ink: #f3efe8;
+      --muted: #aca5b6;
+      --line: #34303f;
+      --madder: #b0303a;
+      --madder-press: #93262f;
+      --madder-text: #f2858a;
+      --saffron: #e0a63e;
+      --quote: #ecc26f;
+      --tint: #2c1f29;
+      --thread-ink: #0a0910;
+      --thread-wool: #ece5d8;
+      --warn-bg: #352b17;
+      --warn-text: #f1dcae;
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --bg: #141312;
-    --surface: #1f1d1b;
-    --text: #f4f2ef;
-    --muted: #b4ada6;
-    --border: #3a3633;
-    --primary: #0f766e;
-    --primary-press: #0b5d57;
-    --on-primary: #ffffff;
-    --accent: #5eead4;
-    --soft: #1d2d2b;
-    --warn-bg: #3a2f17;
-    --warn-text: #f3dfae;
-    --danger: #f97066;
+    --paper: #16141f;
+    --surface: #201d2c;
+    --sunk: #1b1926;
+    --ink: #f3efe8;
+    --muted: #aca5b6;
+    --line: #34303f;
+    --madder: #b0303a;
+    --madder-press: #93262f;
+    --madder-text: #f2858a;
+    --saffron: #e0a63e;
+    --quote: #ecc26f;
+    --tint: #2c1f29;
+    --thread-ink: #0a0910;
+    --thread-wool: #ece5d8;
+    --warn-bg: #352b17;
+    --warn-text: #f1dcae;
     color-scheme: dark;
   }
 
@@ -68,167 +83,339 @@
   html { -webkit-text-size-adjust: 100%; }
   body {
     margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font: 20px/1.7 -apple-system, "SF Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    font: 400 20px/1.75 "Noto Naskh Arabic", "Geeza Pro", "SF Arabic", serif;
+    -webkit-font-smoothing: antialiased;
   }
   main {
-    max-width: 640px;
+    max-width: 620px;
     margin: 0 auto;
-    padding: max(20px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(32px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+    padding:
+      max(16px, env(safe-area-inset-top))
+      max(20px, env(safe-area-inset-right))
+      max(28px, env(safe-area-inset-bottom))
+      max(20px, env(safe-area-inset-left));
   }
   [hidden] { display: none !important; }
-  h1 { font-size: 30px; margin: 8px 0 24px; text-align: center; }
-  h2 { font-size: 24px; margin: 0 0 12px; }
-  h3 { font-size: 22px; margin: 0 0 12px; }
-  a { color: var(--accent); }
-  .muted { color: var(--muted); }
-  .small { font-size: 16px; }
+  button, input { font: inherit; color: inherit; }
+  button { -webkit-tap-highlight-color: transparent; cursor: pointer; }
+  :focus-visible { outline: 3px solid var(--saffron); outline-offset: 3px; }
+  .defs { position: absolute; width: 0; height: 0; }
+  .t-ink { fill: var(--thread-ink); }
+  .t-wool { fill: var(--thread-wool); }
+  .t-red { fill: var(--madder); }
+  .t-ochre { fill: var(--saffron); }
 
-  button, .big { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent; }
-  .big {
-    display: flex; align-items: center; justify-content: center; gap: 12px;
-    width: 100%; min-height: 96px; padding: 16px;
+  /* ---------- Sadu band ---------- */
+  .band {
+    position: relative;
+    height: 30px;
+    margin-inline: calc(-1 * max(20px, env(safe-area-inset-right)));
+    background: repeating-linear-gradient(90deg, transparent 0 3px, var(--line) 3px 4px);
+  }
+  .band svg { display: block; width: 100%; height: 30px; }
+  .band .woven { clip-path: inset(0 0 0 var(--unwoven, 0%)); }
+  .band.hero .woven { animation: weave-in 1.2s cubic-bezier(.3, .7, .2, 1) both; }
+  .band.progress .woven { transition: clip-path .8s ease; }
+  @keyframes weave-in { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0 0 0 0); } }
+  @media (prefers-reduced-motion: reduce) {
+    .band.hero .woven { animation: none; }
+    .band.progress .woven { transition: none; }
+  }
+
+  /* ---------- buttons ---------- */
+  .primary {
+    display: flex; align-items: center; justify-content: center; gap: 14px;
+    width: 100%; min-height: 92px; padding: 14px 20px;
     border: 0; border-radius: 22px;
-    background: var(--primary); color: var(--on-primary);
-    font-size: 28px; font-weight: 700; cursor: pointer;
-    box-shadow: 0 6px 18px rgb(15 118 110 / .25);
+    background: var(--madder); color: #fff;
+    font: 700 28px/1.3 "Noto Kufi Arabic", sans-serif;
+    box-shadow: 0 10px 24px -12px rgb(155 34 38 / .7);
   }
-  .big:active { background: var(--primary-press); transform: scale(.99); }
-  .big:disabled { opacity: .6; }
+  .primary:active { background: var(--madder-press); transform: translateY(1px); }
+  .primary:disabled { opacity: .55; }
+  .primary svg { width: 34px; height: 34px; flex: none; }
   .secondary {
-    display: block; width: 100%; min-height: 60px; margin-top: 14px; padding: 10px 16px;
-    border: 2px solid var(--border); border-radius: 16px;
-    background: var(--surface); font-size: 21px; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; min-height: 60px; padding: 10px 18px;
+    border: 2px solid var(--line); border-radius: 16px;
+    background: var(--surface);
+    font-size: 21px; font-weight: 600;
   }
-  .link { background: none; border: 0; color: var(--muted); font-size: 17px; text-decoration: underline; padding: 12px; cursor: pointer; }
-  .hint { text-align: center; color: var(--muted); margin: 14px 0 0; }
+  .secondary:active { background: var(--sunk); }
+  .textlink {
+    border: 0; background: none; padding: 10px 4px;
+    color: var(--madder-text); font-size: 19px; font-weight: 600;
+    text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px;
+  }
+  .textlink.quiet { color: var(--muted); font-weight: 400; }
 
-  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  /* ---------- home ---------- */
+  .hero-title { margin: 18px 0 0; font: 800 60px/1.25 "Noto Kufi Arabic", sans-serif; }
+  .lede { margin: 6px 0 22px; color: var(--muted); font-size: 21px; }
+  .pick { margin-top: 30px; }
+  .pick-note { margin: 12px 0 0; color: var(--muted); font-size: 18px; text-align: center; }
+  .alt { display: flex; flex-direction: column; align-items: center; margin-top: 18px; }
+  .yt { width: 100%; display: grid; gap: 10px; margin-top: 8px; }
+  input[type="url"], input[type="text"] {
+    width: 100%; min-height: 60px; padding: 12px 16px;
+    background: var(--surface); border: 2px solid var(--line); border-radius: 16px;
+    font-size: 18px; direction: ltr; text-align: left;
+  }
+  input::placeholder { color: var(--muted); opacity: .8; text-align: right; direction: rtl; }
+  .help { margin-top: 6px; width: 100%; }
+  .help summary { list-style: none; text-align: center; }
+  .help summary::-webkit-details-marker { display: none; }
+  .help ol { margin: 10px 0 0; padding: 16px 40px 16px 18px; background: var(--sunk); border-radius: 16px; font-size: 19px; }
+  .help li + li { margin-top: 6px; }
 
-  .history { margin-top: 40px; }
-  .history ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .library { margin-top: 44px; }
+  .library h2 { margin: 0 0 4px; font: 700 26px/1.4 "Noto Kufi Arabic", sans-serif; }
+  .library ul { list-style: none; margin: 0; padding: 0; }
   .row {
-    width: 100%; display: grid; gap: 2px; text-align: start;
-    padding: 14px 16px; min-height: 64px;
-    background: var(--surface); border: 1px solid var(--border); border-radius: 16px; cursor: pointer;
+    display: flex; align-items: center; gap: 12px; width: 100%;
+    min-height: 76px; padding: 12px 0;
+    border: 0; border-bottom: 1px solid var(--line); background: none; text-align: start;
   }
-  .row-title { font-size: 20px; font-weight: 600; }
-  .row-date { font-size: 16px; color: var(--muted); }
+  .row-text { flex: 1; display: grid; gap: 2px; }
+  .row-title { font-size: 20px; font-weight: 600; line-height: 1.5; }
+  .row-meta { font-size: 16px; color: var(--muted); }
+  .row-chevron { color: var(--muted); font-size: 26px; line-height: 1; }
+  .empty { color: var(--muted); font-size: 18px; margin: 8px 0 0; }
+  .home-foot { text-align: center; margin-top: 36px; }
 
-  .work { text-align: center; padding-top: 24px; }
-  .spinner {
-    width: 72px; height: 72px; margin: 0 auto 24px;
-    border: 7px solid var(--soft); border-top-color: var(--accent); border-radius: 50%;
-    animation: spin 1s linear infinite;
+  /* ---------- work ---------- */
+  .work-title { margin: 22px 0 4px; font: 700 34px/1.3 "Noto Kufi Arabic", sans-serif; }
+  .work-name { margin: 0 0 22px; color: var(--muted); font-size: 17px; overflow-wrap: anywhere; }
+  .steps { list-style: none; margin: 28px 0 0; padding: 0; counter-reset: step; }
+  .steps li {
+    counter-increment: step;
+    display: grid; grid-template-columns: 44px 1fr; align-items: center; column-gap: 14px;
+    min-height: 64px; color: var(--muted);
   }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  @media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 3s; } }
-  .step { font-size: 25px; font-weight: 700; margin: 0 0 16px; }
-  .bar { height: 14px; background: var(--soft); border-radius: 7px; overflow: hidden; margin: 0 0 20px; }
-  .bar > div { height: 100%; width: 0; background: var(--accent); transition: width .3s; }
-  .warn { background: var(--warn-bg); color: var(--warn-text); border-radius: 14px; padding: 12px 16px; margin: 0 0 20px; font-size: 18px; }
-  .live { text-align: start; color: var(--muted); font-size: 17px; white-space: pre-wrap; margin: 0 0 12px; }
-
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 18px 16px; margin: 0 0 18px; }
-  .copy {
-    display: block; width: 100%; min-height: 64px; margin: 0 0 16px;
-    border: 2px solid var(--accent); border-radius: 16px;
-    background: var(--soft); color: var(--accent); font-size: 22px; font-weight: 700; cursor: pointer;
+  .steps .mark {
+    grid-row: span 2;
+    display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
+    border: 2px solid var(--line); font: 700 18px "Noto Kufi Arabic", sans-serif;
   }
-  .copy:active { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
-  .text { white-space: pre-wrap; font-size: 20px; line-height: 1.95; overflow-wrap: anywhere; }
-  .note { background: var(--warn-bg); color: var(--warn-text); border-radius: 12px; padding: 8px 12px; font-size: 17px; }
-  .result-head { margin-bottom: 16px; }
-  .result-head h2 { margin: 6px 0 0; }
+  .steps .mark::before { content: counter(step, arabic-indic); }
+  .steps .label { font-size: 22px; font-weight: 600; }
+  .steps .detail { font-size: 16px; min-height: 1em; }
+  .steps li[data-state="active"] { color: var(--ink); }
+  .steps li[data-state="active"] .mark { border-color: var(--madder); color: var(--madder-text); animation: pulse 1.6s ease-in-out infinite; }
+  .steps li[data-state="done"] .mark { background: var(--madder); border-color: var(--madder); color: #fff; }
+  .steps li[data-state="done"] .mark::before { content: "✓"; }
+  @keyframes pulse { 50% { box-shadow: 0 0 0 7px var(--tint); } }
+  @media (prefers-reduced-motion: reduce) { .steps li[data-state="active"] .mark { animation: none; } }
+  .keep-open { margin: 26px 0 0; padding: 14px 16px; border-radius: 16px; background: var(--warn-bg); color: var(--warn-text); font-size: 18px; }
+  .live {
+    margin: 22px 0 0; max-height: 7.5em; overflow: hidden;
+    font-size: 18px; color: var(--muted); white-space: pre-wrap;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 45%);
+            mask-image: linear-gradient(to bottom, transparent, #000 45%);
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  .cancel { margin-top: 26px; }
 
-  .error { text-align: center; padding-top: 24px; }
-  .error .icon { font-size: 52px; margin: 0; }
-  .error details { margin-top: 28px; text-align: start; }
+  /* ---------- result ---------- */
+  .result-top { display: flex; align-items: center; justify-content: space-between; }
+  .size { display: flex; gap: 6px; }
+  .size button {
+    width: 52px; height: 48px; border: 2px solid var(--line); border-radius: 14px; background: var(--surface);
+    font-family: "Noto Kufi Arabic", sans-serif; font-weight: 700; line-height: 1;
+  }
+  .size button:first-child { font-size: 17px; }
+  .size button:last-child { font-size: 25px; }
+  .size button:disabled { opacity: .4; }
+  .r-title { margin: 10px 0 2px; font: 700 32px/1.4 "Noto Kufi Arabic", sans-serif; }
+  .meta { margin: 0 0 18px; color: var(--muted); font-size: 17px; }
+  .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; background: var(--sunk); border-radius: 16px; }
+  .tabs button {
+    min-height: 54px; border: 0; border-radius: 12px; background: none;
+    color: var(--muted); font-size: 18px; font-weight: 600;
+  }
+  .tabs button[aria-selected="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgb(30 27 46 / .12), inset 0 -3px 0 var(--madder); }
+  .panel { padding: 20px 2px 8px; font-size: var(--read-size); line-height: 2.05; }
+  .panel h3 { margin: 18px 0 6px; font: 700 calc(var(--read-size) + 1px)/1.5 "Noto Kufi Arabic", sans-serif; color: var(--madder-text); }
+  .panel h3:first-child { margin-top: 0; }
+  .panel ul { list-style: none; margin: 0; padding: 0; }
+  .panel li { position: relative; padding-inline-start: 24px; margin-bottom: 8px; }
+  .panel li::before {
+    content: ""; position: absolute; inset-inline-start: 3px; top: .95em;
+    width: 8px; height: 8px; background: var(--saffron); transform: rotate(45deg);
+  }
+  .panel p { margin: 0 0 1em; }
+  .ayah { color: var(--madder-text); font-weight: 600; }
+  .quote { color: var(--quote); }
+  .unclear { color: var(--muted); text-decoration: underline dotted; }
+  .question { padding-inline-start: 14px; border-inline-start: 3px solid var(--saffron); }
+  .q-label { font-weight: 700; color: var(--quote); margin-inline-end: 6px; }
+  .note { margin: 0 0 16px; padding: 10px 14px; border-radius: 14px; background: var(--warn-bg); color: var(--warn-text); font-size: 17px; line-height: 1.7; }
+  .bubble {
+    padding: 16px 18px; background: var(--tint); border-radius: 22px 22px 22px 6px;
+    white-space: pre-wrap; line-height: 1.8;
+  }
+  .missing { text-align: center; color: var(--muted); padding: 10px 0; }
+  .missing .secondary { margin-top: 12px; }
+  .delete { display: block; margin: 18px auto 0; }
+  .actions {
+    position: sticky; bottom: 0; z-index: 2;
+    display: grid; grid-template-columns: 1.7fr 1fr; gap: 10px;
+    margin: 18px calc(-1 * max(20px, env(safe-area-inset-right))) calc(-1 * max(28px, env(safe-area-inset-bottom)));
+    padding: 12px max(20px, env(safe-area-inset-right)) max(14px, env(safe-area-inset-bottom));
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    border-top: 1px solid var(--line);
+  }
+  .actions .primary { min-height: 64px; font-size: 22px; border-radius: 18px; box-shadow: none; }
+  .actions .secondary { min-height: 64px; border-radius: 18px; }
+  .actions.single { grid-template-columns: 1fr; }
+
+  /* ---------- error & setup ---------- */
+  .screen-title { margin: 22px 0 10px; font: 700 32px/1.4 "Noto Kufi Arabic", sans-serif; }
+  .error-msg { font-size: 22px; margin: 0 0 26px; }
+  .error .secondary { margin-top: 12px; }
+  .error details { margin-top: 30px; color: var(--muted); font-size: 15px; }
   .error pre { white-space: pre-wrap; direction: ltr; text-align: left; font-size: 13px; }
-
-  .steps { padding-inline-start: 26px; margin: 0 0 20px; }
-  .steps li { margin-bottom: 10px; }
-  input[type="text"] {
-    width: 100%; min-height: 60px; padding: 12px 14px; margin: 0 0 14px;
-    font: inherit; font-size: 18px; direction: ltr; text-align: left;
-    color: var(--text); background: var(--surface);
-    border: 2px solid var(--border); border-radius: 14px;
-  }
-  .msg { min-height: 1.7em; font-weight: 600; margin: 14px 0 0; }
-  footer { text-align: center; margin-top: 36px; }
+  .setup-steps { margin: 0 0 22px; padding-inline-start: 30px; list-style: arabic-indic; }
+  .setup-steps li { margin-bottom: 12px; }
+  .setup-steps li::marker { font-family: "Noto Kufi Arabic", sans-serif; font-weight: 700; color: var(--madder-text); }
+  .key-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin-bottom: 14px; }
+  .key-row .secondary { width: auto; }
+  .msg { min-height: 1.75em; margin: 14px 0 0; font-weight: 600; }
+  .fine { color: var(--muted); font-size: 16px; margin-top: 26px; }
 </style>
 </head>
 <body>
-<main>
-  <h1>تفريغ المحاضرات</h1>
 
+<svg class="defs" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="sadu" width="32" height="30" patternUnits="userSpaceOnUse">
+      <rect width="32" height="30" class="t-red"/>
+      <rect width="32" height="4" class="t-ink"/>
+      <rect y="26" width="32" height="4" class="t-ink"/>
+      <rect y="4" width="32" height="2" class="t-wool"/>
+      <rect y="24" width="32" height="2" class="t-wool"/>
+      <rect x="4" y="4" width="6" height="2" class="t-ochre"/>
+      <rect x="20" y="24" width="6" height="2" class="t-ochre"/>
+      <path class="t-ink" d="M0 6h16l-8 7z M16 24h16l-8-7z"/>
+      <path class="t-wool" d="M24 7.5l3.5 3.5-3.5 3.5-3.5-3.5z M8 15.5l3.5 3.5-3.5 3.5-3.5-3.5z"/>
+      <path class="t-ochre" d="M24 9.5l1.5 1.5-1.5 1.5-1.5-1.5z M8 17.5l1.5 1.5-1.5 1.5-1.5-1.5z"/>
+    </pattern>
+  </defs>
+</svg>
+
+<main>
   <section id="home" hidden>
-    <label for="file" class="big"><span aria-hidden="true">🎙️</span> اختاري المقطع</label>
-    <input type="file" id="file" class="visually-hidden" accept="audio/*,video/*,.opus,.ogg,.m4a,.mp3,.wav,.aac,.flac,.mp4,.mov">
-    <p class="hint">صوت أو فيديو. بعد ما تختارينه يبدأ بروحه.</p>
-    <div id="history-wrap" class="history" hidden>
-      <h2>المقاطع السابقة</h2>
-      <ul id="history"></ul>
+    <h1 class="hero-title">تفريغ</h1>
+    <p class="lede">محاضراتك مكتوبة وملخّصة</p>
+    <div class="band hero" aria-hidden="true">
+      <svg class="woven"><rect width="100%" height="100%" fill="url(#sadu)"/></svg>
     </div>
+
+    <div class="pick">
+      <label for="file" class="primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 10v4M8 7v10M12 4v16M16 8v8M20 11v2"/></svg>
+        اختاري المقطع
+      </label>
+      <input type="file" id="file" class="defs" accept="audio/*,video/*,.opus,.ogg,.m4a,.mp3,.wav,.aac,.flac,.mp4,.mov">
+      <p class="pick-note">صوت أو فيديو من جهازك</p>
+    </div>
+
+    <div class="alt">
+      <button id="yt-toggle" class="textlink" aria-expanded="false" aria-controls="yt-form">عندك رابط يوتيوب؟</button>
+      <form id="yt-form" class="yt" hidden>
+        <input type="url" id="yt-url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="الصقي رابط الفيديو هني">
+        <button class="secondary" type="submit">ابدئي</button>
+      </form>
+      <details class="help">
+        <summary class="textlink quiet">كيف أجيب المقطع من الواتساب؟</summary>
+        <ol>
+          <li>اضغطي مطوّلاً على المقطع في المحادثة، واختاري «إعادة توجيه».</li>
+          <li>اضغطي زر المشاركة اللي تحت، واختاري «حفظ في الملفات» ثم «حفظ».</li>
+          <li>ارجعي هني واضغطي «اختاري المقطع»، وبتلقينه في الملفات.</li>
+        </ol>
+      </details>
+    </div>
+
+    <div class="library">
+      <h2>محاضراتك</h2>
+      <ul id="history"></ul>
+      <p id="empty" class="empty">أول ما تفرّغين محاضرة، بتلقينها هني.</p>
+    </div>
+    <div class="home-foot"><button id="settings-btn" class="textlink quiet">الإعدادات</button></div>
   </section>
 
-  <section id="work" class="work" hidden>
-    <div class="spinner" aria-hidden="true"></div>
-    <p id="step" class="step" role="status" aria-live="polite"></p>
-    <div id="bar" class="bar" hidden><div id="bar-fill"></div></div>
-    <p class="warn">خلّي الصفحة مفتوحة ولا تقفلين الشاشة لين يخلص.</p>
-    <p id="live" class="live"></p>
+  <section id="work" hidden>
+    <h2 class="work-title">جاري التفريغ</h2>
+    <p id="work-name" class="work-name"></p>
+    <div class="band progress" id="weave" aria-hidden="true">
+      <svg class="woven"><rect width="100%" height="100%" fill="url(#sadu)"/></svg>
+    </div>
+    <ol class="steps">
+      <li data-step="upload"><span class="mark" aria-hidden="true"></span><span class="label">رفع المقطع</span><span class="detail" role="status"></span></li>
+      <li data-step="write"><span class="mark" aria-hidden="true"></span><span class="label">كتابة الكلام</span><span class="detail" role="status"></span></li>
+      <li data-step="summary"><span class="mark" aria-hidden="true"></span><span class="label">كتابة الملخص</span><span class="detail" role="status"></span></li>
+    </ol>
+    <p class="keep-open">خلّي الصفحة مفتوحة والشاشة شغالة لين يخلص.</p>
+    <div id="live" class="live" aria-hidden="true"></div>
+    <button id="cancel" class="secondary cancel">إلغاء</button>
   </section>
 
   <section id="result" hidden>
-    <div class="result-head">
-      <button id="result-back" class="link">← الرئيسية</button>
-      <h2 id="result-title"></h2>
-      <div id="result-date" class="muted small"></div>
+    <div class="result-top">
+      <button id="back" class="textlink">‹ محاضراتك</button>
+      <div class="size" role="group" aria-label="حجم الخط">
+        <button id="smaller" aria-label="تصغير الخط">أ</button>
+        <button id="bigger" aria-label="تكبير الخط">أ</button>
+      </div>
     </div>
-    <article class="card">
-      <h3>الملخص</h3>
-      <button class="copy" data-copy="summary" data-label="نسخ الملخص">نسخ الملخص</button>
-      <div id="summary" class="text"></div>
-      <button id="retry-summary" class="secondary" hidden>اكتبي الملخص مرة ثانية</button>
-    </article>
-    <article class="card">
-      <h3>الكلام كامل</h3>
-      <button class="copy" data-copy="transcript" data-label="نسخ الكلام كامل">نسخ الكلام كامل</button>
-      <p id="incomplete" class="note" hidden>ممكن آخر المقطع ما انكتب كامل.</p>
-      <div id="transcript" class="text"></div>
-    </article>
-    <button id="new" class="big">مقطع جديد</button>
+    <h2 id="r-title" class="r-title"></h2>
+    <p id="r-meta" class="meta"></p>
+    <div class="tabs" role="tablist" aria-label="المحتوى">
+      <button role="tab" id="tab-summary" data-tab="summary" aria-controls="panel-summary">الملخص</button>
+      <button role="tab" id="tab-transcript" data-tab="transcript" aria-controls="panel-transcript">الكلام كامل</button>
+      <button role="tab" id="tab-whatsapp" data-tab="whatsapp" aria-controls="panel-whatsapp">للواتساب</button>
+    </div>
+    <div id="panel-summary" class="panel" role="tabpanel" aria-labelledby="tab-summary"></div>
+    <div id="panel-transcript" class="panel" role="tabpanel" aria-labelledby="tab-transcript"></div>
+    <div id="panel-whatsapp" class="panel" role="tabpanel" aria-labelledby="tab-whatsapp"></div>
+    <button id="delete" class="textlink quiet delete">حذف المحاضرة</button>
+    <div id="actions" class="actions">
+      <button id="copy" class="primary"></button>
+      <button id="share" class="secondary">مشاركة</button>
+    </div>
   </section>
 
   <section id="error" class="error" hidden>
-    <p class="icon" aria-hidden="true">⚠️</p>
-    <p id="error-msg" class="step"></p>
-    <button id="retry" class="big">حاولي مرة ثانية</button>
+    <h2 class="screen-title">ما كمل التفريغ</h2>
+    <p id="error-msg" class="error-msg"></p>
+    <button id="retry" class="primary"></button>
     <button id="error-home" class="secondary">رجوع</button>
-    <details class="muted small">
+    <details>
       <summary>تفاصيل للمساعدة</summary>
       <pre id="error-detail"></pre>
     </details>
   </section>
 
   <section id="setup" hidden>
-    <h2>الإعداد (مرة وحدة بس)</h2>
-    <p class="muted">هالخطوة يسويها أحد من العيال، وبعدها ما تحتاجها الوالدة.</p>
-    <ol class="steps">
-      <li id="step-home">من Safari اضغط زر المشاركة ثم «إضافة إلى الشاشة الرئيسية». بعدها افتح الصفحة من الأيقونة الجديدة وكمّل الخطوات من هناك.</li>
-      <li>افتح <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> وادخل بحساب Gmail، واضغط <b>Create API key</b> وانسخ المفتاح.</li>
+    <h2 class="screen-title">الإعداد</h2>
+    <p class="muted">مرة وحدة بس، ويسويه أحد من العيال. بعدها الوالدة تفتح الأيقونة وتبدأ على طول.</p>
+    <ol class="setup-steps">
+      <li id="step-home">من Safari اضغط زر المشاركة ثم «إضافة إلى الشاشة الرئيسية». بعدها افتح الأيقونة الجديدة وكمّل من هناك.</li>
+      <li>افتح <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" class="textlink">aistudio.google.com/apikey</a> بحسابك في Gmail، واضغط <b>Create API key</b> وانسخ المفتاح.</li>
       <li>الصق المفتاح هني واضغط «حفظ».</li>
     </ol>
-    <input type="text" id="key" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
-    <button id="save-key" class="big">حفظ</button>
+    <div class="key-row">
+      <input type="text" id="key" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="مفتاح Gemini">
+      <button id="paste-key" class="secondary">لصق</button>
+    </div>
+    <button id="save-key" class="primary">حفظ</button>
     <p id="key-msg" class="msg" role="status"></p>
     <button id="setup-back" class="secondary" hidden>رجوع</button>
-    <p class="muted small">المفتاح ينحفظ على هالجهاز بس. المقاطع تنرسل إلى Google Gemini عشان ينكتب الكلام، وبالخطة المجانية ممكن قوقل يستخدم المحتوى لتحسين خدماته.</p>
+    <p class="fine">المفتاح ينحفظ على هالجهاز بس. المقاطع تنرسل إلى Google Gemini عشان ينكتب الكلام، وبالخطة المجانية ممكن قوقل يستخدم المحتوى لتحسين خدماته.</p>
   </section>
-
-  <footer><button id="settings-btn" class="link" hidden>الإعدادات</button></footer>
 </main>
 
 <script>
@@ -238,8 +425,11 @@ const API = 'https://generativelanguage.googleapis.com';
 const KEY = 'tafreegh.key';
 const HISTORY = 'tafreegh.history';
 const MODELS = 'tafreegh.models';
+const PREFS = 'tafreegh.prefs';
 const FALLBACK_MODELS = ['gemini-flash-latest', 'gemini-2.5-flash'];
 const MAX_FILE_BYTES = 2e9;
+const READ_SIZES = [18, 21, 25, 29];
+const YOUTUBE = /^https?:\/\/(www\.|m\.)?(youtube\.com|youtu\.be)\//i;
 
 // Gemini rejects some of the MIME types iOS reports (e.g. audio/x-m4a), so map by extension first.
 const MIME = {
@@ -259,23 +449,29 @@ const TRANSCRIBE_PROMPT = `هذا تسجيل لدرس أو محاضرة ديني
 - إذا لم تتضح كلمة فاكتب [غير واضح].
 - اكتب النص فقط: بدون مقدمة أو تعليق أو عناوين أو توقيت، وبدون رموز تنسيق مثل * أو #.`;
 
-const SUMMARY_PROMPT = `هذا تفريغ نصي لدرس أو محاضرة دينية. اكتب ملخصاً واضحاً ومختصراً بالعربية الفصحى المبسّطة بهذا الترتيب:
-
-الموضوع: (سطر واحد)
-
-أهم الأفكار:
-• (نقاط قصيرة)
-
-الأدلة المذكورة:
-• (الآيات والأحاديث التي ذُكرت، باختصار)
-
-الفوائد العملية:
-• (نقاط قصيرة)
-
-اعتمد على التفريغ فقط ولا تضف معلومات من خارجه. لا تستخدم رموز تنسيق مثل * أو #.
+const NOTES_PROMPT = `هذا تفريغ نصي لدرس أو محاضرة دينية. اكتب بالعربية الفصحى المبسّطة:
+- title: عنوان قصير وواضح لموضوع المحاضرة (من ٣ إلى ٨ كلمات).
+- points: أهم الأفكار، كل فكرة في جملة أو جملتين.
+- evidence: الآيات والأحاديث التي ذُكرت، الآية بين ﴿ ﴾ والحديث بين « ». إذا لم يُذكر شيء فاتركها فارغة.
+- lessons: فوائد عملية يقدر السامع يطبقها.
+- whatsapp: رسالة قصيرة جاهزة للنشر في مجموعة واتساب (لا تزيد عن ١٢٠ كلمة): تبدأ بعنوان الدرس بين نجمتين مثل *العنوان*، ثم أهم الفوائد في نقاط قصيرة، بأسلوب لطيف.
+اعتمد على التفريغ فقط ولا تضف معلومات من خارجه.
 
 التفريغ:
 `;
+
+const NOTES_SCHEMA = {
+  type: 'OBJECT',
+  properties: {
+    title: { type: 'STRING' },
+    points: { type: 'ARRAY', items: { type: 'STRING' } },
+    evidence: { type: 'ARRAY', items: { type: 'STRING' } },
+    lessons: { type: 'ARRAY', items: { type: 'STRING' } },
+    whatsapp: { type: 'STRING' },
+  },
+  required: ['title', 'points', 'evidence', 'lessons', 'whatsapp'],
+  propertyOrdering: ['title', 'points', 'evidence', 'lessons', 'whatsapp'],
+};
 
 // Finish reasons after which another request can pick up where the text stopped.
 const CONTINUABLE = ['MAX_TOKENS', 'RECITATION', 'INTERRUPTED'];
@@ -283,9 +479,12 @@ const CONTINUABLE = ['MAX_TOKENS', 'RECITATION', 'INTERRUPTED'];
 const $ = s => document.querySelector(s);
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const num = n => n.toLocaleString('ar-KW');
+const isAbort = e => e?.name === 'AbortError';
 
-let currentFile = null;
+let job = null;
+let lastSource = null;
 let shown = null;
+let tab = 'summary';
 
 /* ---------- storage ---------- */
 
@@ -299,6 +498,7 @@ function forget(k) {
   try { localStorage.removeItem(k); } catch {}
 }
 const getKey = () => load(KEY, '');
+const prefs = () => ({ size: 1, ...load(PREFS, {}) });
 
 /* ---------- Gemini API ---------- */
 
@@ -328,6 +528,7 @@ async function api(path, opts = {}, key = getKey()) {
   try {
     res = await fetch(API + path, { ...opts, headers: { 'x-goog-api-key': key, ...opts.headers } });
   } catch (e) {
+    if (isAbort(e)) throw e;
     throw new ApiError(0, 'NETWORK', String(e));
   }
   if (!res.ok) throw toApiError(res.status, await res.text());
@@ -340,7 +541,7 @@ async function listModels(key) {
 }
 
 // Newest stable Flash models first, so the page keeps working as Google renames them.
-async function getModels() {
+async function getModels(signal) {
   const cached = load(MODELS, null);
   if (cached && Date.now() - cached.at < 864e5) return cached.list;
   let list = FALLBACK_MODELS;
@@ -355,6 +556,7 @@ async function getModels() {
   } catch (e) {
     if (isKeyError(e)) throw e;
   }
+  signal?.throwIfAborted();
   return list;
 }
 
@@ -363,9 +565,10 @@ function dropModel(model) {
   if (cached) save(MODELS, { ...cached, list: cached.list.filter(m => m !== model) });
 }
 
-async function uploadFile(file, mime, onProgress) {
+async function uploadFile(file, mime, onProgress, signal) {
   const res = await api('/upload/v1beta/files', {
     method: 'POST',
+    signal,
     headers: {
       'X-Goog-Upload-Protocol': 'resumable',
       'X-Goog-Upload-Command': 'start',
@@ -391,14 +594,16 @@ async function uploadFile(file, mime, onProgress) {
       catch { reject(new ApiError(xhr.status, 'BAD_RESPONSE', xhr.responseText)); }
     };
     xhr.onerror = () => reject(new ApiError(0, 'NETWORK', 'upload failed'));
+    xhr.onabort = () => reject(new DOMException('cancelled', 'AbortError'));
+    signal.addEventListener('abort', () => xhr.abort(), { once: true });
     xhr.send(file);
   });
 }
 
-async function waitActive(file) {
+async function waitActive(file, signal) {
   for (let i = 0; file.state === 'PROCESSING' && i < 200; i++) {
     await sleep(3000);
-    file = await (await api(`/v1beta/${file.name}`)).json();
+    file = await (await api(`/v1beta/${file.name}`, { signal })).json();
   }
   if (file.state !== 'ACTIVE') throw new ApiError(0, `FILE_${file.state}`, JSON.stringify(file.error || file.state));
   return file;
@@ -408,11 +613,12 @@ function deleteFile(name) {
   api(`/v1beta/${name}`, { method: 'DELETE' }).catch(() => {});
 }
 
-async function streamGenerate(model, contents, onText) {
+async function streamGenerate(model, contents, { onText, config, signal } = {}) {
   const res = await api(`/v1beta/models/${model}:streamGenerateContent?alt=sse`, {
     method: 'POST',
+    signal,
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ contents }),
+    body: JSON.stringify({ contents, ...(config && { generationConfig: config }) }),
   });
   const reader = res.body.getReader();
   const decoder = new TextDecoder();
@@ -441,6 +647,7 @@ async function streamGenerate(model, contents, onText) {
     }
     handle(buffer);
   } catch (e) {
+    if (isAbort(e)) throw e;
     if (!text) throw new ApiError(0, 'NETWORK', String(e));
     finish = 'INTERRUPTED';
   }
@@ -448,12 +655,13 @@ async function streamGenerate(model, contents, onText) {
 }
 
 // Tries each model in turn: a missing model, a used-up quota or an overloaded server moves on to the next.
-async function generate(models, contents, onText) {
+async function generate(models, contents, opts) {
   let lastError;
   for (const model of models) {
     for (let attempt = 0; attempt < 2; attempt++) {
-      try { return await streamGenerate(model, contents, onText); }
+      try { return await streamGenerate(model, contents, opts); }
       catch (e) {
+        if (isAbort(e)) throw e;
         lastError = e;
         if (e.status === 404) dropModel(model);
         if (e.status !== 500 && e.status !== 503) break;
@@ -482,16 +690,17 @@ function continuePrompt(done, finish) {
 كمّل الكتابة مباشرة من بعد هذا الكلام إلى نهاية المقطع، ولا تُعِد كتابة ما سبق.`;
 }
 
-async function transcribe(models, file, onText) {
-  const media = { file_data: { mime_type: file.mimeType, file_uri: file.uri } };
+async function transcribe(models, media, { onText, config, signal }) {
   let full = '', finish = '';
   for (let round = 0; round < 4; round++) {
     const prompt = round === 0 ? TRANSCRIBE_PROMPT : continuePrompt(full, finish);
     let r;
     try {
-      r = await generate(models, [{ role: 'user', parts: [media, { text: prompt }] }], t => onText(joinText(full, t)));
+      r = await generate(models, [{ role: 'user', parts: [media, { text: prompt }] }], {
+        onText: t => onText(joinText(full, t)), config, signal,
+      });
     } catch (e) {
-      if (!full.trim()) throw e;
+      if (isAbort(e) || !full.trim()) throw e;
       finish = 'INTERRUPTED';
       break;
     }
@@ -502,13 +711,17 @@ async function transcribe(models, file, onText) {
   return { text: full.trim(), complete: finish === 'STOP' || finish === '' };
 }
 
-async function summarize(item) {
-  const models = await getModels();
-  const r = await generate(models, [{ role: 'user', parts: [{ text: SUMMARY_PROMPT + item.transcript }] }]);
-  if (!r.text.trim()) throw new ApiError(0, 'EMPTY', 'empty summary');
-  item.summary = r.text.trim();
-  item.summaryFailed = false;
-  item.title = topicOf(item.summary) || item.title;
+async function makeNotes(item, signal) {
+  const models = await getModels(signal);
+  const r = await generate(models, [{ role: 'user', parts: [{ text: NOTES_PROMPT + item.transcript }] }], {
+    config: { responseMimeType: 'application/json', responseSchema: NOTES_SCHEMA },
+    signal,
+  });
+  const notes = JSON.parse(r.text);
+  if (!notes.points?.length) throw new ApiError(0, 'EMPTY', 'empty notes');
+  item.notes = notes;
+  item.notesFailed = false;
+  if (notes.title) item.title = notes.title.trim();
   storeItem(item);
 }
 
@@ -521,64 +734,154 @@ function mimeFor(file) {
   return file.type || 'audio/mp3';
 }
 
+function mediaDuration(file, mime) {
+  return new Promise(resolve => {
+    const el = document.createElement(mime.startsWith('video') ? 'video' : 'audio');
+    const url = URL.createObjectURL(file);
+    let settled = false;
+    const done = d => {
+      if (settled) return;
+      settled = true;
+      URL.revokeObjectURL(url);
+      resolve(Number.isFinite(d) ? d : 0);
+    };
+    el.preload = 'metadata';
+    el.onloadedmetadata = () => done(el.duration);
+    el.onerror = () => done(0);
+    setTimeout(() => done(0), 4000);
+    el.src = url;
+  });
+}
+
 async function keepAwake() {
   try { return await navigator.wakeLock?.request('screen'); } catch { return null; }
 }
 
-async function handleFile(file) {
-  currentFile = file;
-  show('work');
-  setLive('');
-  setStep('جاري رفع المقطع…', 0);
+async function run(source) {
+  const ctrl = new AbortController();
+  const { signal } = ctrl;
+  job = ctrl;
+  lastSource = source;
+  startWork(source);
   const lock = await keepAwake();
+  let uploadedName = '';
   try {
-    if (file.size > MAX_FILE_BYTES) throw new ApiError(0, 'TOO_BIG', `${file.size} bytes`);
-    const models = await getModels();
-    const uploaded = await uploadFile(file, mimeFor(file), p => setStep(`جاري رفع المقطع… ${num(Math.round(p * 100))}٪`, p));
-    setStep('جاري تجهيز المقطع…');
-    const ready = await waitActive(uploaded);
+    const models = await getModels(signal);
+    let media, video, duration = 0;
 
-    setStep('جاري كتابة الكلام…');
-    const { text, complete } = await transcribe(models, ready, t => {
-      setStep(`جاري كتابة الكلام… (${num(countWords(t))} كلمة)`);
-      setLive(`…${t.slice(-240)}`);
+    if (source.kind === 'file') {
+      const { file } = source;
+      if (file.size > MAX_FILE_BYTES) throw new ApiError(0, 'TOO_BIG', `${file.size} bytes`);
+      const mime = mimeFor(file);
+      video = mime.startsWith('video');
+      const durationP = mediaDuration(file, mime);
+      const uploaded = await uploadFile(file, mime, p => {
+        stepDetail('upload', `${num(Math.round(p * 100))}٪`);
+        setProgress(p * 0.25);
+      }, signal);
+      uploadedName = uploaded.name;
+      stepDetail('upload', 'تجهيز المقطع…');
+      const ready = await waitActive(uploaded, signal);
+      media = { file_data: { mime_type: ready.mimeType, file_uri: ready.uri } };
+      duration = await durationP;
+    } else {
+      video = true;
+      media = { file_data: { file_uri: source.url } };
+    }
+    // A sparse frame rate keeps long lecture videos inside the free token limits; only the audio matters here.
+    if (video) media.video_metadata = { fps: 0.1 };
+    const config = video ? { mediaResolution: 'MEDIA_RESOLUTION_LOW' } : undefined;
+
+    stepState('upload', 'done');
+    stepDetail('upload', '');
+    stepState('write', 'active');
+    setProgress(0.3);
+    const expectedWords = duration / 60 * 110;
+    const { text, complete } = await transcribe(models, media, {
+      config, signal,
+      onText: t => {
+        const words = countWords(t);
+        stepDetail('write', countLabel(words, WORD));
+        const share = expectedWords ? Math.min(words / expectedWords, 1) : 1 - Math.exp(-words / 2500);
+        setProgress(0.3 + share * 0.6);
+        $('#live').textContent = t.slice(-320);
+      },
     });
-    deleteFile(ready.name);
     if (!text) throw new ApiError(0, 'EMPTY', 'empty transcript');
 
-    const item = { id: Date.now(), date: Date.now(), file: file.name, title: `محاضرة ${shortDate(Date.now())}`, transcript: text, complete, summary: '' };
+    const item = {
+      id: Date.now(), date: Date.now(), kind: source.kind, file: source.name,
+      title: `محاضرة ${shortDate(Date.now())}`, duration, transcript: text, complete, notes: null,
+    };
     storeItem(item);
 
-    setStep('جاري كتابة الملخص…');
-    setLive('');
-    try { await summarize(item); }
-    catch { item.summaryFailed = true; storeItem(item); }
-    showResult(item);
+    stepState('write', 'done');
+    stepState('summary', 'active');
+    $('#live').textContent = '';
+    setProgress(0.93);
+    try { await makeNotes(item, signal); }
+    catch (e) {
+      if (isAbort(e)) throw e;
+      item.notesFailed = true;
+      storeItem(item);
+    }
+    stepState('summary', 'done');
+    setProgress(1);
+    await sleep(500);
+    showResult(item, 'summary');
   } catch (e) {
-    fail(e);
+    if (!signal.aborted) fail(e, source);
   } finally {
+    if (uploadedName) deleteFile(uploadedName);
+    if (job === ctrl) job = null;
     lock?.release?.().catch(() => {});
   }
 }
 
-function explain(e) {
+function explain(e, source) {
   const why = `${e.reason || ''} ${e.message || ''}`;
+  if (source?.kind === 'youtube' && (e.status === 400 || e.status === 403) && !/API_KEY/.test(why)) {
+    return { msg: 'ما قدرنا نفتح الرابط. تأكدي إن الفيديو عام على يوتيوب، وإن الرابط كامل.' };
+  }
   if (isKeyError(e)) return { msg: 'المفتاح ما يشتغل. خلّي أحد من العيال يدخل «الإعدادات» ويحط المفتاح من جديد.', fix: 'settings' };
   if (e.status === 429) return { msg: 'وصلتي للحد المجاني لليوم. جربي بعد شوي أو باجر.' };
-  if (e.reason === 'NETWORK') return { msg: 'انقطع الاتصال. تأكدي من الإنترنت، وخلّي الصفحة مفتوحة والشاشة شغالة لين يخلص، وجربي مرة ثانية.' };
+  if (e.reason === 'NETWORK') return { msg: 'انقطع الاتصال. تأكدي من الإنترنت، وخلّي الصفحة مفتوحة والشاشة شغالة لين يخلص.' };
   if (e.reason === 'TOO_BIG') return { msg: 'المقطع كبير وايد. جربي ملف الصوت بدل الفيديو.' };
   if (e.reason === 'EMPTY') return { msg: 'ما طلع كلام من المقطع. تأكدي إن فيه صوت واضح.' };
-  if (e.reason?.startsWith('FILE_') || /mime|unsupported|invalid argument/i.test(why)) return { msg: 'ما قدرنا نقرأ هالمقطع. جربي ملف صوت ثاني (مثل mp3 أو m4a).' };
-  return { msg: 'صار خطأ. جربي مرة ثانية.' };
+  if (e.status === 400 && /token/i.test(why)) return { msg: 'المقطع طويل وايد على الخطة المجانية. جربي تقسمينه لجزئين.' };
+  if (e.reason?.startsWith('FILE_') || /mime|unsupported|invalid argument/i.test(why)) return { msg: 'ما قدرنا نقرأ هالمقطع. جربي ملف صوت ثاني، مثل mp3 أو m4a.' };
+  return { msg: 'صار خطأ غير متوقع. جربي مرة ثانية.' };
 }
 
-function fail(e) {
-  const { msg, fix } = explain(e);
+function fail(e, source) {
+  const { msg, fix } = explain(e, source);
   $('#error-msg').textContent = msg;
   $('#error-detail').textContent = `${e.status ?? ''} ${e.reason || ''}\n${e.message || e}`;
   $('#retry').textContent = fix === 'settings' ? 'الإعدادات' : 'حاولي مرة ثانية';
-  $('#retry').onclick = fix === 'settings' ? openSettings : () => handleFile(currentFile);
+  $('#retry').onclick = fix === 'settings' ? openSettings : () => run(lastSource);
   show('error');
+}
+
+/* ---------- work screen ---------- */
+
+function startWork(source) {
+  $('#work-name').textContent = source.kind === 'youtube' ? source.url : source.name.replace(/\.[^.]+$/, '');
+  $('[data-step="upload"] .label').textContent = source.kind === 'youtube' ? 'فتح الرابط' : 'رفع المقطع';
+  document.querySelectorAll('.steps li').forEach(li => {
+    li.dataset.state = li.dataset.step === 'upload' ? 'active' : 'pending';
+    li.querySelector('.detail').textContent = '';
+  });
+  $('#live').textContent = '';
+  setProgress(0);
+  show('work');
+}
+
+const stepState = (step, state) => { $(`[data-step="${step}"]`).dataset.state = state; };
+const stepDetail = (step, text) => { $(`[data-step="${step}"] .detail`).textContent = text; };
+
+function setProgress(p) {
+  // The woven band fills from the right, the way Arabic reads.
+  $('#weave').style.setProperty('--unwoven', `${(1 - p) * 100}%`);
 }
 
 /* ---------- history ---------- */
@@ -586,84 +889,179 @@ function fail(e) {
 const history = () => load(HISTORY, []);
 
 function storeItem(item) {
-  let list = [item, ...history().filter(x => x.id !== item.id)].slice(0, 10);
+  let list = [item, ...history().filter(x => x.id !== item.id)].slice(0, 30);
   while (!save(HISTORY, list) && list.length > 1) list = list.slice(0, -1);
 }
 
-function topicOf(summary) {
-  const m = summary.match(/الموضوع\s*[:：]\s*(.+)/);
-  return m ? m[1].replace(/[()]/g, '').trim().slice(0, 90) : '';
+function removeItem(id) {
+  save(HISTORY, history().filter(x => x.id !== id));
+}
+
+const WORD = ['كلمة', 'كلمتين', 'كلمات', 'كلمة'];
+const MINUTE = ['دقيقة', 'دقيقتين', 'دقائق', 'دقيقة'];
+
+function countLabel(n, [one, two, few, many]) {
+  if (n === 1) return one;
+  if (n === 2) return two;
+  return `${num(n)} ${n >= 3 && n <= 10 ? few : many}`;
 }
 
 const countWords = t => (t.trim() ? t.trim().split(/\s+/).length : 0);
 const shortDate = ts => new Date(ts).toLocaleDateString('ar-KW', { day: 'numeric', month: 'long' });
-const longDate = ts => new Date(ts).toLocaleString('ar-KW', { weekday: 'long', day: 'numeric', month: 'long', hour: 'numeric', minute: '2-digit' });
+const longDate = ts => new Date(ts).toLocaleDateString('ar-KW', { weekday: 'long', day: 'numeric', month: 'long' });
+
+function metaFor(item, dateFn) {
+  const parts = [dateFn(item.date)];
+  if (item.duration) parts.push(countLabel(Math.max(1, Math.round(item.duration / 60)), MINUTE));
+  if (item.kind === 'youtube') parts.push('من يوتيوب');
+  return parts.join('، ');
+}
+
+function el(tag, text, cls) {
+  const node = document.createElement(tag);
+  if (text) node.textContent = text;
+  if (cls) node.className = cls;
+  return node;
+}
 
 function renderHistory() {
   const list = history();
-  $('#history-wrap').hidden = !list.length;
+  $('#empty').hidden = list.length > 0;
   $('#history').replaceChildren(...list.map(item => {
-    const title = document.createElement('span');
-    title.className = 'row-title';
-    title.textContent = item.title;
-    const date = document.createElement('span');
-    date.className = 'row-date';
-    date.textContent = longDate(item.date);
-    const row = document.createElement('button');
-    row.className = 'row';
-    row.append(title, date);
-    row.addEventListener('click', () => showResult(item));
-    const li = document.createElement('li');
+    const text = el('span', '', 'row-text');
+    text.append(el('span', item.title, 'row-title'), el('span', metaFor(item, shortDate), 'row-meta'));
+    const row = el('button', '', 'row');
+    row.append(text, el('span', '‹', 'row-chevron'));
+    row.addEventListener('click', () => showResult(item, 'summary'));
+    const li = el('li');
     li.append(row);
     return li;
   }));
 }
 
-/* ---------- screens ---------- */
+/* ---------- result screen ---------- */
 
-function show(id) {
-  document.querySelectorAll('main > section').forEach(s => { s.hidden = s.id !== id; });
-  $('#settings-btn').hidden = id !== 'home';
-  window.scrollTo(0, 0);
+// Marks Quran verses, quoted hadith and unclear words so they stand out while reading.
+function rich(text) {
+  const frag = document.createDocumentFragment();
+  for (const piece of text.split(/(﴿[^﴾]*﴾|«[^»]*»|\[غير واضح\])/)) {
+    if (!piece) continue;
+    const cls = piece.startsWith('﴿') ? 'ayah' : piece.startsWith('«') ? 'quote' : piece === '[غير واضح]' ? 'unclear' : '';
+    frag.append(cls ? el('span', piece, cls) : piece);
+  }
+  return frag;
 }
 
-function goHome() {
-  renderHistory();
-  show('home');
+function notesText(n) {
+  const block = (heading, list) => (list?.length ? [heading, ...list.map(x => `• ${x}`), ''] : []);
+  return [n.title, '', ...block('أهم الأفكار:', n.points), ...block('الأدلة المذكورة:', n.evidence), ...block('الفوائد العملية:', n.lessons)]
+    .join('\n').trim();
 }
 
-function setStep(text, progress) {
-  $('#step').textContent = text;
-  $('#bar').hidden = progress == null;
-  if (progress != null) $('#bar-fill').style.width = `${Math.round(progress * 100)}%`;
+function missingNotes() {
+  const box = el('div', '', 'missing');
+  box.append(el('p', 'ما انكتب الملخص هالمرة.'));
+  const retry = el('button', 'اكتبي الملخص', 'secondary');
+  retry.addEventListener('click', async () => {
+    retry.disabled = true;
+    retry.textContent = 'جاري كتابة الملخص…';
+    try {
+      await makeNotes(shown);
+      showResult(shown, tab);
+    } catch {
+      retry.disabled = false;
+      retry.textContent = 'اكتبي الملخص';
+      box.firstChild.textContent = 'ما زبط. تأكدي من الإنترنت وجربي بعد شوي.';
+    }
+  });
+  box.append(retry);
+  return box;
 }
 
-function setLive(text) {
-  $('#live').textContent = text;
+function renderPanels(item) {
+  const summary = $('#panel-summary');
+  const transcript = $('#panel-transcript');
+  const whatsapp = $('#panel-whatsapp');
+  summary.replaceChildren();
+  transcript.replaceChildren();
+  whatsapp.replaceChildren();
+
+  if (item.notes) {
+    for (const [heading, list] of [['أهم الأفكار', item.notes.points], ['الأدلة المذكورة', item.notes.evidence], ['الفوائد العملية', item.notes.lessons]]) {
+      if (!list?.length) continue;
+      const ul = el('ul');
+      for (const line of list) {
+        const li = el('li');
+        li.append(rich(line));
+        ul.append(li);
+      }
+      summary.append(el('h3', heading), ul);
+    }
+    const bubble = el('div', '', 'bubble');
+    // WhatsApp shows *text* as bold, so preview it the same way.
+    for (const piece of item.notes.whatsapp.split(/(\*[^*\n]+\*)/)) {
+      if (piece) bubble.append(/^\*.+\*$/.test(piece) ? el('strong', piece.slice(1, -1)) : piece);
+    }
+    whatsapp.append(bubble);
+  } else {
+    summary.append(missingNotes());
+    whatsapp.append(missingNotes());
+  }
+
+  if (item.complete === false) transcript.append(el('p', 'ممكن آخر المقطع ما انكتب كامل.', 'note'));
+  for (let para of item.transcript.split(/\n+/)) {
+    if (!para.trim()) continue;
+    const p = el('p');
+    const q = para.match(/^\s*سؤال\s*[:：]\s*/);
+    if (q) {
+      p.className = 'question';
+      p.append(el('span', 'سؤال:', 'q-label'));
+      para = para.slice(q[0].length);
+    }
+    p.append(rich(para));
+    transcript.append(p);
+  }
 }
 
-function showResult(item) {
+function copyPayload() {
+  if (tab === 'transcript') return shown.transcript;
+  if (!shown.notes) return '';
+  return tab === 'summary' ? notesText(shown.notes) : shown.notes.whatsapp;
+}
+
+const COPY_LABEL = { summary: 'نسخ الملخص', transcript: 'نسخ الكلام', whatsapp: 'نسخ الرسالة' };
+
+function selectTab(name) {
+  tab = name;
+  document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
+  for (const t of ['summary', 'transcript', 'whatsapp']) $(`#panel-${t}`).hidden = t !== name;
+  const copy = $('#copy');
+  copy.textContent = COPY_LABEL[name];
+  copy.dataset.label = COPY_LABEL[name];
+  copy.disabled = !copyPayload();
+  $('#share').disabled = !copyPayload();
+}
+
+function showResult(item, startTab) {
   shown = item;
-  $('#result-title').textContent = item.title;
-  $('#result-date').textContent = longDate(item.date);
-  $('#summary').textContent = item.summary || 'ما قدرنا نكتب الملخص هالمرة.';
-  $('[data-copy="summary"]').hidden = !item.summary;
-  $('#retry-summary').hidden = !!item.summary;
-  $('#incomplete').hidden = item.complete !== false;
-  $('#transcript').textContent = item.transcript;
+  $('#r-title').textContent = item.title;
+  $('#r-meta').textContent = `${metaFor(item, longDate)}، ${countLabel(countWords(item.transcript), WORD)}`;
+  renderPanels(item);
   show('result');
+  selectTab(startTab || tab);
 }
 
-const isStandalone = () => navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
+function applySize() {
+  const i = prefs().size;
+  document.documentElement.style.setProperty('--read-size', `${READ_SIZES[i]}px`);
+  $('#smaller').disabled = i === 0;
+  $('#bigger').disabled = i === READ_SIZES.length - 1;
+}
 
-function openSettings() {
-  const hasKey = !!getKey();
-  $('#key').value = '';
-  $('#key').placeholder = hasKey ? 'المفتاح محفوظ ✓ — الصق مفتاح جديد لتغييره' : 'الصق المفتاح هني';
-  $('#key-msg').textContent = '';
-  $('#setup-back').hidden = !hasKey;
-  $('#step-home').hidden = isStandalone();
-  show('setup');
+function changeSize(step) {
+  const size = Math.min(READ_SIZES.length - 1, Math.max(0, prefs().size + step));
+  save(PREFS, { ...prefs(), size });
+  applySize();
 }
 
 async function copyText(text, button) {
@@ -683,7 +1081,32 @@ async function copyText(text, button) {
     ta.remove();
   }
   button.textContent = ok ? 'تم النسخ ✓' : 'ما انسخ، حاولي مرة ثانية';
-  setTimeout(() => { button.textContent = button.dataset.label; }, 2500);
+  setTimeout(() => { button.textContent = button.dataset.label; }, 2200);
+}
+
+/* ---------- screens ---------- */
+
+function show(id) {
+  document.querySelectorAll('main > section').forEach(s => { s.hidden = s.id !== id; });
+  window.scrollTo(0, 0);
+}
+
+function goHome() {
+  renderHistory();
+  show('home');
+}
+
+const isStandalone = () => navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
+
+function openSettings() {
+  const hasKey = !!getKey();
+  $('#key').value = '';
+  $('#key').placeholder = hasKey ? 'المفتاح محفوظ ✓' : 'الصق المفتاح هني';
+  $('#key-msg').textContent = '';
+  $('#setup-back').hidden = !hasKey;
+  $('#step-home').hidden = isStandalone();
+  $('#paste-key').hidden = !navigator.clipboard?.readText;
+  show('setup');
 }
 
 /* ---------- wiring ---------- */
@@ -691,25 +1114,59 @@ async function copyText(text, button) {
 $('#file').addEventListener('change', e => {
   const file = e.target.files[0];
   e.target.value = '';
-  if (file) handleFile(file);
+  if (file) run({ kind: 'file', file, name: file.name });
 });
 
-document.querySelectorAll('.copy').forEach(b =>
-  b.addEventListener('click', () => shown && copyText(shown[b.dataset.copy], b)));
+$('#yt-toggle').addEventListener('click', e => {
+  const form = $('#yt-form');
+  form.hidden = !form.hidden;
+  e.currentTarget.setAttribute('aria-expanded', String(!form.hidden));
+  if (!form.hidden) $('#yt-url').focus();
+});
 
-$('#retry-summary').addEventListener('click', async e => {
-  const button = e.currentTarget;
-  button.disabled = true;
-  button.textContent = 'جاري كتابة الملخص…';
-  try {
-    await summarize(shown);
-    showResult(shown);
-  } catch {
-    $('#summary').textContent = 'ما زبط. تأكدي من الإنترنت وجربي بعد شوي.';
-  } finally {
-    button.disabled = false;
-    button.textContent = 'اكتبي الملخص مرة ثانية';
+$('#yt-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const input = $('#yt-url');
+  const url = input.value.trim();
+  if (!YOUTUBE.test(url)) {
+    input.setCustomValidity('هذا مو رابط يوتيوب');
+    input.reportValidity();
+    return;
   }
+  input.value = '';
+  run({ kind: 'youtube', url, name: 'رابط يوتيوب' });
+});
+$('#yt-url').addEventListener('input', e => e.target.setCustomValidity(''));
+
+$('#cancel').addEventListener('click', () => {
+  job?.abort();
+  goHome();
+});
+
+document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => selectTab(b.dataset.tab)));
+
+$('#copy').addEventListener('click', e => copyText(copyPayload(), e.currentTarget));
+
+$('#share').addEventListener('click', async () => {
+  try { await navigator.share({ text: copyPayload() }); }
+  catch (e) { if (!isAbort(e)) copyText(copyPayload(), $('#copy')); }
+});
+if (!navigator.share) {
+  $('#share').hidden = true;
+  $('#actions').classList.add('single');
+}
+
+$('#smaller').addEventListener('click', () => changeSize(-1));
+$('#bigger').addEventListener('click', () => changeSize(1));
+
+$('#delete').addEventListener('click', () => {
+  if (!confirm('تبين تحذفين هالمحاضرة؟')) return;
+  removeItem(shown.id);
+  goHome();
+});
+
+$('#paste-key').addEventListener('click', async () => {
+  try { $('#key').value = (await navigator.clipboard.readText()).trim(); } catch {}
 });
 
 $('#save-key').addEventListener('click', async e => {
@@ -735,12 +1192,12 @@ $('#save-key').addEventListener('click', async e => {
   }
 });
 
-$('#new').addEventListener('click', goHome);
-$('#result-back').addEventListener('click', goHome);
+$('#back').addEventListener('click', goHome);
 $('#error-home').addEventListener('click', goHome);
 $('#setup-back').addEventListener('click', goHome);
 $('#settings-btn').addEventListener('click', openSettings);
 
+applySize();
 if (getKey()) goHome(); else openSettings();
 </script>
 </body>
