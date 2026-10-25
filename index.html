@@ -1,0 +1,747 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>تفريغ المحاضرات</title>
+<meta name="description" content="تحويل مقطع صوت أو فيديو إلى نص مكتوب مع ملخص">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="تفريغ">
+<meta name="theme-color" content="#0f766e">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+  :root {
+    --bg: #f6f4ef;
+    --surface: #ffffff;
+    --text: #1c1917;
+    --muted: #57534e;
+    --border: #e2ded8;
+    --primary: #0f766e;
+    --primary-press: #115e59;
+    --on-primary: #ffffff;
+    --accent: #0f766e;
+    --soft: #e6f2f0;
+    --warn-bg: #fdf3d8;
+    --warn-text: #6b4a0b;
+    --danger: #b42318;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141312;
+      --surface: #1f1d1b;
+      --text: #f4f2ef;
+      --muted: #b4ada6;
+      --border: #3a3633;
+      --primary: #0f766e;
+      --primary-press: #0b5d57;
+      --on-primary: #ffffff;
+      --accent: #5eead4;
+      --soft: #1d2d2b;
+      --warn-bg: #3a2f17;
+      --warn-text: #f3dfae;
+      --danger: #f97066;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #141312;
+    --surface: #1f1d1b;
+    --text: #f4f2ef;
+    --muted: #b4ada6;
+    --border: #3a3633;
+    --primary: #0f766e;
+    --primary-press: #0b5d57;
+    --on-primary: #ffffff;
+    --accent: #5eead4;
+    --soft: #1d2d2b;
+    --warn-bg: #3a2f17;
+    --warn-text: #f3dfae;
+    --danger: #f97066;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 20px/1.7 -apple-system, "SF Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif;
+  }
+  main {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: max(20px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(32px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  }
+  [hidden] { display: none !important; }
+  h1 { font-size: 30px; margin: 8px 0 24px; text-align: center; }
+  h2 { font-size: 24px; margin: 0 0 12px; }
+  h3 { font-size: 22px; margin: 0 0 12px; }
+  a { color: var(--accent); }
+  .muted { color: var(--muted); }
+  .small { font-size: 16px; }
+
+  button, .big { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent; }
+  .big {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    width: 100%; min-height: 96px; padding: 16px;
+    border: 0; border-radius: 22px;
+    background: var(--primary); color: var(--on-primary);
+    font-size: 28px; font-weight: 700; cursor: pointer;
+    box-shadow: 0 6px 18px rgb(15 118 110 / .25);
+  }
+  .big:active { background: var(--primary-press); transform: scale(.99); }
+  .big:disabled { opacity: .6; }
+  .secondary {
+    display: block; width: 100%; min-height: 60px; margin-top: 14px; padding: 10px 16px;
+    border: 2px solid var(--border); border-radius: 16px;
+    background: var(--surface); font-size: 21px; font-weight: 600; cursor: pointer;
+  }
+  .link { background: none; border: 0; color: var(--muted); font-size: 17px; text-decoration: underline; padding: 12px; cursor: pointer; }
+  .hint { text-align: center; color: var(--muted); margin: 14px 0 0; }
+
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  .history { margin-top: 40px; }
+  .history ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .row {
+    width: 100%; display: grid; gap: 2px; text-align: start;
+    padding: 14px 16px; min-height: 64px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px; cursor: pointer;
+  }
+  .row-title { font-size: 20px; font-weight: 600; }
+  .row-date { font-size: 16px; color: var(--muted); }
+
+  .work { text-align: center; padding-top: 24px; }
+  .spinner {
+    width: 72px; height: 72px; margin: 0 auto 24px;
+    border: 7px solid var(--soft); border-top-color: var(--accent); border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 3s; } }
+  .step { font-size: 25px; font-weight: 700; margin: 0 0 16px; }
+  .bar { height: 14px; background: var(--soft); border-radius: 7px; overflow: hidden; margin: 0 0 20px; }
+  .bar > div { height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+  .warn { background: var(--warn-bg); color: var(--warn-text); border-radius: 14px; padding: 12px 16px; margin: 0 0 20px; font-size: 18px; }
+  .live { text-align: start; color: var(--muted); font-size: 17px; white-space: pre-wrap; margin: 0 0 12px; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 18px 16px; margin: 0 0 18px; }
+  .copy {
+    display: block; width: 100%; min-height: 64px; margin: 0 0 16px;
+    border: 2px solid var(--accent); border-radius: 16px;
+    background: var(--soft); color: var(--accent); font-size: 22px; font-weight: 700; cursor: pointer;
+  }
+  .copy:active { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+  .text { white-space: pre-wrap; font-size: 20px; line-height: 1.95; overflow-wrap: anywhere; }
+  .note { background: var(--warn-bg); color: var(--warn-text); border-radius: 12px; padding: 8px 12px; font-size: 17px; }
+  .result-head { margin-bottom: 16px; }
+  .result-head h2 { margin: 6px 0 0; }
+
+  .error { text-align: center; padding-top: 24px; }
+  .error .icon { font-size: 52px; margin: 0; }
+  .error details { margin-top: 28px; text-align: start; }
+  .error pre { white-space: pre-wrap; direction: ltr; text-align: left; font-size: 13px; }
+
+  .steps { padding-inline-start: 26px; margin: 0 0 20px; }
+  .steps li { margin-bottom: 10px; }
+  input[type="text"] {
+    width: 100%; min-height: 60px; padding: 12px 14px; margin: 0 0 14px;
+    font: inherit; font-size: 18px; direction: ltr; text-align: left;
+    color: var(--text); background: var(--surface);
+    border: 2px solid var(--border); border-radius: 14px;
+  }
+  .msg { min-height: 1.7em; font-weight: 600; margin: 14px 0 0; }
+  footer { text-align: center; margin-top: 36px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>تفريغ المحاضرات</h1>
+
+  <section id="home" hidden>
+    <label for="file" class="big"><span aria-hidden="true">🎙️</span> اختاري المقطع</label>
+    <input type="file" id="file" class="visually-hidden" accept="audio/*,video/*,.opus,.ogg,.m4a,.mp3,.wav,.aac,.flac,.mp4,.mov">
+    <p class="hint">صوت أو فيديو. بعد ما تختارينه يبدأ بروحه.</p>
+    <div id="history-wrap" class="history" hidden>
+      <h2>المقاطع السابقة</h2>
+      <ul id="history"></ul>
+    </div>
+  </section>
+
+  <section id="work" class="work" hidden>
+    <div class="spinner" aria-hidden="true"></div>
+    <p id="step" class="step" role="status" aria-live="polite"></p>
+    <div id="bar" class="bar" hidden><div id="bar-fill"></div></div>
+    <p class="warn">خلّي الصفحة مفتوحة ولا تقفلين الشاشة لين يخلص.</p>
+    <p id="live" class="live"></p>
+  </section>
+
+  <section id="result" hidden>
+    <div class="result-head">
+      <button id="result-back" class="link">← الرئيسية</button>
+      <h2 id="result-title"></h2>
+      <div id="result-date" class="muted small"></div>
+    </div>
+    <article class="card">
+      <h3>الملخص</h3>
+      <button class="copy" data-copy="summary" data-label="نسخ الملخص">نسخ الملخص</button>
+      <div id="summary" class="text"></div>
+      <button id="retry-summary" class="secondary" hidden>اكتبي الملخص مرة ثانية</button>
+    </article>
+    <article class="card">
+      <h3>الكلام كامل</h3>
+      <button class="copy" data-copy="transcript" data-label="نسخ الكلام كامل">نسخ الكلام كامل</button>
+      <p id="incomplete" class="note" hidden>ممكن آخر المقطع ما انكتب كامل.</p>
+      <div id="transcript" class="text"></div>
+    </article>
+    <button id="new" class="big">مقطع جديد</button>
+  </section>
+
+  <section id="error" class="error" hidden>
+    <p class="icon" aria-hidden="true">⚠️</p>
+    <p id="error-msg" class="step"></p>
+    <button id="retry" class="big">حاولي مرة ثانية</button>
+    <button id="error-home" class="secondary">رجوع</button>
+    <details class="muted small">
+      <summary>تفاصيل للمساعدة</summary>
+      <pre id="error-detail"></pre>
+    </details>
+  </section>
+
+  <section id="setup" hidden>
+    <h2>الإعداد (مرة وحدة بس)</h2>
+    <p class="muted">هالخطوة يسويها أحد من العيال، وبعدها ما تحتاجها الوالدة.</p>
+    <ol class="steps">
+      <li id="step-home">من Safari اضغط زر المشاركة ثم «إضافة إلى الشاشة الرئيسية». بعدها افتح الصفحة من الأيقونة الجديدة وكمّل الخطوات من هناك.</li>
+      <li>افتح <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> وادخل بحساب Gmail، واضغط <b>Create API key</b> وانسخ المفتاح.</li>
+      <li>الصق المفتاح هني واضغط «حفظ».</li>
+    </ol>
+    <input type="text" id="key" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+    <button id="save-key" class="big">حفظ</button>
+    <p id="key-msg" class="msg" role="status"></p>
+    <button id="setup-back" class="secondary" hidden>رجوع</button>
+    <p class="muted small">المفتاح ينحفظ على هالجهاز بس. المقاطع تنرسل إلى Google Gemini عشان ينكتب الكلام، وبالخطة المجانية ممكن قوقل يستخدم المحتوى لتحسين خدماته.</p>
+  </section>
+
+  <footer><button id="settings-btn" class="link" hidden>الإعدادات</button></footer>
+</main>
+
+<script>
+'use strict';
+
+const API = 'https://generativelanguage.googleapis.com';
+const KEY = 'tafreegh.key';
+const HISTORY = 'tafreegh.history';
+const MODELS = 'tafreegh.models';
+const FALLBACK_MODELS = ['gemini-flash-latest', 'gemini-2.5-flash'];
+const MAX_FILE_BYTES = 2e9;
+
+// Gemini rejects some of the MIME types iOS reports (e.g. audio/x-m4a), so map by extension first.
+const MIME = {
+  mp3: 'audio/mp3', m4a: 'audio/mp4', aac: 'audio/aac', wav: 'audio/wav', flac: 'audio/flac', aiff: 'audio/aiff',
+  ogg: 'audio/ogg', oga: 'audio/ogg', opus: 'audio/ogg',
+  mp4: 'video/mp4', m4v: 'video/mp4', mov: 'video/quicktime', webm: 'video/webm', '3gp': 'video/3gpp', mpeg: 'video/mpeg', mpg: 'video/mpeg',
+};
+
+const TRANSCRIBE_PROMPT = `هذا تسجيل لدرس أو محاضرة دينية بالعربي.
+المطلوب: اكتب الكلام المنطوق كتابةً، كلمة بكلمة، من أول المقطع إلى آخره.
+- لا تلخّص ولا تحذف ولا تضف شيئاً من عندك، واكتب الكلام كما قيل وباللهجة التي قيل بها.
+- احذف فقط أصوات التردد مثل (اممم، إإإ) والتكرار غير المقصود.
+- اكتب الآيات القرآنية بالرسم الإملائي الصحيح بين القوسين ﴿ ﴾.
+- اكتب الأحاديث والأقوال المنقولة بين علامتي التنصيص « ».
+- قسّم الكلام إلى فقرات كلما تغيّرت الفكرة، واستخدم علامات الترقيم.
+- إذا تكلّم أحد غير المحاضِر (مثل سؤال من الحضور) فابدأ كلامه بكلمة: سؤال:
+- إذا لم تتضح كلمة فاكتب [غير واضح].
+- اكتب النص فقط: بدون مقدمة أو تعليق أو عناوين أو توقيت، وبدون رموز تنسيق مثل * أو #.`;
+
+const SUMMARY_PROMPT = `هذا تفريغ نصي لدرس أو محاضرة دينية. اكتب ملخصاً واضحاً ومختصراً بالعربية الفصحى المبسّطة بهذا الترتيب:
+
+الموضوع: (سطر واحد)
+
+أهم الأفكار:
+• (نقاط قصيرة)
+
+الأدلة المذكورة:
+• (الآيات والأحاديث التي ذُكرت، باختصار)
+
+الفوائد العملية:
+• (نقاط قصيرة)
+
+اعتمد على التفريغ فقط ولا تضف معلومات من خارجه. لا تستخدم رموز تنسيق مثل * أو #.
+
+التفريغ:
+`;
+
+// Finish reasons after which another request can pick up where the text stopped.
+const CONTINUABLE = ['MAX_TOKENS', 'RECITATION', 'INTERRUPTED'];
+
+const $ = s => document.querySelector(s);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const num = n => n.toLocaleString('ar-KW');
+
+let currentFile = null;
+let shown = null;
+
+/* ---------- storage ---------- */
+
+function load(k, fallback) {
+  try { const v = localStorage.getItem(k); return v == null ? fallback : JSON.parse(v); } catch { return fallback; }
+}
+function save(k, v) {
+  try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; }
+}
+function forget(k) {
+  try { localStorage.removeItem(k); } catch {}
+}
+const getKey = () => load(KEY, '');
+
+/* ---------- Gemini API ---------- */
+
+class ApiError extends Error {
+  constructor(status, reason, message) {
+    super(message || `HTTP ${status}`);
+    this.status = status;
+    this.reason = reason || '';
+  }
+}
+
+function toApiError(status, body) {
+  let reason = '', message = body;
+  try {
+    const e = JSON.parse(body).error;
+    message = e.message;
+    reason = (e.details || []).map(d => d.reason).find(Boolean) || e.status;
+  } catch {}
+  return new ApiError(status, reason, message);
+}
+
+const isKeyError = e =>
+  e.status === 401 || e.status === 403 || (e.status === 400 && /API_KEY/.test(`${e.reason} ${e.message}`));
+
+async function api(path, opts = {}, key = getKey()) {
+  let res;
+  try {
+    res = await fetch(API + path, { ...opts, headers: { 'x-goog-api-key': key, ...opts.headers } });
+  } catch (e) {
+    throw new ApiError(0, 'NETWORK', String(e));
+  }
+  if (!res.ok) throw toApiError(res.status, await res.text());
+  return res;
+}
+
+async function listModels(key) {
+  const res = await api('/v1beta/models?pageSize=1000', {}, key);
+  return (await res.json()).models || [];
+}
+
+// Newest stable Flash models first, so the page keeps working as Google renames them.
+async function getModels() {
+  const cached = load(MODELS, null);
+  if (cached && Date.now() - cached.at < 864e5) return cached.list;
+  let list = FALLBACK_MODELS;
+  try {
+    const flash = (await listModels(getKey()))
+      .filter(m => (m.supportedGenerationMethods || []).includes('generateContent'))
+      .map(m => m.name.replace(/^models\//, ''))
+      .filter(n => /^gemini-\d+(\.\d+)?-flash$/.test(n))
+      .sort((a, b) => parseFloat(b.slice(7)) - parseFloat(a.slice(7)));
+    list = [...new Set([FALLBACK_MODELS[0], ...flash, ...FALLBACK_MODELS])].slice(0, 4);
+    save(MODELS, { at: Date.now(), list });
+  } catch (e) {
+    if (isKeyError(e)) throw e;
+  }
+  return list;
+}
+
+function dropModel(model) {
+  const cached = load(MODELS, null);
+  if (cached) save(MODELS, { ...cached, list: cached.list.filter(m => m !== model) });
+}
+
+async function uploadFile(file, mime, onProgress) {
+  const res = await api('/upload/v1beta/files', {
+    method: 'POST',
+    headers: {
+      'X-Goog-Upload-Protocol': 'resumable',
+      'X-Goog-Upload-Command': 'start',
+      'X-Goog-Upload-Header-Content-Length': String(file.size),
+      'X-Goog-Upload-Header-Content-Type': mime,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ file: { display_name: 'lecture' } }),
+  });
+  const url = res.headers.get('x-goog-upload-url');
+  if (!url) throw new ApiError(0, 'NO_UPLOAD_URL', 'upload url missing');
+
+  // XHR rather than fetch, for upload progress.
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url);
+    xhr.setRequestHeader('X-Goog-Upload-Offset', '0');
+    xhr.setRequestHeader('X-Goog-Upload-Command', 'upload, finalize');
+    xhr.upload.onprogress = e => { if (e.lengthComputable) onProgress(e.loaded / e.total); };
+    xhr.onload = () => {
+      if (xhr.status < 200 || xhr.status >= 300) return reject(toApiError(xhr.status, xhr.responseText));
+      try { resolve(JSON.parse(xhr.responseText).file); }
+      catch { reject(new ApiError(xhr.status, 'BAD_RESPONSE', xhr.responseText)); }
+    };
+    xhr.onerror = () => reject(new ApiError(0, 'NETWORK', 'upload failed'));
+    xhr.send(file);
+  });
+}
+
+async function waitActive(file) {
+  for (let i = 0; file.state === 'PROCESSING' && i < 200; i++) {
+    await sleep(3000);
+    file = await (await api(`/v1beta/${file.name}`)).json();
+  }
+  if (file.state !== 'ACTIVE') throw new ApiError(0, `FILE_${file.state}`, JSON.stringify(file.error || file.state));
+  return file;
+}
+
+function deleteFile(name) {
+  api(`/v1beta/${name}`, { method: 'DELETE' }).catch(() => {});
+}
+
+async function streamGenerate(model, contents, onText) {
+  const res = await api(`/v1beta/models/${model}:streamGenerateContent?alt=sse`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ contents }),
+  });
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '', text = '', finish = '';
+
+  const handle = line => {
+    if (!line.startsWith('data:')) return;
+    let chunk;
+    try { chunk = JSON.parse(line.slice(5)); } catch { return; }
+    if (chunk.promptFeedback?.blockReason) finish = 'BLOCKED';
+    const cand = chunk.candidates?.[0];
+    for (const part of cand?.content?.parts || []) {
+      if (part.text && !part.thought) { text += part.text; onText?.(text); }
+    }
+    if (cand?.finishReason) finish = cand.finishReason;
+  };
+
+  try {
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop();
+      lines.forEach(handle);
+    }
+    handle(buffer);
+  } catch (e) {
+    if (!text) throw new ApiError(0, 'NETWORK', String(e));
+    finish = 'INTERRUPTED';
+  }
+  return { text, finish };
+}
+
+// Tries each model in turn: a missing model, a used-up quota or an overloaded server moves on to the next.
+async function generate(models, contents, onText) {
+  let lastError;
+  for (const model of models) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try { return await streamGenerate(model, contents, onText); }
+      catch (e) {
+        lastError = e;
+        if (e.status === 404) dropModel(model);
+        if (e.status !== 500 && e.status !== 503) break;
+        await sleep(4000);
+      }
+    }
+    if (![404, 429, 500, 503].includes(lastError.status)) throw lastError;
+  }
+  throw lastError;
+}
+
+function joinText(a, b) {
+  if (!a) return b;
+  if (!b) return a;
+  return `${a.replace(/\s+$/, '')}\n${b.replace(/^\s+/, '')}`;
+}
+
+function continuePrompt(done, finish) {
+  // Long Quran passages can trip Gemini's recitation filter; abbreviating them lets it carry on.
+  const rule = finish === 'RECITATION' ? '\n- إذا جاءت آية طويلة فاكتب أول كلماتها فقط ثم (... الآية).' : '';
+  if (!done.trim()) return TRANSCRIBE_PROMPT + rule;
+  return `${TRANSCRIBE_PROMPT}${rule}
+
+سبق أن كُتب الجزء الأول من المقطع، وهذا آخر ما كُتب:
+«${done.slice(-400)}»
+كمّل الكتابة مباشرة من بعد هذا الكلام إلى نهاية المقطع، ولا تُعِد كتابة ما سبق.`;
+}
+
+async function transcribe(models, file, onText) {
+  const media = { file_data: { mime_type: file.mimeType, file_uri: file.uri } };
+  let full = '', finish = '';
+  for (let round = 0; round < 4; round++) {
+    const prompt = round === 0 ? TRANSCRIBE_PROMPT : continuePrompt(full, finish);
+    let r;
+    try {
+      r = await generate(models, [{ role: 'user', parts: [media, { text: prompt }] }], t => onText(joinText(full, t)));
+    } catch (e) {
+      if (!full.trim()) throw e;
+      finish = 'INTERRUPTED';
+      break;
+    }
+    full = joinText(full, r.text);
+    finish = r.finish;
+    if (!CONTINUABLE.includes(finish) || (round > 0 && !r.text.trim())) break;
+  }
+  return { text: full.trim(), complete: finish === 'STOP' || finish === '' };
+}
+
+async function summarize(item) {
+  const models = await getModels();
+  const r = await generate(models, [{ role: 'user', parts: [{ text: SUMMARY_PROMPT + item.transcript }] }]);
+  if (!r.text.trim()) throw new ApiError(0, 'EMPTY', 'empty summary');
+  item.summary = r.text.trim();
+  item.summaryFailed = false;
+  item.title = topicOf(item.summary) || item.title;
+  storeItem(item);
+}
+
+/* ---------- main flow ---------- */
+
+function mimeFor(file) {
+  const ext = (file.name.split('.').pop() || '').toLowerCase();
+  if (MIME[ext]) return MIME[ext];
+  if (file.type === 'audio/x-m4a') return 'audio/mp4';
+  return file.type || 'audio/mp3';
+}
+
+async function keepAwake() {
+  try { return await navigator.wakeLock?.request('screen'); } catch { return null; }
+}
+
+async function handleFile(file) {
+  currentFile = file;
+  show('work');
+  setLive('');
+  setStep('جاري رفع المقطع…', 0);
+  const lock = await keepAwake();
+  try {
+    if (file.size > MAX_FILE_BYTES) throw new ApiError(0, 'TOO_BIG', `${file.size} bytes`);
+    const models = await getModels();
+    const uploaded = await uploadFile(file, mimeFor(file), p => setStep(`جاري رفع المقطع… ${num(Math.round(p * 100))}٪`, p));
+    setStep('جاري تجهيز المقطع…');
+    const ready = await waitActive(uploaded);
+
+    setStep('جاري كتابة الكلام…');
+    const { text, complete } = await transcribe(models, ready, t => {
+      setStep(`جاري كتابة الكلام… (${num(countWords(t))} كلمة)`);
+      setLive(`…${t.slice(-240)}`);
+    });
+    deleteFile(ready.name);
+    if (!text) throw new ApiError(0, 'EMPTY', 'empty transcript');
+
+    const item = { id: Date.now(), date: Date.now(), file: file.name, title: `محاضرة ${shortDate(Date.now())}`, transcript: text, complete, summary: '' };
+    storeItem(item);
+
+    setStep('جاري كتابة الملخص…');
+    setLive('');
+    try { await summarize(item); }
+    catch { item.summaryFailed = true; storeItem(item); }
+    showResult(item);
+  } catch (e) {
+    fail(e);
+  } finally {
+    lock?.release?.().catch(() => {});
+  }
+}
+
+function explain(e) {
+  const why = `${e.reason || ''} ${e.message || ''}`;
+  if (isKeyError(e)) return { msg: 'المفتاح ما يشتغل. خلّي أحد من العيال يدخل «الإعدادات» ويحط المفتاح من جديد.', fix: 'settings' };
+  if (e.status === 429) return { msg: 'وصلتي للحد المجاني لليوم. جربي بعد شوي أو باجر.' };
+  if (e.reason === 'NETWORK') return { msg: 'انقطع الاتصال. تأكدي من الإنترنت، وخلّي الصفحة مفتوحة والشاشة شغالة لين يخلص، وجربي مرة ثانية.' };
+  if (e.reason === 'TOO_BIG') return { msg: 'المقطع كبير وايد. جربي ملف الصوت بدل الفيديو.' };
+  if (e.reason === 'EMPTY') return { msg: 'ما طلع كلام من المقطع. تأكدي إن فيه صوت واضح.' };
+  if (e.reason?.startsWith('FILE_') || /mime|unsupported|invalid argument/i.test(why)) return { msg: 'ما قدرنا نقرأ هالمقطع. جربي ملف صوت ثاني (مثل mp3 أو m4a).' };
+  return { msg: 'صار خطأ. جربي مرة ثانية.' };
+}
+
+function fail(e) {
+  const { msg, fix } = explain(e);
+  $('#error-msg').textContent = msg;
+  $('#error-detail').textContent = `${e.status ?? ''} ${e.reason || ''}\n${e.message || e}`;
+  $('#retry').textContent = fix === 'settings' ? 'الإعدادات' : 'حاولي مرة ثانية';
+  $('#retry').onclick = fix === 'settings' ? openSettings : () => handleFile(currentFile);
+  show('error');
+}
+
+/* ---------- history ---------- */
+
+const history = () => load(HISTORY, []);
+
+function storeItem(item) {
+  let list = [item, ...history().filter(x => x.id !== item.id)].slice(0, 10);
+  while (!save(HISTORY, list) && list.length > 1) list = list.slice(0, -1);
+}
+
+function topicOf(summary) {
+  const m = summary.match(/الموضوع\s*[:：]\s*(.+)/);
+  return m ? m[1].replace(/[()]/g, '').trim().slice(0, 90) : '';
+}
+
+const countWords = t => (t.trim() ? t.trim().split(/\s+/).length : 0);
+const shortDate = ts => new Date(ts).toLocaleDateString('ar-KW', { day: 'numeric', month: 'long' });
+const longDate = ts => new Date(ts).toLocaleString('ar-KW', { weekday: 'long', day: 'numeric', month: 'long', hour: 'numeric', minute: '2-digit' });
+
+function renderHistory() {
+  const list = history();
+  $('#history-wrap').hidden = !list.length;
+  $('#history').replaceChildren(...list.map(item => {
+    const title = document.createElement('span');
+    title.className = 'row-title';
+    title.textContent = item.title;
+    const date = document.createElement('span');
+    date.className = 'row-date';
+    date.textContent = longDate(item.date);
+    const row = document.createElement('button');
+    row.className = 'row';
+    row.append(title, date);
+    row.addEventListener('click', () => showResult(item));
+    const li = document.createElement('li');
+    li.append(row);
+    return li;
+  }));
+}
+
+/* ---------- screens ---------- */
+
+function show(id) {
+  document.querySelectorAll('main > section').forEach(s => { s.hidden = s.id !== id; });
+  $('#settings-btn').hidden = id !== 'home';
+  window.scrollTo(0, 0);
+}
+
+function goHome() {
+  renderHistory();
+  show('home');
+}
+
+function setStep(text, progress) {
+  $('#step').textContent = text;
+  $('#bar').hidden = progress == null;
+  if (progress != null) $('#bar-fill').style.width = `${Math.round(progress * 100)}%`;
+}
+
+function setLive(text) {
+  $('#live').textContent = text;
+}
+
+function showResult(item) {
+  shown = item;
+  $('#result-title').textContent = item.title;
+  $('#result-date').textContent = longDate(item.date);
+  $('#summary').textContent = item.summary || 'ما قدرنا نكتب الملخص هالمرة.';
+  $('[data-copy="summary"]').hidden = !item.summary;
+  $('#retry-summary').hidden = !!item.summary;
+  $('#incomplete').hidden = item.complete !== false;
+  $('#transcript').textContent = item.transcript;
+  show('result');
+}
+
+const isStandalone = () => navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
+
+function openSettings() {
+  const hasKey = !!getKey();
+  $('#key').value = '';
+  $('#key').placeholder = hasKey ? 'المفتاح محفوظ ✓ — الصق مفتاح جديد لتغييره' : 'الصق المفتاح هني';
+  $('#key-msg').textContent = '';
+  $('#setup-back').hidden = !hasKey;
+  $('#step-home').hidden = isStandalone();
+  show('setup');
+}
+
+async function copyText(text, button) {
+  let ok = false;
+  try {
+    await navigator.clipboard.writeText(text);
+    ok = true;
+  } catch {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.append(ta);
+    ta.select();
+    ta.setSelectionRange(0, text.length);
+    try { ok = document.execCommand('copy'); } catch {}
+    ta.remove();
+  }
+  button.textContent = ok ? 'تم النسخ ✓' : 'ما انسخ، حاولي مرة ثانية';
+  setTimeout(() => { button.textContent = button.dataset.label; }, 2500);
+}
+
+/* ---------- wiring ---------- */
+
+$('#file').addEventListener('change', e => {
+  const file = e.target.files[0];
+  e.target.value = '';
+  if (file) handleFile(file);
+});
+
+document.querySelectorAll('.copy').forEach(b =>
+  b.addEventListener('click', () => shown && copyText(shown[b.dataset.copy], b)));
+
+$('#retry-summary').addEventListener('click', async e => {
+  const button = e.currentTarget;
+  button.disabled = true;
+  button.textContent = 'جاري كتابة الملخص…';
+  try {
+    await summarize(shown);
+    showResult(shown);
+  } catch {
+    $('#summary').textContent = 'ما زبط. تأكدي من الإنترنت وجربي بعد شوي.';
+  } finally {
+    button.disabled = false;
+    button.textContent = 'اكتبي الملخص مرة ثانية';
+  }
+});
+
+$('#save-key').addEventListener('click', async e => {
+  const button = e.currentTarget;
+  const key = $('#key').value.trim();
+  const say = t => { $('#key-msg').textContent = t; };
+  if (!key) return say('الصق المفتاح أول.');
+  button.disabled = true;
+  say('جاري التأكد من المفتاح…');
+  try {
+    await listModels(key);
+    if (!save(KEY, key)) return say('ما قدرنا نحفظ المفتاح على هالجهاز.');
+    forget(MODELS);
+    say('✓ تمام، المفتاح شغال');
+    await sleep(900);
+    goHome();
+  } catch (err) {
+    say(isKeyError(err) ? 'المفتاح غلط. تأكد إنك نسخته كامل.'
+      : err.status === 0 ? 'ما فيه إنترنت. جرب مرة ثانية.'
+      : `ما قدرنا نتأكد من المفتاح: ${err.message}`);
+  } finally {
+    button.disabled = false;
+  }
+});
+
+$('#new').addEventListener('click', goHome);
+$('#result-back').addEventListener('click', goHome);
+$('#error-home').addEventListener('click', goHome);
+$('#setup-back').addEventListener('click', goHome);
+$('#settings-btn').addEventListener('click', openSettings);
+
+if (getKey()) goHome(); else openSettings();
+</script>
+</body>
+</html>
