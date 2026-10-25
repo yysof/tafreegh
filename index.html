@@ -3,79 +3,93 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>تفريغ المحاضرات</title>
-<meta name="description" content="تحويل مقطع المحاضرة إلى نص مكتوب مع ملخص ورسالة جاهزة للواتساب">
+<title>مِداد</title>
+<meta name="description" content="حوّل التسجيلات الصوتية والمحاضرات إلى نص مكتوب مع ملخص ونقاط رئيسية، مجاناً ومن المتصفح.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="تفريغ">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#16141f" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-title" content="مداد">
+<meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b1120" media="(prefers-color-scheme: dark)">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" type="image/png" href="icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;700;800&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap">
+<!-- Amiri, subset to the two ornate Quran brackets only; every other glyph falls through to Naskh. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&text=%EF%B4%BF%EF%B4%BE&display=swap">
 <style>
+  /* Layout: sticky top bar; the home view pairs the headline with the working tool, then content sections.
+     App views (progress, result, library) reuse the same container. */
   :root {
-    --paper: #fbfaf8;
+    --bg: #f6f7f9;
     --surface: #ffffff;
-    --sunk: #f1eee9;
-    --ink: #1e1b2e;
-    --muted: #615b6b;
-    --line: #e4dfd7;
-    --madder: #9b2226;
-    --madder-press: #7c1a1e;
-    --madder-text: #9b2226;
-    --saffron: #c98a1c;
-    --quote: #7a5208;
-    --tint: #f7ecea;
-    --thread-ink: #1e1b2e;
-    --thread-wool: #f5f0e6;
-    --warn-bg: #fbf1dc;
-    --warn-text: #6b4a0b;
-    --read-size: 21px;
+    --surface-2: #eef1f5;
+    --fg: #101828;
+    --muted: #5d6779;
+    --line: #e2e6ec;
+    --ink: #1b2a4a;
+    --ink-hover: #142039;
+    --on-ink: #ffffff;
+    --gold: #c08a2e;
+    --gold-text: #8a5d12;
+    --gold-soft: #f7eedc;
+    --focus: #3d5bd9;
+    --danger: #b42318;
+    --danger-soft: #fdeceb;
+    --success: #1a7f4b;
+    --mark: #fde7a8;
+    --shadow: 0 1px 2px rgb(16 24 40 / .05), 0 18px 40px -20px rgb(16 24 40 / .28);
+    --shadow-sm: 0 1px 2px rgb(16 24 40 / .06);
+    --font-ui: "Readex Pro", "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+    --font-read: "Amiri", "Noto Naskh Arabic", "Geeza Pro", "Times New Roman", serif;
+    --read-size: 20px;
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --paper: #16141f;
-      --surface: #201d2c;
-      --sunk: #1b1926;
-      --ink: #f3efe8;
-      --muted: #aca5b6;
-      --line: #34303f;
-      --madder: #b0303a;
-      --madder-press: #93262f;
-      --madder-text: #f2858a;
-      --saffron: #e0a63e;
-      --quote: #ecc26f;
-      --tint: #2c1f29;
-      --thread-ink: #0a0910;
-      --thread-wool: #ece5d8;
-      --warn-bg: #352b17;
-      --warn-text: #f1dcae;
+      --bg: #0b1120;
+      --surface: #121a2c;
+      --surface-2: #1a2338;
+      --fg: #e8ecf4;
+      --muted: #9aa4b8;
+      --line: #263049;
+      --ink: #e8ecf4;
+      --ink-hover: #ffffff;
+      --on-ink: #0b1120;
+      --gold: #e0b25a;
+      --gold-text: #e9c27a;
+      --gold-soft: #2a2416;
+      --focus: #8ca2ff;
+      --danger: #f97066;
+      --danger-soft: #361a1c;
+      --success: #4ade80;
+      --mark: #5c4a17;
+      --shadow: 0 1px 2px rgb(0 0 0 / .4), 0 20px 44px -20px rgb(0 0 0 / .7);
+      --shadow-sm: 0 1px 2px rgb(0 0 0 / .4);
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --paper: #16141f;
-    --surface: #201d2c;
-    --sunk: #1b1926;
-    --ink: #f3efe8;
-    --muted: #aca5b6;
-    --line: #34303f;
-    --madder: #b0303a;
-    --madder-press: #93262f;
-    --madder-text: #f2858a;
-    --saffron: #e0a63e;
-    --quote: #ecc26f;
-    --tint: #2c1f29;
-    --thread-ink: #0a0910;
-    --thread-wool: #ece5d8;
-    --warn-bg: #352b17;
-    --warn-text: #f1dcae;
+    --bg: #0b1120;
+    --surface: #121a2c;
+    --surface-2: #1a2338;
+    --fg: #e8ecf4;
+    --muted: #9aa4b8;
+    --line: #263049;
+    --ink: #e8ecf4;
+    --ink-hover: #ffffff;
+    --on-ink: #0b1120;
+    --gold: #e0b25a;
+    --gold-text: #e9c27a;
+    --gold-soft: #2a2416;
+    --focus: #8ca2ff;
+    --danger: #f97066;
+    --danger-soft: #361a1c;
+    --success: #4ade80;
+    --mark: #5c4a17;
+    --shadow: 0 1px 2px rgb(0 0 0 / .4), 0 20px 44px -20px rgb(0 0 0 / .7);
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / .4);
     color-scheme: dark;
   }
 
@@ -83,378 +97,772 @@
   html { -webkit-text-size-adjust: 100%; }
   body {
     margin: 0;
-    background: var(--paper);
-    color: var(--ink);
-    font: 400 20px/1.75 "Noto Naskh Arabic", "Geeza Pro", "SF Arabic", serif;
+    background: var(--bg);
+    color: var(--fg);
+    font: 400 16px/1.7 var(--font-ui);
     -webkit-font-smoothing: antialiased;
   }
-  main {
-    max-width: 620px;
-    margin: 0 auto;
-    padding:
-      max(16px, env(safe-area-inset-top))
-      max(20px, env(safe-area-inset-right))
-      max(28px, env(safe-area-inset-bottom))
-      max(20px, env(safe-area-inset-left));
-  }
   [hidden] { display: none !important; }
+  h1, h2, h3 { text-wrap: balance; margin: 0; }
+  p { margin: 0; }
   button, input { font: inherit; color: inherit; }
-  button { -webkit-tap-highlight-color: transparent; cursor: pointer; }
-  :focus-visible { outline: 3px solid var(--saffron); outline-offset: 3px; }
-  .defs { position: absolute; width: 0; height: 0; }
-  .t-ink { fill: var(--thread-ink); }
-  .t-wool { fill: var(--thread-wool); }
-  .t-red { fill: var(--madder); }
-  .t-ochre { fill: var(--saffron); }
-
-  /* ---------- Sadu band ---------- */
-  .band {
-    position: relative;
-    height: 30px;
-    margin-inline: calc(-1 * max(20px, env(safe-area-inset-right)));
-    background: repeating-linear-gradient(90deg, transparent 0 3px, var(--line) 3px 4px);
+  button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+  .icon { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .min0 { min-width: 0; }
+  .wrap {
+    width: 100%;
+    max-width: 1120px;
+    margin-inline: auto;
+    padding-left: max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
   }
-  .band svg { display: block; width: 100%; height: 30px; }
-  .band .woven { clip-path: inset(0 0 0 var(--unwoven, 0%)); }
-  .band.hero .woven { animation: weave-in 1.2s cubic-bezier(.3, .7, .2, 1) both; }
-  .band.progress .woven { transition: clip-path .8s ease; }
-  @keyframes weave-in { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0 0 0 0); } }
-  @media (prefers-reduced-motion: reduce) {
-    .band.hero .woven { animation: none; }
-    .band.progress .woven { transition: none; }
-  }
+  .narrow { max-width: 760px; }
 
   /* ---------- buttons ---------- */
-  .primary {
-    display: flex; align-items: center; justify-content: center; gap: 14px;
-    width: 100%; min-height: 92px; padding: 14px 20px;
-    border: 0; border-radius: 22px;
-    background: var(--madder); color: #fff;
-    font: 700 28px/1.3 "Noto Kufi Arabic", sans-serif;
-    box-shadow: 0 10px 24px -12px rgb(155 34 38 / .7);
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 44px; padding: 8px 16px;
+    border: 1px solid var(--line); border-radius: 12px;
+    background: var(--surface); color: var(--fg);
+    font-size: 15px; font-weight: 500; white-space: nowrap;
+    transition: background .15s, border-color .15s;
   }
-  .primary:active { background: var(--madder-press); transform: translateY(1px); }
-  .primary:disabled { opacity: .55; }
-  .primary svg { width: 34px; height: 34px; flex: none; }
-  .secondary {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    width: 100%; min-height: 60px; padding: 10px 18px;
-    border: 2px solid var(--line); border-radius: 16px;
-    background: var(--surface);
-    font-size: 21px; font-weight: 600;
+  .btn:hover { border-color: color-mix(in srgb, var(--fg) 25%, var(--line)); }
+  .btn:disabled { opacity: .5; cursor: default; }
+  .btn.primary { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }
+  .btn.primary:hover { background: var(--ink-hover); }
+  .btn.lg { min-height: 52px; padding: 10px 22px; font-size: 16px; border-radius: 14px; }
+  .btn.ghost { background: transparent; }
+  .btn.danger { color: var(--danger); }
+  .btn.danger:hover { background: var(--danger-soft); border-color: var(--danger-soft); }
+  .icon-btn {
+    display: inline-grid; place-items: center; width: 40px; height: 40px;
+    border: 0; border-radius: 10px; background: transparent; color: var(--muted);
   }
-  .secondary:active { background: var(--sunk); }
-  .textlink {
-    border: 0; background: none; padding: 10px 4px;
-    color: var(--madder-text); font-size: 19px; font-weight: 600;
-    text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px;
+  .icon-btn:hover { background: var(--surface-2); color: var(--fg); }
+  .link { border: 0; background: none; padding: 0; color: var(--fg); font-weight: 500; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--gold); }
+
+  /* ---------- top bar ---------- */
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+  .topbar {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    -webkit-backdrop-filter: saturate(1.4) blur(12px); backdrop-filter: saturate(1.4) blur(12px);
+    border-bottom: 1px solid var(--line);
   }
-  .textlink.quiet { color: var(--muted); font-weight: 400; }
+  .bar { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; border: 0; background: none; padding: 0; text-decoration: none; }
+  .brand svg { width: 30px; height: 30px; }
+  .brand span { font-size: 22px; font-weight: 700; letter-spacing: 0; }
+  .nav { display: flex; align-items: center; gap: 4px; }
+  .nav-link { border: 0; background: none; padding: 8px 12px; border-radius: 10px; color: var(--muted); font-weight: 500; }
+  .nav-link:hover, .nav-link[aria-current="page"] { color: var(--fg); background: var(--surface-2); }
 
   /* ---------- home ---------- */
-  .hero-title { margin: 18px 0 0; font: 800 60px/1.25 "Noto Kufi Arabic", sans-serif; }
-  .lede { margin: 6px 0 22px; color: var(--muted); font-size: 21px; }
-  .pick { margin-top: 30px; }
-  .pick-note { margin: 12px 0 0; color: var(--muted); font-size: 18px; text-align: center; }
-  .alt { display: flex; flex-direction: column; align-items: center; margin-top: 18px; }
-  .yt { width: 100%; display: grid; gap: 10px; margin-top: 8px; }
-  input[type="url"], input[type="text"] {
-    width: 100%; min-height: 60px; padding: 12px 16px;
-    background: var(--surface); border: 2px solid var(--line); border-radius: 16px;
-    font-size: 18px; direction: ltr; text-align: left;
+  .hero {
+    display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 56px; align-items: center;
+    padding-block: 72px 56px;
   }
-  input::placeholder { color: var(--muted); opacity: .8; text-align: right; direction: rtl; }
-  .help { margin-top: 6px; width: 100%; }
-  .help summary { list-style: none; text-align: center; }
-  .help summary::-webkit-details-marker { display: none; }
-  .help ol { margin: 10px 0 0; padding: 16px 40px 16px 18px; background: var(--sunk); border-radius: 16px; font-size: 19px; }
-  .help li + li { margin-top: 6px; }
+  .eyebrow-pill {
+    display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px 4px 6px;
+    border: 1px solid var(--line); border-radius: 999px; background: var(--surface);
+    font-size: 13px; color: var(--muted);
+  }
+  .eyebrow-pill b { padding: 2px 8px; border-radius: 999px; background: var(--gold-soft); color: var(--gold-text); font-weight: 600; }
+  .hero h1 { margin-top: 18px; font-size: clamp(32px, 4.3vw, 50px); line-height: 1.3; font-weight: 700; }
+  .orn { font-family: var(--font-read); }
+  .lead { margin-top: 18px; font-size: 18px; line-height: 1.8; color: var(--muted); max-width: 34em; }
+  .ticks { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 10px; }
+  .ticks li { display: flex; align-items: center; gap: 10px; font-size: 15px; }
+  .ticks .icon { width: 18px; height: 18px; color: var(--success); stroke-width: 2.2; }
 
-  .library { margin-top: 44px; }
-  .library h2 { margin: 0 0 4px; font: 700 26px/1.4 "Noto Kufi Arabic", sans-serif; }
-  .library ul { list-style: none; margin: 0; padding: 0; }
-  .row {
-    display: flex; align-items: center; gap: 12px; width: 100%;
-    min-height: 76px; padding: 12px 0;
-    border: 0; border-bottom: 1px solid var(--line); background: none; text-align: start;
+  .tool { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow); padding: 10px; }
+  .tool-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; background: var(--surface-2); border-radius: 14px; }
+  .tool-tabs button {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 42px; border: 0; border-radius: 10px; background: none; color: var(--muted); font-size: 14px; font-weight: 500;
   }
-  .row-text { flex: 1; display: grid; gap: 2px; }
-  .row-title { font-size: 20px; font-weight: 600; line-height: 1.5; }
-  .row-meta { font-size: 16px; color: var(--muted); }
-  .row-chevron { color: var(--muted); font-size: 26px; line-height: 1; }
-  .empty { color: var(--muted); font-size: 18px; margin: 8px 0 0; }
-  .home-foot { text-align: center; margin-top: 36px; }
+  .tool-tabs button[aria-selected="true"] { background: var(--surface); color: var(--fg); box-shadow: var(--shadow-sm); }
+  .tool-tabs .icon { width: 18px; height: 18px; }
+  .tool-panel { padding: 10px 6px 4px; }
+  .drop {
+    display: grid; justify-items: center; gap: 14px; text-align: center;
+    padding: 36px 20px; border: 1.5px dashed color-mix(in srgb, var(--muted) 45%, var(--line)); border-radius: 16px;
+    transition: border-color .15s, background .15s; cursor: pointer;
+  }
+  .drop.over { border-color: var(--gold); background: var(--gold-soft); }
+  .drop-art { width: 168px; height: 56px; color: var(--muted); }
+  .drop-art .w { stroke: var(--gold); }
+  .drop-title { font-size: 18px; font-weight: 600; }
+  .drop-sub { font-size: 14px; color: var(--muted); }
+  .file-input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+  .tool-foot { padding: 12px 8px 6px; font-size: 14px; color: var(--muted); text-align: center; }
+
+  .recorder { display: grid; justify-items: center; gap: 14px; padding: 26px 12px 18px; text-align: center; }
+  .rec-btn {
+    position: relative; width: 84px; height: 84px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow-sm);
+    display: grid; place-items: center;
+  }
+  .rec-btn::after { content: ""; width: 30px; height: 30px; border-radius: 50%; background: var(--danger); transition: border-radius .2s, width .2s, height .2s; }
+  .rec-btn.on::after { width: 26px; height: 26px; border-radius: 6px; }
+  .rec-btn.on { box-shadow: 0 0 0 8px var(--danger-soft); }
+  .rec-time { font-size: 32px; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: 1px; }
+  .rec-state { font-size: 14px; color: var(--muted); }
+  .meter { display: flex; align-items: center; justify-content: center; gap: 3px; height: 36px; width: 100%; max-width: 280px; }
+  .meter i { flex: 1; height: 4px; border-radius: 2px; background: var(--line); transition: height .08s; }
+  .meter.on i { background: var(--gold); }
+  .rec-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+
+  .link-form { display: grid; gap: 12px; padding: 22px 6px 10px; }
+  .field-label { font-size: 14px; font-weight: 500; }
+  .input {
+    width: 100%; min-height: 48px; padding: 10px 14px;
+    border: 1px solid var(--line); border-radius: 12px; background: var(--surface);
+    font-size: 15px;
+  }
+  .input:focus { outline: 2px solid var(--focus); outline-offset: 0; border-color: transparent; }
+  .ltr { direction: ltr; text-align: left; }
+  .ltr::placeholder { text-align: right; direction: rtl; }
+  .hint { font-size: 13px; color: var(--muted); }
+
+  .section { padding-block: 56px; border-top: 1px solid var(--line); }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+  .section h2 { font-size: 26px; font-weight: 700; }
+  .section-lead { margin-top: 8px; color: var(--muted); }
+  .features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px 32px; margin-top: 32px; }
+  .feature .icon { width: 24px; height: 24px; color: var(--gold-text); }
+  .feature h3 { margin-top: 14px; font-size: 17px; font-weight: 600; }
+  .feature p { margin-top: 6px; color: var(--muted); font-size: 15px; }
+  .how { list-style: none; margin: 32px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; counter-reset: how; }
+  .how li { counter-increment: how; display: grid; gap: 8px; align-content: start; }
+  .how li::before {
+    content: counter(how, arabic-indic);
+    display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px;
+    background: var(--ink); color: var(--on-ink); font-weight: 600; font-size: 17px;
+  }
+  .how h3 { margin-top: 6px; font-size: 17px; font-weight: 600; }
+  .how p { color: var(--muted); font-size: 15px; }
+  .faq-list { margin-top: 24px; border-top: 1px solid var(--line); }
+  .faq-list details { border-bottom: 1px solid var(--line); }
+  .faq-list summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 18px 0; font-weight: 500; font-size: 16px; cursor: pointer; list-style: none;
+  }
+  .faq-list summary::-webkit-details-marker { display: none; }
+  .faq-list summary .icon { transition: transform .2s; color: var(--muted); }
+  .faq-list details[open] summary .icon { transform: rotate(-90deg); }
+  .faq-list details > div { padding: 0 0 20px; color: var(--muted); max-width: 62ch; }
+  .faq-list ol { margin: 8px 0 0; padding-inline-start: 22px; }
+
+  /* ---------- list rows (recent + library) ---------- */
+  .list { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); overflow: hidden; }
+  .list li + li { border-top: 1px solid var(--line); }
+  .row { display: flex; align-items: center; gap: 14px; width: 100%; padding: 14px 16px; border: 0; background: none; text-align: start; }
+  .row:hover { background: var(--surface-2); }
+  .row-icon { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; background: var(--surface-2); color: var(--muted); flex: none; }
+  .row-text { flex: 1; min-width: 0; display: grid; }
+  .row-title { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .row-meta { font-size: 13px; color: var(--muted); }
+  .row > .icon { color: var(--muted); }
 
   /* ---------- work ---------- */
-  .work-title { margin: 22px 0 4px; font: 700 34px/1.3 "Noto Kufi Arabic", sans-serif; }
-  .work-name { margin: 0 0 22px; color: var(--muted); font-size: 17px; overflow-wrap: anywhere; }
-  .steps { list-style: none; margin: 28px 0 0; padding: 0; counter-reset: step; }
-  .steps li {
-    counter-increment: step;
-    display: grid; grid-template-columns: 44px 1fr; align-items: center; column-gap: 14px;
-    min-height: 64px; color: var(--muted);
-  }
-  .steps .mark {
-    grid-row: span 2;
-    display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
-    border: 2px solid var(--line); font: 700 18px "Noto Kufi Arabic", sans-serif;
-  }
-  .steps .mark::before { content: counter(step, arabic-indic); }
-  .steps .label { font-size: 22px; font-weight: 600; }
-  .steps .detail { font-size: 16px; min-height: 1em; }
-  .steps li[data-state="active"] { color: var(--ink); }
-  .steps li[data-state="active"] .mark { border-color: var(--madder); color: var(--madder-text); animation: pulse 1.6s ease-in-out infinite; }
-  .steps li[data-state="done"] .mark { background: var(--madder); border-color: var(--madder); color: #fff; }
-  .steps li[data-state="done"] .mark::before { content: "✓"; }
-  @keyframes pulse { 50% { box-shadow: 0 0 0 7px var(--tint); } }
-  @media (prefers-reduced-motion: reduce) { .steps li[data-state="active"] .mark { animation: none; } }
-  .keep-open { margin: 26px 0 0; padding: 14px 16px; border-radius: 16px; background: var(--warn-bg); color: var(--warn-text); font-size: 18px; }
+  .page { padding-block: 48px 72px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 28px; }
+  .work-file { display: flex; align-items: center; gap: 14px; }
+  .file-badge { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 12px; background: var(--gold-soft); color: var(--gold-text); flex: none; }
+  .work-name { font-weight: 600; font-size: 17px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .work-sub { font-size: 14px; color: var(--muted); }
+  .stepper { list-style: none; margin: 28px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .stepper li { display: grid; gap: 8px; font-size: 14px; color: var(--muted); }
+  .stepper li::before { content: ""; height: 4px; border-radius: 2px; background: var(--line); }
+  .stepper li[data-state="active"] { color: var(--fg); font-weight: 600; }
+  .stepper li[data-state="active"]::before { background: linear-gradient(90deg, var(--line), var(--gold)); background-size: 200% 100%; animation: flow 1.4s linear infinite; }
+  .stepper li[data-state="done"]::before { background: var(--gold); }
+  .stepper li[data-state="done"] { color: var(--fg); }
+  @keyframes flow { to { background-position: -200% 0; } }
+  .progress-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-top: 26px; }
+  .progress-label { font-size: 15px; font-weight: 500; }
+  .progress-pct { font-size: 28px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .progress { height: 8px; border-radius: 4px; background: var(--surface-2); overflow: hidden; margin-top: 8px; }
+  .progress-fill { height: 100%; width: 0; background: var(--gold); border-radius: 4px; transition: width .6s ease; margin-inline-start: 0; }
   .live {
-    margin: 22px 0 0; max-height: 7.5em; overflow: hidden;
-    font-size: 18px; color: var(--muted); white-space: pre-wrap;
-    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 45%);
-            mask-image: linear-gradient(to bottom, transparent, #000 45%);
-    display: flex; flex-direction: column; justify-content: flex-end;
+    margin-top: 22px; padding: 16px 18px; border-radius: 14px; background: var(--surface-2);
+    font-family: var(--font-read); font-size: 17px; line-height: 2; color: var(--muted);
+    height: 9.5em; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; white-space: pre-wrap;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 40%); mask-image: linear-gradient(to bottom, transparent, #000 40%);
   }
-  .cancel { margin-top: 26px; }
+  .work-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 22px; flex-wrap: wrap; }
+  @media (prefers-reduced-motion: reduce) { .stepper li[data-state="active"]::before { animation: none; background: var(--gold); } .progress-fill { transition: none; } }
 
   /* ---------- result ---------- */
-  .result-top { display: flex; align-items: center; justify-content: space-between; }
-  .size { display: flex; gap: 6px; }
-  .size button {
-    width: 52px; height: 48px; border: 2px solid var(--line); border-radius: 14px; background: var(--surface);
-    font-family: "Noto Kufi Arabic", sans-serif; font-weight: 700; line-height: 1;
+  .back { display: inline-flex; align-items: center; gap: 6px; border: 0; background: none; padding: 6px 0; color: var(--muted); font-weight: 500; }
+  .back:hover { color: var(--fg); }
+  .result-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-top: 10px; flex-wrap: wrap; }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 999px; background: var(--gold-soft); color: var(--gold-text); font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+  .result-head h1 { font-size: clamp(26px, 3.4vw, 34px); line-height: 1.35; font-weight: 700; }
+  .r-meta { margin-top: 6px; color: var(--muted); font-size: 14px; }
+  .r-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .menu-wrap { position: relative; }
+  .menu {
+    position: absolute; inset-inline-end: 0; top: calc(100% + 6px); z-index: 10; min-width: 190px;
+    padding: 6px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow);
   }
-  .size button:first-child { font-size: 17px; }
-  .size button:last-child { font-size: 25px; }
-  .size button:disabled { opacity: .4; }
-  .r-title { margin: 10px 0 2px; font: 700 32px/1.4 "Noto Kufi Arabic", sans-serif; }
-  .meta { margin: 0 0 18px; color: var(--muted); font-size: 17px; }
-  .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; background: var(--sunk); border-radius: 16px; }
+  .menu button { display: flex; width: 100%; align-items: center; gap: 10px; padding: 10px 12px; border: 0; border-radius: 8px; background: none; text-align: start; font-size: 15px; }
+  .menu button:hover { background: var(--surface-2); }
+  .result-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px; margin-top: 28px; align-items: start; }
+  .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
   .tabs button {
-    min-height: 54px; border: 0; border-radius: 12px; background: none;
-    color: var(--muted); font-size: 18px; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 8px; flex: none;
+    padding: 12px 14px; border: 0; background: none; color: var(--muted); font-weight: 500; font-size: 15px;
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
   }
-  .tabs button[aria-selected="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgb(30 27 46 / .12), inset 0 -3px 0 var(--madder); }
-  .panel { padding: 20px 2px 8px; font-size: var(--read-size); line-height: 2.05; }
-  .panel h3 { margin: 18px 0 6px; font: 700 calc(var(--read-size) + 1px)/1.5 "Noto Kufi Arabic", sans-serif; color: var(--madder-text); }
-  .panel h3:first-child { margin-top: 0; }
-  .panel ul { list-style: none; margin: 0; padding: 0; }
-  .panel li { position: relative; padding-inline-start: 24px; margin-bottom: 8px; }
-  .panel li::before {
-    content: ""; position: absolute; inset-inline-start: 3px; top: .95em;
-    width: 8px; height: 8px; background: var(--saffron); transform: rotate(45deg);
-  }
-  .panel p { margin: 0 0 1em; }
-  .ayah { color: var(--madder-text); font-weight: 600; }
-  .quote { color: var(--quote); }
-  .unclear { color: var(--muted); text-decoration: underline dotted; }
-  .question { padding-inline-start: 14px; border-inline-start: 3px solid var(--saffron); }
-  .q-label { font-weight: 700; color: var(--quote); margin-inline-end: 6px; }
-  .note { margin: 0 0 16px; padding: 10px 14px; border-radius: 14px; background: var(--warn-bg); color: var(--warn-text); font-size: 17px; line-height: 1.7; }
-  .bubble {
-    padding: 16px 18px; background: var(--tint); border-radius: 22px 22px 22px 6px;
-    white-space: pre-wrap; line-height: 1.8;
-  }
-  .missing { text-align: center; color: var(--muted); padding: 10px 0; }
-  .missing .secondary { margin-top: 12px; }
-  .delete { display: block; margin: 18px auto 0; }
-  .actions {
-    position: sticky; bottom: 0; z-index: 2;
-    display: grid; grid-template-columns: 1.7fr 1fr; gap: 10px;
-    margin: 18px calc(-1 * max(20px, env(safe-area-inset-right))) calc(-1 * max(28px, env(safe-area-inset-bottom)));
-    padding: 12px max(20px, env(safe-area-inset-right)) max(14px, env(safe-area-inset-bottom));
-    background: color-mix(in srgb, var(--paper) 92%, transparent);
-    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-    border-top: 1px solid var(--line);
-  }
-  .actions .primary { min-height: 64px; font-size: 22px; border-radius: 18px; box-shadow: none; }
-  .actions .secondary { min-height: 64px; border-radius: 18px; }
-  .actions.single { grid-template-columns: 1fr; }
+  .tabs button[aria-selected="true"] { color: var(--fg); border-bottom-color: var(--gold); }
+  .tabs .icon { width: 18px; height: 18px; }
+  .tab-tools { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0 0; flex-wrap: wrap; }
+  .search { position: relative; flex: 1; min-width: 200px; max-width: 360px; }
+  .search .icon { position: absolute; inset-inline-start: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); width: 18px; height: 18px; }
+  .search .input { padding-inline-start: 40px; min-height: 42px; }
+  .search-count { font-size: 13px; color: var(--muted); }
+  .size-ctl { display: inline-flex; margin-inline-start: auto; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--surface); }
+  .size-ctl button { width: 42px; height: 40px; border: 0; background: none; font-weight: 600; }
+  .size-ctl button + button { border-inline-start: 1px solid var(--line); }
+  .size-ctl button:first-child { font-size: 13px; }
+  .size-ctl button:last-child { font-size: 19px; }
+  .size-ctl button:disabled { opacity: .35; }
+  .size-ctl button:not(:disabled):hover { background: var(--surface-2); }
 
-  /* ---------- error & setup ---------- */
-  .screen-title { margin: 22px 0 10px; font: 700 32px/1.4 "Noto Kufi Arabic", sans-serif; }
-  .error-msg { font-size: 22px; margin: 0 0 26px; }
-  .error .secondary { margin-top: 12px; }
-  .error details { margin-top: 30px; color: var(--muted); font-size: 15px; }
-  .error pre { white-space: pre-wrap; direction: ltr; text-align: left; font-size: 13px; }
-  .setup-steps { margin: 0 0 22px; padding-inline-start: 30px; list-style: arabic-indic; }
-  .setup-steps li { margin-bottom: 12px; }
-  .setup-steps li::marker { font-family: "Noto Kufi Arabic", sans-serif; font-weight: 700; color: var(--madder-text); }
-  .key-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin-bottom: 14px; }
-  .key-row .secondary { width: auto; }
-  .msg { min-height: 1.75em; margin: 14px 0 0; font-weight: 600; }
-  .fine { color: var(--muted); font-size: 16px; margin-top: 26px; }
+  .panel { padding-top: 22px; }
+  .reading { font-family: var(--font-read); font-size: var(--read-size); line-height: 2.05; max-width: 68ch; }
+  .reading p { margin: 0 0 1em; }
+  .overview { padding: 18px 20px; border-radius: 14px; background: var(--surface-2); margin-bottom: 26px; }
+  .panel h3 { font-family: var(--font-ui); font-size: 17px; font-weight: 600; margin: 28px 0 10px; }
+  .panel h3:first-child { margin-top: 0; }
+  .points { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .points li { position: relative; padding-inline-start: 22px; }
+  .points li::before { content: ""; position: absolute; inset-inline-start: 2px; top: .95em; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+  .ayah { color: var(--gold-text); font-weight: 600; }
+  .quote { color: var(--fg); font-weight: 600; }
+  .unclear { color: var(--muted); text-decoration: underline dotted; }
+  mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1px; }
+  .question { padding-inline-start: 16px; border-inline-start: 3px solid var(--gold); }
+  .q-label { font-family: var(--font-ui); font-size: .78em; font-weight: 600; color: var(--gold-text); margin-inline-end: 8px; }
+  .note { font-family: var(--font-ui); font-size: 14px; padding: 10px 14px; border-radius: 12px; background: var(--gold-soft); color: var(--gold-text); margin-bottom: 18px; }
+  .post-card { max-width: 520px; padding: 20px 22px; border: 1px solid var(--line); border-radius: 18px 18px 18px 6px; background: var(--surface); white-space: pre-wrap; line-height: 1.9; font-size: 16px; box-shadow: var(--shadow-sm); }
+  .post-hint { margin-top: 12px; font-size: 13px; color: var(--muted); }
+  .qa { border-top: 1px solid var(--line); }
+  .qa details { border-bottom: 1px solid var(--line); }
+  .qa summary { padding: 14px 0; cursor: pointer; font-weight: 600; list-style: none; display: flex; gap: 12px; }
+  .qa summary::-webkit-details-marker { display: none; }
+  .qa summary::before { content: "؟"; display: grid; place-items: center; flex: none; width: 30px; height: 30px; margin-top: .35em; border-radius: 8px; background: var(--gold-soft); color: var(--gold-text); font-family: var(--font-ui); font-size: 16px; }
+  .qa details > p { padding: 0 42px 16px 0; color: var(--muted); }
+  .missing { display: grid; justify-items: start; gap: 14px; padding: 22px; border: 1px dashed var(--line); border-radius: 14px; font-family: var(--font-ui); font-size: 15px; color: var(--muted); }
+
+  .side { display: grid; gap: 16px; position: sticky; top: calc(84px + env(safe-area-inset-top, 0px)); }
+  .side-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+  .side-card h2 { font-size: 14px; font-weight: 600; color: var(--muted); margin-bottom: 10px; }
+  .details { margin: 0; display: grid; gap: 0; }
+  .details div { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .details div:last-child { border-bottom: 0; }
+  .details dt { color: var(--muted); }
+  .details dd { margin: 0; font-weight: 500; font-variant-numeric: tabular-nums; text-align: left; }
+  .confirm-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* ---------- library ---------- */
+  .page-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .page-head h1 { font-size: 30px; font-weight: 700; }
+  .lib-search { margin: 24px 0 16px; max-width: none; }
+  .empty { display: grid; justify-items: center; gap: 12px; text-align: center; padding: 56px 20px; border: 1px dashed var(--line); border-radius: 16px; color: var(--muted); }
+  .empty .icon { width: 32px; height: 32px; }
+  .empty h2 { font-size: 18px; color: var(--fg); font-weight: 600; }
+
+  /* ---------- error ---------- */
+  .error-card { text-align: center; display: grid; justify-items: center; gap: 12px; }
+  .error-icon { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 16px; background: var(--danger-soft); color: var(--danger); }
+  .error-card h1 { font-size: 24px; font-weight: 700; margin-top: 6px; }
+  .error-card > p { color: var(--muted); max-width: 46ch; }
+  .error-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 10px; }
+  .error-card details { margin-top: 16px; font-size: 13px; color: var(--muted); }
+  .error-card pre { white-space: pre-wrap; direction: ltr; text-align: left; font-size: 12px; max-width: 520px; }
+
+  /* ---------- dialog ---------- */
+  dialog {
+    width: min(560px, calc(100vw - 32px)); max-height: calc(100dvh - 48px); padding: 0;
+    border: 1px solid var(--line); border-radius: 20px; background: var(--surface); color: var(--fg); box-shadow: var(--shadow);
+  }
+  dialog::backdrop { background: rgb(8 12 24 / .5); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+  .dialog-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--surface); z-index: 1; }
+  .dialog-head h2 { font-size: 19px; font-weight: 600; }
+  .dialog-body { padding: 6px 20px 22px; }
+  .callout { margin-top: 16px; padding: 12px 14px; border-radius: 12px; background: var(--gold-soft); color: var(--gold-text); font-size: 14px; font-weight: 500; }
+  .set-group { padding: 18px 0; border-bottom: 1px solid var(--line); display: grid; gap: 12px; }
+  .set-group:last-child { border-bottom: 0; }
+  .set-group h3 { font-size: 16px; font-weight: 600; }
+  .set-group > p { font-size: 14px; color: var(--muted); }
+  .key-steps { margin: 0; padding-inline-start: 22px; font-size: 14px; display: grid; gap: 4px; list-style: arabic-indic; }
+  .key-steps a { color: var(--fg); font-weight: 500; text-decoration-color: var(--gold); text-underline-offset: 3px; }
+  .key-field { position: relative; }
+  .key-field .input { padding-inline-end: 48px; }
+  .key-field .icon-btn { position: absolute; inset-inline-end: 4px; top: 4px; }
+  .key-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .status { font-size: 14px; font-weight: 500; }
+  .status.ok { color: var(--success); }
+  .status.bad { color: var(--danger); }
+  .segmented { display: inline-grid; grid-auto-flow: column; gap: 4px; padding: 4px; background: var(--surface-2); border-radius: 12px; justify-self: start; }
+  .segmented button { padding: 8px 16px; border: 0; border-radius: 9px; background: none; color: var(--muted); font-size: 14px; font-weight: 500; }
+  .segmented button[aria-checked="true"] { background: var(--surface); color: var(--fg); box-shadow: var(--shadow-sm); }
+
+  /* ---------- footer & toast ---------- */
+  .foot { border-top: 1px solid var(--line); padding-block: 28px calc(28px + env(safe-area-inset-bottom, 0px)); color: var(--muted); font-size: 14px; }
+  .foot .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .foot a { text-underline-offset: 3px; }
+  .toast {
+    position: fixed; z-index: 50; inset-inline: 0; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); margin-inline: auto; width: max-content; max-width: calc(100vw - 32px);
+    padding: 12px 18px; border-radius: 12px; background: var(--ink); color: var(--on-ink); font-size: 15px; font-weight: 500;
+    box-shadow: var(--shadow); opacity: 0; transform: translateY(8px); transition: opacity .2s, transform .2s; pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: none; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 920px) {
+    .hero { grid-template-columns: 1fr; gap: 36px; padding-block: 40px 40px; }
+    .features { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .result-grid { grid-template-columns: 1fr; }
+    .side { position: static; grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    body { font-size: 15px; }
+    #nav-new { display: none; }
+    .features, .how { grid-template-columns: 1fr; gap: 28px; }
+    .section { padding-block: 44px; }
+    .card { padding: 20px; border-radius: 18px; }
+    .hide-sm { display: none; }
+    .r-actions { width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); }
+    .r-actions .btn, .menu-wrap .btn { width: 100%; padding-inline: 10px; }
+    .result-head { align-items: stretch; }
+    .search { max-width: none; }
+  }
 </style>
 </head>
 <body>
 
-<svg class="defs" aria-hidden="true" focusable="false">
-  <defs>
-    <pattern id="sadu" width="32" height="30" patternUnits="userSpaceOnUse">
-      <rect width="32" height="30" class="t-red"/>
-      <rect width="32" height="4" class="t-ink"/>
-      <rect y="26" width="32" height="4" class="t-ink"/>
-      <rect y="4" width="32" height="2" class="t-wool"/>
-      <rect y="24" width="32" height="2" class="t-wool"/>
-      <rect x="4" y="4" width="6" height="2" class="t-ochre"/>
-      <rect x="20" y="24" width="6" height="2" class="t-ochre"/>
-      <path class="t-ink" d="M0 6h16l-8 7z M16 24h16l-8-7z"/>
-      <path class="t-wool" d="M24 7.5l3.5 3.5-3.5 3.5-3.5-3.5z M8 15.5l3.5 3.5-3.5 3.5-3.5-3.5z"/>
-      <path class="t-ochre" d="M24 9.5l1.5 1.5-1.5 1.5-1.5-1.5z M8 17.5l1.5 1.5-1.5 1.5-1.5-1.5z"/>
-    </pattern>
-  </defs>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M15 9V5.5A1.5 1.5 0 0 0 13.5 4h-8A1.5 1.5 0 0 0 4 5.5v8A1.5 1.5 0 0 0 5.5 15H9"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V3.5M8 7.5l4-4 4 4M6 11H5.5A1.5 1.5 0 0 0 4 12.5v6A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5v-6a1.5 1.5 0 0 0-1.5-1.5H18"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M4 20h16"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9.5 7V4.5h5V7M6 7l1 13h10l1-13M10 11v5M14 11v5"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10Z"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="m14.5 6-6 6 6 6"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="m9.5 6 6 6-6 6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3.5H7A1.5 1.5 0 0 0 5.5 5v14A1.5 1.5 0 0 0 7 20.5h10a1.5 1.5 0 0 0 1.5-1.5V8Z M14 3.5V8h4.5"/><path d="M9 13v2M12 11.5v5M15 13v2"/></symbol>
+  <symbol id="i-text" viewBox="0 0 24 24"><path d="M4 6h16M4 10.5h16M9 15h11M6 19.5h14"/></symbol>
+  <symbol id="i-summary" viewBox="0 0 24 24"><path d="M10 6h10M10 12h10M10 18h10"/><circle cx="5.5" cy="6" r="1.2"/><circle cx="5.5" cy="12" r="1.2"/><circle cx="5.5" cy="18" r="1.2"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4.5 5.5h15v10.5H10l-5.5 4Z"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.6a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.4M12 16.8v.2"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.5 18.5 6v5.5c0 4.2-2.8 7.4-6.5 9-3.7-1.6-6.5-4.8-6.5-9V6Z"/><path d="m9 12 2.2 2.2L15.5 10"/></symbol>
+  <symbol id="i-quote" viewBox="0 0 24 24"><path d="M10 7H6.5v4.5H10c0 3-1.3 4.6-3.5 5.5M18 7h-3.5v4.5H18c0 3-1.3 4.6-3.5 5.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="m10.5 9.5 4 2.5-4 2.5Z"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4 21 19.5H3Z"/><path d="M12 10v4M12 16.8v.2"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9.5 6 6 6-6"/></symbol>
 </svg>
 
+<header class="topbar">
+  <div class="wrap bar">
+    <button class="brand" id="brand" aria-label="مِداد، الصفحة الرئيسية">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M16 3c5 5.6 9 10.4 9 15a9 9 0 0 1-18 0c0-4.6 4-9.4 9-15Z" fill="var(--ink)"/>
+        <path d="M12 17.5v3M16 14.5v9M20 16.5v5" stroke="var(--gold)" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+      <span>مِداد</span>
+    </button>
+    <nav class="nav" aria-label="الرئيسية">
+      <button class="nav-link" id="nav-new">تفريغ جديد</button>
+      <button class="nav-link" id="nav-library">المكتبة</button>
+      <button class="icon-btn" id="theme-btn" aria-label="تبديل المظهر"><svg class="icon"><use href="#i-moon"/></svg></button>
+      <button class="icon-btn" id="settings-btn" aria-label="الإعدادات"><svg class="icon"><use href="#i-settings"/></svg></button>
+    </nav>
+  </div>
+</header>
+
 <main>
-  <section id="home" hidden>
-    <h1 class="hero-title">تفريغ</h1>
-    <p class="lede">محاضراتك مكتوبة وملخّصة</p>
-    <div class="band hero" aria-hidden="true">
-      <svg class="woven"><rect width="100%" height="100%" fill="url(#sadu)"/></svg>
-    </div>
+  <!-- ================= home ================= -->
+  <section id="view-home" class="view">
+    <div class="wrap hero">
+      <div class="hero-copy">
+        <span class="eyebrow-pill"><b>مجاني</b> تفريغ صوتي بالعربي</span>
+        <h1>حوّل تسجيلاتك الصوتية إلى نص مكتوب</h1>
+        <p class="lead">ارفع محاضرة أو درساً أو أي تسجيل، واحصل على النص كاملاً مع ملخص ونقاط رئيسية ومنشور جاهز للمشاركة خلال دقائق.</p>
+        <ul class="ticks">
+          <li><svg class="icon"><use href="#i-check"/></svg>يكتب الكلام كما قيل، بالفصحى أو باللهجة</li>
+          <li><svg class="icon"><use href="#i-check"/></svg>يميّز الآيات والأحاديث وأسئلة الحضور</li>
+          <li><svg class="icon"><use href="#i-check"/></svg>يعمل من المتصفح على الجوال والكمبيوتر</li>
+        </ul>
+      </div>
 
-    <div class="pick">
-      <label for="file" class="primary">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 10v4M8 7v10M12 4v16M16 8v8M20 11v2"/></svg>
-        اختاري المقطع
-      </label>
-      <input type="file" id="file" class="defs" accept="audio/*,video/*,.opus,.ogg,.m4a,.mp3,.wav,.aac,.flac,.mp4,.mov">
-      <p class="pick-note">صوت أو فيديو من جهازك</p>
-    </div>
+      <div class="tool" id="tool">
+        <div class="tool-tabs" role="tablist" aria-label="طريقة الإضافة">
+          <button role="tab" id="src-upload" data-src="upload" aria-selected="true" aria-controls="panel-upload"><svg class="icon"><use href="#i-upload"/></svg><span>رفع ملف</span></button>
+          <button role="tab" id="src-record" data-src="record" aria-selected="false" aria-controls="panel-record"><svg class="icon"><use href="#i-mic"/></svg><span>تسجيل</span></button>
+          <button role="tab" id="src-link" data-src="link" aria-selected="false" aria-controls="panel-link"><svg class="icon"><use href="#i-link"/></svg><span><span class="hide-sm">رابط </span>يوتيوب</span></button>
+        </div>
 
-    <div class="alt">
-      <button id="yt-toggle" class="textlink" aria-expanded="false" aria-controls="yt-form">عندك رابط يوتيوب؟</button>
-      <form id="yt-form" class="yt" hidden>
-        <input type="url" id="yt-url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="الصقي رابط الفيديو هني">
-        <button class="secondary" type="submit">ابدئي</button>
-      </form>
-      <details class="help">
-        <summary class="textlink quiet">كيف أجيب المقطع من الواتساب؟</summary>
-        <ol>
-          <li>اضغطي مطوّلاً على المقطع في المحادثة، واختاري «إعادة توجيه».</li>
-          <li>اضغطي زر المشاركة اللي تحت، واختاري «حفظ في الملفات» ثم «حفظ».</li>
-          <li>ارجعي هني واضغطي «اختاري المقطع»، وبتلقينه في الملفات.</li>
-        </ol>
-      </details>
-    </div>
+        <div class="tool-panel" id="panel-upload" role="tabpanel" aria-labelledby="src-upload">
+          <div class="drop" id="drop">
+            <svg class="drop-art" viewBox="0 0 168 56" fill="none" stroke-linecap="round" aria-hidden="true">
+              <g stroke="currentColor" stroke-width="3" opacity=".55">
+                <path d="M8 22v12M18 14v28M28 20v16M38 8v40M48 18v20M58 24v8"/>
+              </g>
+              <path class="w" d="M74 28h18M86 22l6 6-6 6" stroke-width="2.5"/>
+              <g stroke="currentColor" stroke-width="3" opacity=".55">
+                <path d="M106 12h56M114 24h48M106 36h56M126 48h36"/>
+              </g>
+            </svg>
+            <p class="drop-title">اسحب الملف هنا أو اختره من جهازك</p>
+            <label for="file" class="btn primary lg"><svg class="icon"><use href="#i-upload"/></svg>اختر ملفاً</label>
+            <input type="file" id="file" class="file-input" accept="audio/*,video/*,.opus,.ogg,.m4a,.mp3,.wav,.aac,.flac,.mp4,.mov,.webm">
+            <p class="drop-sub">MP3 و M4A و WAV و OGG و MP4 و MOV، حتى ٢ جيجابايت</p>
+          </div>
+        </div>
 
-    <div class="library">
-      <h2>محاضراتك</h2>
-      <ul id="history"></ul>
-      <p id="empty" class="empty">أول ما تفرّغين محاضرة، بتلقينها هني.</p>
-    </div>
-    <div class="home-foot"><button id="settings-btn" class="textlink quiet">الإعدادات</button></div>
-  </section>
+        <div class="tool-panel" id="panel-record" role="tabpanel" aria-labelledby="src-record" hidden>
+          <div class="recorder">
+            <button class="rec-btn" id="rec-btn" aria-label="ابدأ التسجيل"></button>
+            <p class="rec-time" id="rec-time">٠٠:٠٠</p>
+            <div class="meter" id="meter" aria-hidden="true"></div>
+            <p class="rec-state" id="rec-state">اضغط الزر لبدء التسجيل من الميكروفون</p>
+            <div class="rec-actions" id="rec-actions" hidden>
+              <button class="btn primary" id="rec-stop"><svg class="icon"><use href="#i-check"/></svg>إيقاف وتفريغ</button>
+              <button class="btn ghost" id="rec-discard">تجاهل التسجيل</button>
+            </div>
+          </div>
+        </div>
 
-  <section id="work" hidden>
-    <h2 class="work-title">جاري التفريغ</h2>
-    <p id="work-name" class="work-name"></p>
-    <div class="band progress" id="weave" aria-hidden="true">
-      <svg class="woven"><rect width="100%" height="100%" fill="url(#sadu)"/></svg>
-    </div>
-    <ol class="steps">
-      <li data-step="upload"><span class="mark" aria-hidden="true"></span><span class="label">رفع المقطع</span><span class="detail" role="status"></span></li>
-      <li data-step="write"><span class="mark" aria-hidden="true"></span><span class="label">كتابة الكلام</span><span class="detail" role="status"></span></li>
-      <li data-step="summary"><span class="mark" aria-hidden="true"></span><span class="label">كتابة الملخص</span><span class="detail" role="status"></span></li>
-    </ol>
-    <p class="keep-open">خلّي الصفحة مفتوحة والشاشة شغالة لين يخلص.</p>
-    <div id="live" class="live" aria-hidden="true"></div>
-    <button id="cancel" class="secondary cancel">إلغاء</button>
-  </section>
+        <div class="tool-panel" id="panel-link" role="tabpanel" aria-labelledby="src-link" hidden>
+          <form class="link-form" id="link-form" novalidate>
+            <label class="field-label" for="yt-url">رابط الفيديو</label>
+            <input class="input ltr" type="url" id="yt-url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://youtube.com/watch?v=…">
+            <p class="hint" id="yt-hint">يعمل مع الفيديوهات العامة على يوتيوب.</p>
+            <button class="btn primary lg" type="submit">تفريغ الفيديو</button>
+          </form>
+        </div>
 
-  <section id="result" hidden>
-    <div class="result-top">
-      <button id="back" class="textlink">‹ محاضراتك</button>
-      <div class="size" role="group" aria-label="حجم الخط">
-        <button id="smaller" aria-label="تصغير الخط">أ</button>
-        <button id="bigger" aria-label="تكبير الخط">أ</button>
+        <p class="tool-foot">ما عندك تسجيل الحين؟ <button class="link" id="demo-btn">اعرض مثالاً جاهزاً</button></p>
       </div>
     </div>
-    <h2 id="r-title" class="r-title"></h2>
-    <p id="r-meta" class="meta"></p>
-    <div class="tabs" role="tablist" aria-label="المحتوى">
-      <button role="tab" id="tab-summary" data-tab="summary" aria-controls="panel-summary">الملخص</button>
-      <button role="tab" id="tab-transcript" data-tab="transcript" aria-controls="panel-transcript">الكلام كامل</button>
-      <button role="tab" id="tab-whatsapp" data-tab="whatsapp" aria-controls="panel-whatsapp">للواتساب</button>
+
+    <div class="wrap section" id="recent-wrap" hidden>
+      <div class="section-head">
+        <h2>آخر التفريغات</h2>
+        <button class="link" id="see-all">عرض الكل</button>
+      </div>
+      <ul class="list" id="recent"></ul>
     </div>
-    <div id="panel-summary" class="panel" role="tabpanel" aria-labelledby="tab-summary"></div>
-    <div id="panel-transcript" class="panel" role="tabpanel" aria-labelledby="tab-transcript"></div>
-    <div id="panel-whatsapp" class="panel" role="tabpanel" aria-labelledby="tab-whatsapp"></div>
-    <button id="delete" class="textlink quiet delete">حذف المحاضرة</button>
-    <div id="actions" class="actions">
-      <button id="copy" class="primary"></button>
-      <button id="share" class="secondary">مشاركة</button>
+
+    <div class="wrap section">
+      <h2>ماذا تحصل عليه</h2>
+      <p class="section-lead">كل تسجيل يتحول إلى أربع نسخ جاهزة للاستخدام.</p>
+      <div class="features">
+        <article class="feature"><svg class="icon"><use href="#i-text"/></svg><h3>النص الكامل</h3><p>الكلام مكتوب كلمة بكلمة ومقسّم إلى فقرات، مع إمكانية البحث داخله وتكبير الخط.</p></article>
+        <article class="feature"><svg class="icon"><use href="#i-summary"/></svg><h3>ملخص ونقاط رئيسية</h3><p>خلاصة التسجيل وأهم أفكاره والفوائد العملية منه في صفحة واحدة.</p></article>
+        <article class="feature"><svg class="icon"><use href="#i-quote"/></svg><h3>الآيات والأحاديث</h3><p>تُكتب الآيات بالرسم الصحيح بين <span class="orn">﴿ ﴾</span> والأحاديث بين « »، وتُجمع في قائمة الأدلة.</p></article>
+        <article class="feature"><svg class="icon"><use href="#i-chat"/></svg><h3>منشور جاهز</h3><p>رسالة قصيرة مرتبة للواتساب أو وسائل التواصل، تنسخها وتنشرها مباشرة.</p></article>
+        <article class="feature"><svg class="icon"><use href="#i-help"/></svg><h3>أسئلة للمراجعة</h3><p>أسئلة وأجوبة من محتوى التسجيل، تفيد في المراجعة أو في إعداد الدرس القادم.</p></article>
+        <article class="feature"><svg class="icon"><use href="#i-download"/></svg><h3>تصدير ومشاركة</h3><p>انسخ أي قسم أو صدّر التفريغ كاملاً كملف Word أو ملف نصي.</p></article>
+      </div>
+    </div>
+
+    <div class="wrap section">
+      <h2>كيف يعمل</h2>
+      <ol class="how">
+        <li><h3>أضف التسجيل</h3><p>ارفع ملف صوت أو فيديو، أو سجّل مباشرة، أو الصق رابط يوتيوب.</p></li>
+        <li><h3>انتظر دقائق</h3><p>يُكتب الكلام أمامك أولاً بأول، ثم يُجهَّز الملخص والمنشور والأسئلة.</p></li>
+        <li><h3>انسخ أو صدّر</h3><p>كل تفريغ يُحفظ في مكتبتك على هذا الجهاز لترجع له متى شئت.</p></li>
+      </ol>
+    </div>
+
+    <div class="wrap section">
+      <h2>أسئلة شائعة</h2>
+      <div class="faq-list">
+        <details>
+          <summary>هل الخدمة مجانية؟<svg class="icon"><use href="#i-left"/></svg></summary>
+          <div>نعم. مداد يستخدم Google Gemini، ويكفي مفتاح مجاني من Google تحصل عليه في دقيقة. الخطة المجانية تكفي لعدة تسجيلات يومياً.</div>
+        </details>
+        <details>
+          <summary>ماذا أحتاج لأبدأ؟<svg class="icon"><use href="#i-left"/></svg></summary>
+          <div>
+            مفتاح Gemini مجاني، مرة واحدة فقط:
+            <ol>
+              <li>افتح <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> وسجّل الدخول بحساب Google.</li>
+              <li>اضغط Create API key وانسخ المفتاح.</li>
+              <li>الصقه في الإعدادات هنا. يُحفظ على جهازك فقط.</li>
+            </ol>
+          </div>
+        </details>
+        <details>
+          <summary>كيف أرفع مقطعاً من واتساب؟<svg class="icon"><use href="#i-left"/></svg></summary>
+          <div>
+            <ol>
+              <li>اضغط مطوّلاً على المقطع في المحادثة واختر «إعادة توجيه».</li>
+              <li>اضغط زر المشاركة أسفل الشاشة واختر «حفظ في الملفات».</li>
+              <li>ارجع إلى مداد واضغط «اختر ملفاً»، وستجده في الملفات.</li>
+            </ol>
+          </div>
+        </details>
+        <details>
+          <summary>كيف أضيف مداد إلى الشاشة الرئيسية؟<svg class="icon"><use href="#i-left"/></svg></summary>
+          <div>في الآيفون افتح الموقع من Safari، واضغط زر المشاركة ثم «إضافة إلى الشاشة الرئيسية». في أندرويد افتح قائمة Chrome واختر «إضافة إلى الشاشة الرئيسية». أدخل مفتاح Gemini بعد فتح مداد من الأيقونة، لأن الأيقونة لها تخزين منفصل.</div>
+        </details>
+        <details>
+          <summary>أين تُحفظ ملفاتي؟<svg class="icon"><use href="#i-left"/></svg></summary>
+          <div>يُرسل الملف إلى Google Gemini للتفريغ ثم يُحذف من هناك بعد الانتهاء. النصوص والملخصات تُحفظ في متصفحك على هذا الجهاز فقط، ولا يوجد لمداد خادم يحتفظ بأي شيء. انتبه إلى أن Google قد تستخدم محتوى الخطة المجانية لتحسين خدماتها.</div>
+        </details>
+        <details>
+          <summary>ما أقصى طول للتسجيل؟<svg class="icon"><use href="#i-left"/></svg></summary>
+          <div>التسجيلات حتى ساعة ونصف تعمل عادة دون مشاكل. إذا كان التسجيل أطول وظهر خطأ، قسّمه إلى جزأين.</div>
+        </details>
+      </div>
     </div>
   </section>
 
-  <section id="error" class="error" hidden>
-    <h2 class="screen-title">ما كمل التفريغ</h2>
-    <p id="error-msg" class="error-msg"></p>
-    <button id="retry" class="primary"></button>
-    <button id="error-home" class="secondary">رجوع</button>
-    <details>
-      <summary>تفاصيل للمساعدة</summary>
-      <pre id="error-detail"></pre>
-    </details>
+  <!-- ================= work ================= -->
+  <section id="view-work" class="view" hidden>
+    <div class="wrap narrow page">
+      <div class="card">
+        <div class="work-file">
+          <span class="file-badge"><svg class="icon"><use href="#i-file"/></svg></span>
+          <div class="min0">
+            <p class="work-name" id="work-name"></p>
+            <p class="work-sub" id="work-sub"></p>
+          </div>
+        </div>
+        <ol class="stepper" aria-label="مراحل التفريغ">
+          <li data-step="upload" id="step-upload">رفع الملف</li>
+          <li data-step="write">كتابة النص</li>
+          <li data-step="notes">الملخص والمنشور</li>
+        </ol>
+        <div class="progress-row">
+          <p class="progress-label" id="progress-label" role="status"></p>
+          <p class="progress-pct" id="progress-pct">٠٪</p>
+        </div>
+        <div class="progress" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="live" id="live" aria-hidden="true"></div>
+        <div class="work-foot">
+          <p class="hint">أبقِ الصفحة مفتوحة والشاشة مضاءة حتى ينتهي التفريغ.</p>
+          <button class="btn" id="cancel-btn">إلغاء</button>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <section id="setup" hidden>
-    <h2 class="screen-title">الإعداد</h2>
-    <p class="muted">مرة وحدة بس، ويسويه أحد من العيال. بعدها الوالدة تفتح الأيقونة وتبدأ على طول.</p>
-    <ol class="setup-steps">
-      <li id="step-home">من Safari اضغط زر المشاركة ثم «إضافة إلى الشاشة الرئيسية». بعدها افتح الأيقونة الجديدة وكمّل من هناك.</li>
-      <li>افتح <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" class="textlink">aistudio.google.com/apikey</a> بحسابك في Gmail، واضغط <b>Create API key</b> وانسخ المفتاح.</li>
-      <li>الصق المفتاح هني واضغط «حفظ».</li>
-    </ol>
-    <div class="key-row">
-      <input type="text" id="key" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="مفتاح Gemini">
-      <button id="paste-key" class="secondary">لصق</button>
+  <!-- ================= result ================= -->
+  <section id="view-result" class="view" hidden>
+    <div class="wrap page">
+      <button class="back" id="result-back"><svg class="icon"><use href="#i-right"/></svg>رجوع</button>
+      <div class="result-head">
+        <div class="min0">
+          <span class="badge" id="r-badge" hidden>مثال توضيحي</span>
+          <h1 id="r-title"></h1>
+          <p class="r-meta" id="r-meta"></p>
+        </div>
+        <div class="r-actions">
+          <button class="btn" id="copy-btn"><svg class="icon"><use href="#i-copy"/></svg><span>نسخ</span></button>
+          <div class="menu-wrap">
+            <button class="btn" id="export-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="export-menu"><svg class="icon"><use href="#i-download"/></svg>تصدير</button>
+            <div class="menu" id="export-menu" role="menu" hidden>
+              <button role="menuitem" data-export="doc"><svg class="icon"><use href="#i-file"/></svg>ملف Word</button>
+              <button role="menuitem" data-export="txt"><svg class="icon"><use href="#i-text"/></svg>ملف نصي</button>
+            </div>
+          </div>
+          <button class="btn" id="share-btn"><svg class="icon"><use href="#i-share"/></svg>مشاركة</button>
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="min0">
+          <div class="tabs" role="tablist" aria-label="أقسام التفريغ">
+            <button role="tab" id="tab-summary" data-tab="summary" aria-controls="panel-summary"><svg class="icon"><use href="#i-summary"/></svg>الملخص</button>
+            <button role="tab" id="tab-transcript" data-tab="transcript" aria-controls="panel-transcript"><svg class="icon"><use href="#i-text"/></svg>النص الكامل</button>
+            <button role="tab" id="tab-post" data-tab="post" aria-controls="panel-post"><svg class="icon"><use href="#i-chat"/></svg>منشور جاهز</button>
+            <button role="tab" id="tab-questions" data-tab="questions" aria-controls="panel-questions"><svg class="icon"><use href="#i-help"/></svg>أسئلة المراجعة</button>
+          </div>
+          <div class="tab-tools">
+            <div class="search" id="search-wrap">
+              <svg class="icon"><use href="#i-search"/></svg>
+              <input class="input" type="search" id="search" placeholder="ابحث في النص" aria-label="ابحث في النص">
+            </div>
+            <span class="search-count" id="search-count"></span>
+            <div class="size-ctl" role="group" aria-label="حجم الخط">
+              <button id="smaller" aria-label="تصغير الخط">أ</button>
+              <button id="bigger" aria-label="تكبير الخط">أ</button>
+            </div>
+          </div>
+          <div id="panel-summary" class="panel reading" role="tabpanel" aria-labelledby="tab-summary"></div>
+          <div id="panel-transcript" class="panel reading" role="tabpanel" aria-labelledby="tab-transcript" hidden></div>
+          <div id="panel-post" class="panel" role="tabpanel" aria-labelledby="tab-post" hidden></div>
+          <div id="panel-questions" class="panel reading" role="tabpanel" aria-labelledby="tab-questions" hidden></div>
+        </div>
+
+        <aside class="side">
+          <div class="side-card">
+            <h2>تفاصيل التسجيل</h2>
+            <dl class="details" id="r-details"></dl>
+          </div>
+          <div class="side-card" id="delete-card">
+            <h2>إدارة</h2>
+            <div class="confirm-row" id="delete-row">
+              <button class="btn danger" id="delete-btn"><svg class="icon"><use href="#i-trash"/></svg>حذف التفريغ</button>
+            </div>
+          </div>
+        </aside>
+      </div>
     </div>
-    <button id="save-key" class="primary">حفظ</button>
-    <p id="key-msg" class="msg" role="status"></p>
-    <button id="setup-back" class="secondary" hidden>رجوع</button>
-    <p class="fine">المفتاح ينحفظ على هالجهاز بس. المقاطع تنرسل إلى Google Gemini عشان ينكتب الكلام، وبالخطة المجانية ممكن قوقل يستخدم المحتوى لتحسين خدماته.</p>
+  </section>
+
+  <!-- ================= library ================= -->
+  <section id="view-library" class="view" hidden>
+    <div class="wrap narrow page">
+      <div class="page-head">
+        <h1>المكتبة</h1>
+        <button class="btn primary" id="lib-new"><svg class="icon"><use href="#i-plus"/></svg>تفريغ جديد</button>
+      </div>
+      <div class="search lib-search">
+        <svg class="icon"><use href="#i-search"/></svg>
+        <input class="input" type="search" id="lib-search" placeholder="ابحث في العناوين والنصوص" aria-label="ابحث في المكتبة">
+      </div>
+      <ul class="list" id="lib-list"></ul>
+      <div class="empty" id="lib-empty" hidden>
+        <svg class="icon"><use href="#i-file"/></svg>
+        <h2 id="lib-empty-title">لا توجد تفريغات بعد</h2>
+        <p id="lib-empty-text">كل تسجيل تفرّغه يُحفظ هنا على هذا الجهاز.</p>
+        <button class="btn primary" id="lib-empty-new">ابدأ أول تفريغ</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= error ================= -->
+  <section id="view-error" class="view" hidden>
+    <div class="wrap narrow page">
+      <div class="card error-card">
+        <span class="error-icon"><svg class="icon"><use href="#i-alert"/></svg></span>
+        <h1>تعذّر إكمال التفريغ</h1>
+        <p id="error-msg"></p>
+        <div class="error-actions">
+          <button class="btn primary lg" id="retry-btn"></button>
+          <button class="btn lg" id="error-home">الرئيسية</button>
+        </div>
+        <details>
+          <summary>تفاصيل تقنية</summary>
+          <pre id="error-detail"></pre>
+        </details>
+      </div>
+    </div>
   </section>
 </main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>مِداد، أداة مجانية مفتوحة المصدر لتفريغ التسجيلات العربية.</span>
+    <a href="https://github.com/yysof/tafreegh" target="_blank" rel="noopener">الكود على GitHub</a>
+  </div>
+</footer>
+
+<dialog id="settings" aria-labelledby="settings-title">
+  <div class="dialog-head">
+    <h2 id="settings-title">الإعدادات</h2>
+    <button class="icon-btn" id="settings-close" aria-label="إغلاق"><svg class="icon"><use href="#i-x"/></svg></button>
+  </div>
+  <div class="dialog-body">
+    <p class="callout" id="settings-callout" hidden>لبدء التفريغ تحتاج مفتاح Gemini مجانياً. الحصول عليه يستغرق دقيقة، وبعدها يبدأ التفريغ تلقائياً.</p>
+    <section class="set-group">
+      <h3>مفتاح Gemini</h3>
+      <p>مداد يستخدم Google Gemini لكتابة النص. المفتاح مجاني ويُحفظ على هذا الجهاز فقط.</p>
+      <ol class="key-steps">
+        <li>افتح <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> وسجّل الدخول بحساب Google.</li>
+        <li>اضغط <b>Create API key</b> وانسخ المفتاح.</li>
+        <li>الصقه هنا واضغط «حفظ المفتاح».</li>
+      </ol>
+      <label class="field-label" for="key-input">المفتاح</label>
+      <div class="key-field">
+        <input class="input ltr" type="password" id="key-input" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="AIza…">
+        <button class="icon-btn" id="key-toggle" aria-label="إظهار المفتاح"><svg class="icon"><use href="#i-eye"/></svg></button>
+      </div>
+      <div class="key-row">
+        <button class="btn primary" id="key-save">حفظ المفتاح</button>
+        <span class="status" id="key-status" role="status"></span>
+      </div>
+    </section>
+    <section class="set-group">
+      <h3>المظهر</h3>
+      <div class="segmented" role="radiogroup" aria-label="المظهر">
+        <button role="radio" data-theme-choice="system">تلقائي</button>
+        <button role="radio" data-theme-choice="light">فاتح</button>
+        <button role="radio" data-theme-choice="dark">داكن</button>
+      </div>
+    </section>
+    <section class="set-group">
+      <h3>البيانات</h3>
+      <p>التفريغات محفوظة في هذا المتصفح فقط.</p>
+      <div class="confirm-row" id="clear-row">
+        <button class="btn danger" id="clear-all"><svg class="icon"><use href="#i-trash"/></svg>حذف كل التفريغات</button>
+      </div>
+    </section>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 'use strict';
 
 const API = 'https://generativelanguage.googleapis.com';
-const KEY = 'tafreegh.key';
-const HISTORY = 'tafreegh.history';
-const MODELS = 'tafreegh.models';
-const PREFS = 'tafreegh.prefs';
+const KEY = 'midad.key';
+const HISTORY = 'midad.history';
+const MODELS = 'midad.models';
+const PREFS = 'midad.prefs';
 const FALLBACK_MODELS = ['gemini-flash-latest', 'gemini-2.5-flash'];
 const MAX_FILE_BYTES = 2e9;
-const READ_SIZES = [18, 21, 25, 29];
+const READ_SIZES = [17, 20, 23, 27];
 const YOUTUBE = /^https?:\/\/(www\.|m\.)?(youtube\.com|youtu\.be)\//i;
 
-// Gemini rejects some of the MIME types iOS reports (e.g. audio/x-m4a), so map by extension first.
+// Gemini rejects some of the MIME types browsers report (e.g. audio/x-m4a), so map by extension first.
 const MIME = {
   mp3: 'audio/mp3', m4a: 'audio/mp4', aac: 'audio/aac', wav: 'audio/wav', flac: 'audio/flac', aiff: 'audio/aiff',
-  ogg: 'audio/ogg', oga: 'audio/ogg', opus: 'audio/ogg',
+  ogg: 'audio/ogg', oga: 'audio/ogg', opus: 'audio/ogg', weba: 'audio/webm',
   mp4: 'video/mp4', m4v: 'video/mp4', mov: 'video/quicktime', webm: 'video/webm', '3gp': 'video/3gpp', mpeg: 'video/mpeg', mpg: 'video/mpeg',
 };
 
-const TRANSCRIBE_PROMPT = `هذا تسجيل لدرس أو محاضرة دينية بالعربي.
-المطلوب: اكتب الكلام المنطوق كتابةً، كلمة بكلمة، من أول المقطع إلى آخره.
-- لا تلخّص ولا تحذف ولا تضف شيئاً من عندك، واكتب الكلام كما قيل وباللهجة التي قيل بها.
+const TRANSCRIBE_PROMPT = `هذا تسجيل صوتي (محاضرة أو درس أو حديث).
+المطلوب: اكتب الكلام المنطوق كتابةً، كلمة بكلمة، من أول التسجيل إلى آخره، وبنفس لغة المتحدث.
+- لا تلخّص ولا تحذف ولا تضف شيئاً من عندك، واكتب الكلام كما قيل، بالفصحى أو باللهجة.
 - احذف فقط أصوات التردد مثل (اممم، إإإ) والتكرار غير المقصود.
-- اكتب الآيات القرآنية بالرسم الإملائي الصحيح بين القوسين ﴿ ﴾.
-- اكتب الأحاديث والأقوال المنقولة بين علامتي التنصيص « ».
+- إذا وردت آيات قرآنية فاكتبها بالرسم الإملائي الصحيح بين القوسين ﴿ ﴾.
+- إذا وردت أحاديث أو أقوال منقولة فضعها بين علامتي التنصيص « ».
 - قسّم الكلام إلى فقرات كلما تغيّرت الفكرة، واستخدم علامات الترقيم.
-- إذا تكلّم أحد غير المحاضِر (مثل سؤال من الحضور) فابدأ كلامه بكلمة: سؤال:
+- إذا تكلّم شخص غير المتحدث الرئيسي (مثل سؤال من الحضور) فابدأ كلامه بكلمة: سؤال:
 - إذا لم تتضح كلمة فاكتب [غير واضح].
 - اكتب النص فقط: بدون مقدمة أو تعليق أو عناوين أو توقيت، وبدون رموز تنسيق مثل * أو #.`;
 
-const NOTES_PROMPT = `هذا تفريغ نصي لدرس أو محاضرة دينية. اكتب بالعربية الفصحى المبسّطة:
-- title: عنوان قصير وواضح لموضوع المحاضرة (من ٣ إلى ٨ كلمات).
+const NOTES_PROMPT = `هذا تفريغ نصي لتسجيل صوتي. اكتب بالعربية الفصحى المبسّطة (وإذا كان التفريغ بلغة أخرى فاكتب بلغته):
+- title: عنوان قصير وواضح للموضوع (من ٣ إلى ٨ كلمات).
+- overview: خلاصة التسجيل في جملتين أو ثلاث.
 - points: أهم الأفكار، كل فكرة في جملة أو جملتين.
-- evidence: الآيات والأحاديث التي ذُكرت، الآية بين ﴿ ﴾ والحديث بين « ». إذا لم يُذكر شيء فاتركها فارغة.
-- lessons: فوائد عملية يقدر السامع يطبقها.
-- whatsapp: رسالة قصيرة جاهزة للنشر في مجموعة واتساب (لا تزيد عن ١٢٠ كلمة): تبدأ بعنوان الدرس بين نجمتين مثل *العنوان*، ثم أهم الفوائد في نقاط قصيرة، بأسلوب لطيف.
+- evidence: الآيات والأحاديث والاقتباسات التي ذُكرت، الآية بين ﴿ ﴾ والحديث بين « ». إذا لم يُذكر شيء فاتركها فارغة.
+- lessons: فوائد عملية أو خطوات يقدر السامع يطبقها.
+- post: منشور قصير جاهز للواتساب أو وسائل التواصل (لا يزيد عن ١٢٠ كلمة): يبدأ بالعنوان بين نجمتين مثل *العنوان*، ثم أهم الفوائد في نقاط قصيرة تبدأ بـ •.
+- questions: من ٣ إلى ٥ أسئلة لمراجعة المحتوى، مع جواب مختصر لكل سؤال من التفريغ نفسه.
 اعتمد على التفريغ فقط ولا تضف معلومات من خارجه.
 
 التفريغ:
@@ -464,29 +872,89 @@ const NOTES_SCHEMA = {
   type: 'OBJECT',
   properties: {
     title: { type: 'STRING' },
+    overview: { type: 'STRING' },
     points: { type: 'ARRAY', items: { type: 'STRING' } },
     evidence: { type: 'ARRAY', items: { type: 'STRING' } },
     lessons: { type: 'ARRAY', items: { type: 'STRING' } },
-    whatsapp: { type: 'STRING' },
+    post: { type: 'STRING' },
+    questions: {
+      type: 'ARRAY',
+      items: { type: 'OBJECT', properties: { question: { type: 'STRING' }, answer: { type: 'STRING' } }, required: ['question', 'answer'] },
+    },
   },
-  required: ['title', 'points', 'evidence', 'lessons', 'whatsapp'],
-  propertyOrdering: ['title', 'points', 'evidence', 'lessons', 'whatsapp'],
+  required: ['title', 'overview', 'points', 'evidence', 'lessons', 'post', 'questions'],
+  propertyOrdering: ['title', 'overview', 'points', 'evidence', 'lessons', 'post', 'questions'],
 };
 
 // Finish reasons after which another request can pick up where the text stopped.
 const CONTINUABLE = ['MAX_TOKENS', 'RECITATION', 'INTERRUPTED'];
 
+const SAMPLE = {
+  id: 'sample', sample: true, kind: 'file', file: 'محاضرة فضل الصدقة.m4a',
+  date: Date.UTC(2026, 9, 21, 17, 30), duration: 1265, complete: true,
+  title: 'فضل الصدقة وأثرها في حياة المسلم',
+  transcript: `بسم الله الرحمن الرحيم، الحمد لله رب العالمين، والصلاة والسلام على نبينا محمد وعلى آله وصحبه أجمعين.
+
+موضوعنا الليلة عن الصدقة، وكيف أنها من أعظم الأبواب اللي فتحها الله لنا. الصدقة مو بس مال تعطيه، الصدقة تطهير للنفس قبل ما تكون تطهير للمال.
+
+قال تعالى: ﴿مَثَلُ الَّذِينَ يُنْفِقُونَ أَمْوَالَهُمْ فِي سَبِيلِ اللَّهِ كَمَثَلِ حَبَّةٍ أَنْبَتَتْ سَبْعَ سَنَابِلَ فِي كُلِّ سُنْبُلَةٍ مِائَةُ حَبَّةٍ﴾. تخيلوا، حبة وحدة تصير سبعمائة، والله يضاعف لمن يشاء.
+
+وكثير من الناس يخاف إن ماله ينقص إذا تصدق، والنبي ﷺ قال: «ما نقصت صدقة من مال». بالعكس، الصدقة تبارك المال وتحفظه.
+
+والصدقة بعد تمحو الذنوب، قال ﷺ: «والصدقة تطفئ الخطيئة كما يطفئ الماء النار». فلا تستقل القليل، اللي تقدر عليه اليوم أعطه.
+
+وقال تعالى: ﴿لَنْ تَنَالُوا الْبِرَّ حَتَّى تُنْفِقُوا مِمَّا تُحِبُّونَ﴾. يعني أفضل الصدقة إنك تعطي من الشي اللي تحبه، مو من الشي اللي ما تحتاجه.
+
+سؤال: هل الصدقة على الأقارب أفضل من غيرهم؟
+إي نعم، قال ﷺ: «الصدقة على المسكين صدقة، وهي على ذي الرحم ثنتان: صدقة وصلة». فابدأ بأهلك وأقاربك المحتاجين.
+
+نسأل الله أن يجعلنا من المتصدقين، وأن يتقبل منا ومنكم. والحمد لله رب العالمين.`,
+  notes: {
+    title: 'فضل الصدقة وأثرها في حياة المسلم',
+    overview: 'تتناول المحاضرة فضل الصدقة ومضاعفة أجرها، وأنها لا تنقص المال بل تباركه، وأثرها في تكفير الذنوب، مع بيان أن الصدقة على الأقارب أعظم أجراً.',
+    points: [
+      'الصدقة تطهير للنفس قبل أن تكون تطهيراً للمال.',
+      'أجر الصدقة يضاعفه الله إلى سبعمائة ضعف وأكثر لمن يشاء.',
+      'الصدقة لا تنقص المال، بل تكون سبباً في بركته وحفظه.',
+      'الصدقة تكفّر الذنوب، فلا ينبغي استقلال القليل منها.',
+      'أفضل الصدقة ما كان مما يحبه الإنسان، لا مما يستغني عنه.',
+    ],
+    evidence: [
+      '﴿مَثَلُ الَّذِينَ يُنْفِقُونَ أَمْوَالَهُمْ فِي سَبِيلِ اللَّهِ كَمَثَلِ حَبَّةٍ أَنْبَتَتْ سَبْعَ سَنَابِلَ فِي كُلِّ سُنْبُلَةٍ مِائَةُ حَبَّةٍ﴾',
+      '﴿لَنْ تَنَالُوا الْبِرَّ حَتَّى تُنْفِقُوا مِمَّا تُحِبُّونَ﴾',
+      '«ما نقصت صدقة من مال»',
+      '«والصدقة تطفئ الخطيئة كما يطفئ الماء النار»',
+      '«الصدقة على المسكين صدقة، وهي على ذي الرحم ثنتان: صدقة وصلة»',
+    ],
+    lessons: [
+      'خصّص مبلغاً ثابتاً للصدقة ولو كان قليلاً.',
+      'ابدأ بأقاربك المحتاجين، فلك أجر الصدقة وأجر الصلة.',
+      'تصدّق من الأشياء التي تحبها لتنال البر.',
+    ],
+    post: '*فضل الصدقة*\n\n• أجرها يُضاعَف إلى سبعمائة ضعف\n• «ما نقصت صدقة من مال»\n• تطفئ الخطيئة كما يطفئ الماء النار\n• على القريب أجران: صدقة وصلة\n\nابدأ اليوم ولو بالقليل.',
+    questions: [
+      { question: 'ما المثل الذي ضربه الله لمضاعفة أجر الصدقة؟', answer: 'مثل حبة أنبتت سبع سنابل، في كل سنبلة مائة حبة.' },
+      { question: 'هل تنقص الصدقة المال؟', answer: 'لا، قال ﷺ: «ما نقصت صدقة من مال»، بل تكون سبباً في بركته.' },
+      { question: 'لماذا كانت الصدقة على القريب أعظم أجراً؟', answer: 'لأنها صدقة وصلة رحم في آن واحد.' },
+      { question: 'ما أفضل ما يُتصدَّق به؟', answer: 'ما يحبه الإنسان من ماله، لقوله تعالى: ﴿لَنْ تَنَالُوا الْبِرَّ حَتَّى تُنْفِقُوا مِمَّا تُحِبُّونَ﴾.' },
+    ],
+  },
+};
+
 const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const num = n => n.toLocaleString('ar-KW');
 const isAbort = e => e?.name === 'AbortError';
 
 let job = null;
 let lastSource = null;
+let pendingSource = null;
 let shown = null;
 let tab = 'summary';
+let query = '';
 
-/* ---------- storage ---------- */
+/* ================= storage ================= */
 
 function load(k, fallback) {
   try { const v = localStorage.getItem(k); return v == null ? fallback : JSON.parse(v); } catch { return fallback; }
@@ -498,9 +966,10 @@ function forget(k) {
   try { localStorage.removeItem(k); } catch {}
 }
 const getKey = () => load(KEY, '');
-const prefs = () => ({ size: 1, ...load(PREFS, {}) });
+const prefs = () => ({ size: 1, theme: 'system', ...load(PREFS, {}) });
+const setPref = patch => save(PREFS, { ...prefs(), ...patch });
 
-/* ---------- Gemini API ---------- */
+/* ================= Gemini API ================= */
 
 class ApiError extends Error {
   constructor(status, reason, message) {
@@ -540,7 +1009,7 @@ async function listModels(key) {
   return (await res.json()).models || [];
 }
 
-// Newest stable Flash models first, so the page keeps working as Google renames them.
+// Newest stable Flash models first, so the site keeps working as Google renames them.
 async function getModels(signal) {
   const cached = load(MODELS, null);
   if (cached && Date.now() - cached.at < 864e5) return cached.list;
@@ -576,7 +1045,7 @@ async function uploadFile(file, mime, onProgress, signal) {
       'X-Goog-Upload-Header-Content-Type': mime,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ file: { display_name: 'lecture' } }),
+    body: JSON.stringify({ file: { display_name: 'recording' } }),
   });
   const url = res.headers.get('x-goog-upload-url');
   if (!url) throw new ApiError(0, 'NO_UPLOAD_URL', 'upload url missing');
@@ -685,9 +1154,9 @@ function continuePrompt(done, finish) {
   if (!done.trim()) return TRANSCRIBE_PROMPT + rule;
   return `${TRANSCRIBE_PROMPT}${rule}
 
-سبق أن كُتب الجزء الأول من المقطع، وهذا آخر ما كُتب:
+سبق أن كُتب الجزء الأول من التسجيل، وهذا آخر ما كُتب:
 «${done.slice(-400)}»
-كمّل الكتابة مباشرة من بعد هذا الكلام إلى نهاية المقطع، ولا تُعِد كتابة ما سبق.`;
+كمّل الكتابة مباشرة من بعد هذا الكلام إلى نهاية التسجيل، ولا تُعِد كتابة ما سبق.`;
 }
 
 async function transcribe(models, media, { onText, config, signal }) {
@@ -725,13 +1194,14 @@ async function makeNotes(item, signal) {
   storeItem(item);
 }
 
-/* ---------- main flow ---------- */
+/* ================= transcription flow ================= */
 
 function mimeFor(file) {
   const ext = (file.name.split('.').pop() || '').toLowerCase();
   if (MIME[ext]) return MIME[ext];
-  if (file.type === 'audio/x-m4a') return 'audio/mp4';
-  return file.type || 'audio/mp3';
+  const type = (file.type || '').split(';')[0];
+  if (type === 'audio/x-m4a') return 'audio/mp4';
+  return type || 'audio/mp3';
 }
 
 function mediaDuration(file, mime) {
@@ -757,6 +1227,15 @@ async function keepAwake() {
   try { return await navigator.wakeLock?.request('screen'); } catch { return null; }
 }
 
+function start(source) {
+  if (!getKey()) {
+    pendingSource = source;
+    openSettings(true);
+    return;
+  }
+  run(source);
+}
+
 async function run(source) {
   const ctrl = new AbortController();
   const { signal } = ctrl;
@@ -767,66 +1246,62 @@ async function run(source) {
   let uploadedName = '';
   try {
     const models = await getModels(signal);
-    let media, video, duration = 0;
+    let media, video, duration = source.duration || 0;
 
-    if (source.kind === 'file') {
+    if (source.kind === 'youtube') {
+      video = true;
+      media = { file_data: { file_uri: source.url } };
+    } else {
       const { file } = source;
       if (file.size > MAX_FILE_BYTES) throw new ApiError(0, 'TOO_BIG', `${file.size} bytes`);
       const mime = mimeFor(file);
       video = mime.startsWith('video');
-      const durationP = mediaDuration(file, mime);
-      const uploaded = await uploadFile(file, mime, p => {
-        stepDetail('upload', `${num(Math.round(p * 100))}٪`);
-        setProgress(p * 0.25);
-      }, signal);
+      const durationP = duration ? Promise.resolve(duration) : mediaDuration(file, mime);
+      const uploaded = await uploadFile(file, mime, p => setProgress(p * 0.25, `جاري رفع الملف… ${num(Math.round(p * 100))}٪`), signal);
       uploadedName = uploaded.name;
-      stepDetail('upload', 'تجهيز المقطع…');
+      setProgress(0.26, 'جاري تجهيز الملف…');
       const ready = await waitActive(uploaded, signal);
       media = { file_data: { mime_type: ready.mimeType, file_uri: ready.uri } };
       duration = await durationP;
-    } else {
-      video = true;
-      media = { file_data: { file_uri: source.url } };
+      if (duration) $('#work-sub').textContent = `${$('#work-sub').textContent}، ${durationLabel(duration)}`;
     }
     // A sparse frame rate keeps long lecture videos inside the free token limits; only the audio matters here.
     if (video) media.video_metadata = { fps: 0.1 };
     const config = video ? { mediaResolution: 'MEDIA_RESOLUTION_LOW' } : undefined;
 
     stepState('upload', 'done');
-    stepDetail('upload', '');
     stepState('write', 'active');
-    setProgress(0.3);
+    setProgress(0.3, 'جاري كتابة النص…');
     const expectedWords = duration / 60 * 110;
     const { text, complete } = await transcribe(models, media, {
       config, signal,
       onText: t => {
         const words = countWords(t);
-        stepDetail('write', countLabel(words, WORD));
         const share = expectedWords ? Math.min(words / expectedWords, 1) : 1 - Math.exp(-words / 2500);
-        setProgress(0.3 + share * 0.6);
-        $('#live').textContent = t.slice(-320);
+        setProgress(0.3 + share * 0.6, `جاري كتابة النص… ${countLabel(words, WORD)}`);
+        $('#live').textContent = t.slice(-360);
       },
     });
     if (!text) throw new ApiError(0, 'EMPTY', 'empty transcript');
 
     const item = {
       id: Date.now(), date: Date.now(), kind: source.kind, file: source.name,
-      title: `محاضرة ${shortDate(Date.now())}`, duration, transcript: text, complete, notes: null,
+      title: `تسجيل ${shortDate(Date.now())}`, duration, transcript: text, complete, notes: null,
     };
     storeItem(item);
 
     stepState('write', 'done');
-    stepState('summary', 'active');
+    stepState('notes', 'active');
     $('#live').textContent = '';
-    setProgress(0.93);
+    setProgress(0.92, 'جاري كتابة الملخص والمنشور…');
     try { await makeNotes(item, signal); }
     catch (e) {
       if (isAbort(e)) throw e;
       item.notesFailed = true;
       storeItem(item);
     }
-    stepState('summary', 'done');
-    setProgress(1);
+    stepState('notes', 'done');
+    setProgress(1, 'اكتمل التفريغ');
     await sleep(500);
     showResult(item, 'summary');
   } catch (e) {
@@ -841,64 +1316,140 @@ async function run(source) {
 function explain(e, source) {
   const why = `${e.reason || ''} ${e.message || ''}`;
   if (source?.kind === 'youtube' && (e.status === 400 || e.status === 403) && !/API_KEY/.test(why)) {
-    return { msg: 'ما قدرنا نفتح الرابط. تأكدي إن الفيديو عام على يوتيوب، وإن الرابط كامل.' };
+    return { msg: 'تعذّر فتح الرابط. تأكد أن الفيديو عام على يوتيوب وأن الرابط كامل.' };
   }
-  if (isKeyError(e)) return { msg: 'المفتاح ما يشتغل. خلّي أحد من العيال يدخل «الإعدادات» ويحط المفتاح من جديد.', fix: 'settings' };
-  if (e.status === 429) return { msg: 'وصلتي للحد المجاني لليوم. جربي بعد شوي أو باجر.' };
-  if (e.reason === 'NETWORK') return { msg: 'انقطع الاتصال. تأكدي من الإنترنت، وخلّي الصفحة مفتوحة والشاشة شغالة لين يخلص.' };
-  if (e.reason === 'TOO_BIG') return { msg: 'المقطع كبير وايد. جربي ملف الصوت بدل الفيديو.' };
-  if (e.reason === 'EMPTY') return { msg: 'ما طلع كلام من المقطع. تأكدي إن فيه صوت واضح.' };
-  if (e.status === 400 && /token/i.test(why)) return { msg: 'المقطع طويل وايد على الخطة المجانية. جربي تقسمينه لجزئين.' };
-  if (e.reason?.startsWith('FILE_') || /mime|unsupported|invalid argument/i.test(why)) return { msg: 'ما قدرنا نقرأ هالمقطع. جربي ملف صوت ثاني، مثل mp3 أو m4a.' };
-  return { msg: 'صار خطأ غير متوقع. جربي مرة ثانية.' };
+  if (isKeyError(e)) return { msg: 'مفتاح Gemini غير صالح أو انتهت صلاحيته. افتح الإعدادات وأدخل المفتاح من جديد.', fix: 'settings' };
+  if (e.status === 429) return { msg: 'وصلت إلى الحد المجاني اليومي لمفتاحك. حاول بعد قليل أو غداً.' };
+  if (e.reason === 'NETWORK') return { msg: 'انقطع الاتصال. تأكد من الإنترنت، وأبقِ الصفحة مفتوحة والشاشة مضاءة حتى ينتهي التفريغ.' };
+  if (e.reason === 'TOO_BIG') return { msg: 'حجم الملف أكبر من ٢ جيجابايت. جرّب ملف الصوت بدلاً من الفيديو.' };
+  if (e.reason === 'EMPTY') return { msg: 'لم يُعثر على كلام في التسجيل. تأكد أن الصوت واضح.' };
+  if (e.status === 400 && /token/i.test(why)) return { msg: 'التسجيل أطول من حدود الخطة المجانية. قسّمه إلى جزأين وحاول مجدداً.' };
+  if (e.reason?.startsWith('FILE_') || /mime|unsupported|invalid argument/i.test(why)) return { msg: 'تعذّرت قراءة الملف. جرّب صيغة أخرى مثل MP3 أو M4A.' };
+  return { msg: 'حدث خطأ غير متوقع. حاول مرة أخرى.' };
 }
 
 function fail(e, source) {
   const { msg, fix } = explain(e, source);
   $('#error-msg').textContent = msg;
   $('#error-detail').textContent = `${e.status ?? ''} ${e.reason || ''}\n${e.message || e}`;
-  $('#retry').textContent = fix === 'settings' ? 'الإعدادات' : 'حاولي مرة ثانية';
-  $('#retry').onclick = fix === 'settings' ? openSettings : () => run(lastSource);
-  show('error');
+  $('#retry-btn').textContent = fix === 'settings' ? 'فتح الإعدادات' : 'حاول مرة أخرى';
+  $('#retry-btn').onclick = fix === 'settings' ? () => { pendingSource = lastSource; openSettings(true); } : () => run(lastSource);
+  showView('error');
 }
 
-/* ---------- work screen ---------- */
+/* ================= work view ================= */
 
 function startWork(source) {
-  $('#work-name').textContent = source.kind === 'youtube' ? source.url : source.name.replace(/\.[^.]+$/, '');
-  $('[data-step="upload"] .label').textContent = source.kind === 'youtube' ? 'فتح الرابط' : 'رفع المقطع';
-  document.querySelectorAll('.steps li').forEach(li => {
-    li.dataset.state = li.dataset.step === 'upload' ? 'active' : 'pending';
-    li.querySelector('.detail').textContent = '';
-  });
+  const youtube = source.kind === 'youtube';
+  $('#work-name').textContent = youtube ? source.url : source.name;
+  $('#work-sub').textContent = youtube ? 'فيديو من يوتيوب'
+    : source.kind === 'record' ? 'تسجيل من الميكروفون'
+    : sizeLabel(source.file.size);
+  $('#step-upload').textContent = youtube ? 'فتح الرابط' : 'رفع الملف';
+  $$('.stepper li').forEach(li => { li.dataset.state = li.dataset.step === 'upload' ? 'active' : 'pending'; });
   $('#live').textContent = '';
-  setProgress(0);
-  show('work');
+  setProgress(0, youtube ? 'جاري فتح الرابط…' : 'جاري رفع الملف…');
+  showView('work');
 }
 
-const stepState = (step, state) => { $(`[data-step="${step}"]`).dataset.state = state; };
-const stepDetail = (step, text) => { $(`[data-step="${step}"] .detail`).textContent = text; };
+const stepState = (step, state) => { $(`.stepper [data-step="${step}"]`).dataset.state = state; };
 
-function setProgress(p) {
-  // The woven band fills from the right, the way Arabic reads.
-  $('#weave').style.setProperty('--unwoven', `${(1 - p) * 100}%`);
+function setProgress(p, label) {
+  $('#progress-fill').style.width = `${Math.round(p * 100)}%`;
+  $('#progress-pct').textContent = `${num(Math.round(p * 100))}٪`;
+  if (label) $('#progress-label').textContent = label;
 }
 
-/* ---------- history ---------- */
+/* ================= recorder ================= */
 
-const history = () => load(HISTORY, []);
+const rec = { media: null, stream: null, chunks: [], started: 0, timer: 0, raf: 0, audio: null };
 
-function storeItem(item) {
-  let list = [item, ...history().filter(x => x.id !== item.id)].slice(0, 30);
-  while (!save(HISTORY, list) && list.length > 1) list = list.slice(0, -1);
+function buildMeter() {
+  $('#meter').replaceChildren(...Array.from({ length: 28 }, () => document.createElement('i')));
 }
 
-function removeItem(id) {
-  save(HISTORY, history().filter(x => x.id !== id));
+function recType() {
+  for (const t of ['audio/mp4', 'audio/webm;codecs=opus', 'audio/ogg;codecs=opus', 'audio/webm']) {
+    if (window.MediaRecorder?.isTypeSupported?.(t)) return t;
+  }
+  return '';
 }
 
-const WORD = ['كلمة', 'كلمتين', 'كلمات', 'كلمة'];
-const MINUTE = ['دقيقة', 'دقيقتين', 'دقائق', 'دقيقة'];
+async function startRecording() {
+  if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
+    toast('المتصفح لا يدعم التسجيل. ارفع ملفاً بدلاً من ذلك.');
+    return;
+  }
+  try {
+    rec.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch {
+    toast('لم يُسمح باستخدام الميكروفون. فعّله من إعدادات المتصفح.');
+    return;
+  }
+  const type = recType();
+  rec.media = new MediaRecorder(rec.stream, type ? { mimeType: type } : undefined);
+  rec.chunks = [];
+  rec.media.ondataavailable = e => { if (e.data.size) rec.chunks.push(e.data); };
+  rec.media.start(1000);
+  rec.started = Date.now();
+  rec.lock = await keepAwake();
+  $('#rec-btn').classList.add('on');
+  $('#rec-btn').setAttribute('aria-label', 'إيقاف التسجيل');
+  $('#rec-state').textContent = 'جاري التسجيل…';
+  $('#rec-actions').hidden = false;
+  $('#meter').classList.add('on');
+  rec.timer = setInterval(() => { $('#rec-time').textContent = clock((Date.now() - rec.started) / 1000); }, 250);
+  watchLevel();
+}
+
+function watchLevel() {
+  try {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    rec.audio = new Ctx();
+    const analyser = rec.audio.createAnalyser();
+    analyser.fftSize = 64;
+    rec.audio.createMediaStreamSource(rec.stream).connect(analyser);
+    const data = new Uint8Array(analyser.frequencyBinCount);
+    const bars = $$('#meter i');
+    const tick = () => {
+      analyser.getByteFrequencyData(data);
+      bars.forEach((bar, i) => { bar.style.height = `${4 + (data[i % data.length] / 255) * 32}px`; });
+      rec.raf = requestAnimationFrame(tick);
+    };
+    tick();
+  } catch {}
+}
+
+function stopRecording(keep) {
+  if (!rec.media) return;
+  const duration = (Date.now() - rec.started) / 1000;
+  const type = rec.media.mimeType || 'audio/webm';
+  rec.media.onstop = () => {
+    const blob = new Blob(rec.chunks, { type });
+    const ext = type.includes('mp4') ? 'm4a' : type.includes('ogg') ? 'ogg' : 'weba';
+    const name = `تسجيل ${shortDate(Date.now())}.${ext}`;
+    if (keep && blob.size) start({ kind: 'record', file: new File([blob], name, { type }), name, duration });
+  };
+  rec.media.stop();
+  rec.stream.getTracks().forEach(t => t.stop());
+  clearInterval(rec.timer);
+  cancelAnimationFrame(rec.raf);
+  rec.audio?.close().catch(() => {});
+  rec.lock?.release?.().catch(() => {});
+  Object.assign(rec, { media: null, stream: null, audio: null, lock: null });
+  $('#rec-btn').classList.remove('on');
+  $('#rec-btn').setAttribute('aria-label', 'ابدأ التسجيل');
+  $('#rec-state').textContent = 'اضغط الزر لبدء التسجيل من الميكروفون';
+  $('#rec-time').textContent = clock(0);
+  $('#rec-actions').hidden = true;
+  $('#meter').classList.remove('on');
+  $$('#meter i').forEach(bar => { bar.style.height = ''; });
+}
+
+/* ================= formatting ================= */
+
+const WORD = ['كلمة واحدة', 'كلمتان', 'كلمات', 'كلمة'];
+const MINUTE = ['دقيقة واحدة', 'دقيقتان', 'دقائق', 'دقيقة'];
 
 function countLabel(n, [one, two, few, many]) {
   if (n === 1) return one;
@@ -908,14 +1459,17 @@ function countLabel(n, [one, two, few, many]) {
 
 const countWords = t => (t.trim() ? t.trim().split(/\s+/).length : 0);
 const shortDate = ts => new Date(ts).toLocaleDateString('ar-KW', { day: 'numeric', month: 'long' });
-const longDate = ts => new Date(ts).toLocaleDateString('ar-KW', { weekday: 'long', day: 'numeric', month: 'long' });
+const longDate = ts => new Date(ts).toLocaleDateString('ar-KW', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+const durationLabel = s => countLabel(Math.max(1, Math.round(s / 60)), MINUTE);
+const clock = s => `${num(Math.floor(s / 60)).padStart(2, '٠')}:${num(Math.floor(s % 60)).padStart(2, '٠')}`;
 
-function metaFor(item, dateFn) {
-  const parts = [dateFn(item.date)];
-  if (item.duration) parts.push(countLabel(Math.max(1, Math.round(item.duration / 60)), MINUTE));
-  if (item.kind === 'youtube') parts.push('من يوتيوب');
-  return parts.join('، ');
+function sizeLabel(bytes) {
+  const mb = bytes / 1048576;
+  return mb >= 1 ? `${num(Math.round(mb * 10) / 10)} ميجابايت` : `${num(Math.max(1, Math.round(bytes / 1024)))} كيلوبايت`;
 }
+
+const SOURCE_LABEL = { file: 'ملف مرفوع', record: 'تسجيل مباشر', youtube: 'يوتيوب' };
+const SOURCE_ICON = { file: 'i-file', record: 'i-mic', youtube: 'i-video' };
 
 function el(tag, text, cls) {
   const node = document.createElement(tag);
@@ -924,45 +1478,99 @@ function el(tag, text, cls) {
   return node;
 }
 
-function renderHistory() {
-  const list = history();
-  $('#empty').hidden = list.length > 0;
-  $('#history').replaceChildren(...list.map(item => {
-    const text = el('span', '', 'row-text');
-    text.append(el('span', item.title, 'row-title'), el('span', metaFor(item, shortDate), 'row-meta'));
-    const row = el('button', '', 'row');
-    row.append(text, el('span', '‹', 'row-chevron'));
-    row.addEventListener('click', () => showResult(item, 'summary'));
-    const li = el('li');
-    li.append(row);
-    return li;
-  }));
+function icon(id) {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('class', 'icon');
+  svg.setAttribute('aria-hidden', 'true');
+  const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+  use.setAttribute('href', `#${id}`);
+  svg.append(use);
+  return svg;
 }
 
-/* ---------- result screen ---------- */
+/* ================= library ================= */
 
-// Marks Quran verses, quoted hadith and unclear words so they stand out while reading.
+const history = () => load(HISTORY, []);
+
+function storeItem(item) {
+  if (item.sample) return;
+  let list = [item, ...history().filter(x => x.id !== item.id)].slice(0, 40);
+  while (!save(HISTORY, list) && list.length > 1) list = list.slice(0, -1);
+}
+
+function removeItem(id) {
+  save(HISTORY, history().filter(x => x.id !== id));
+}
+
+function itemMeta(item) {
+  const parts = [shortDate(item.date)];
+  if (item.duration) parts.push(durationLabel(item.duration));
+  parts.push(countLabel(countWords(item.transcript), WORD));
+  return parts.join('، ');
+}
+
+function rowFor(item) {
+  const iconBox = el('span', '', 'row-icon');
+  iconBox.append(icon(SOURCE_ICON[item.kind] || 'i-file'));
+  const text = el('span', '', 'row-text');
+  text.append(el('span', item.title, 'row-title'), el('span', itemMeta(item), 'row-meta'));
+  const row = el('button', '', 'row');
+  row.append(iconBox, text, icon('i-left'));
+  row.addEventListener('click', () => showResult(item, 'summary'));
+  const li = el('li');
+  li.append(row);
+  return li;
+}
+
+function renderRecent() {
+  const list = history();
+  $('#recent-wrap').hidden = !list.length;
+  $('#recent').replaceChildren(...list.slice(0, 4).map(rowFor));
+  $('#see-all').hidden = list.length <= 4;
+}
+
+function renderLibrary() {
+  const all = history();
+  const q = $('#lib-search').value.trim();
+  const list = q ? all.filter(x => x.title.includes(q) || x.transcript.includes(q)) : all;
+  $('#lib-list').replaceChildren(...list.map(rowFor));
+  $('#lib-list').hidden = !list.length;
+  $('#lib-empty').hidden = !!list.length;
+  $('#lib-empty-title').textContent = all.length ? 'لا توجد نتائج' : 'لا توجد تفريغات بعد';
+  $('#lib-empty-text').textContent = all.length ? 'جرّب كلمة أخرى للبحث.' : 'كل تسجيل تفرّغه يُحفظ هنا على هذا الجهاز.';
+  $('#lib-empty-new').hidden = !!all.length;
+}
+
+/* ================= result view ================= */
+
+// Splits text into plain runs plus verse, quote and unclear-word spans, and marks search matches inside each.
 function rich(text) {
   const frag = document.createDocumentFragment();
   for (const piece of text.split(/(﴿[^﴾]*﴾|«[^»]*»|\[غير واضح\])/)) {
     if (!piece) continue;
     const cls = piece.startsWith('﴿') ? 'ayah' : piece.startsWith('«') ? 'quote' : piece === '[غير واضح]' ? 'unclear' : '';
-    frag.append(cls ? el('span', piece, cls) : piece);
+    const target = cls ? el('span', '', cls) : frag;
+    appendMarked(target, piece);
+    if (cls) frag.append(target);
   }
   return frag;
 }
 
-function notesText(n) {
-  const block = (heading, list) => (list?.length ? [heading, ...list.map(x => `• ${x}`), ''] : []);
-  return [n.title, '', ...block('أهم الأفكار:', n.points), ...block('الأدلة المذكورة:', n.evidence), ...block('الفوائد العملية:', n.lessons)]
-    .join('\n').trim();
+function appendMarked(parent, text) {
+  if (!query) { parent.append(text); return; }
+  const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'g');
+  for (const piece of text.split(re)) {
+    if (!piece) continue;
+    parent.append(piece === query ? el('mark', piece) : piece);
+  }
 }
 
 function missingNotes() {
   const box = el('div', '', 'missing');
-  box.append(el('p', 'ما انكتب الملخص هالمرة.'));
-  const retry = el('button', 'اكتبي الملخص', 'secondary');
+  const msg = el('p', 'لم يُكتب الملخص لهذا التسجيل.');
+  const retry = el('button', 'اكتب الملخص الآن', 'btn primary');
   retry.addEventListener('click', async () => {
+    if (!getKey()) { openSettings(true); return; }
     retry.disabled = true;
     retry.textContent = 'جاري كتابة الملخص…';
     try {
@@ -970,85 +1578,252 @@ function missingNotes() {
       showResult(shown, tab);
     } catch {
       retry.disabled = false;
-      retry.textContent = 'اكتبي الملخص';
-      box.firstChild.textContent = 'ما زبط. تأكدي من الإنترنت وجربي بعد شوي.';
+      retry.textContent = 'اكتب الملخص الآن';
+      msg.textContent = 'تعذّرت كتابة الملخص. تأكد من الإنترنت وحاول بعد قليل.';
     }
   });
-  box.append(retry);
+  box.append(msg, retry);
   return box;
 }
 
-function renderPanels(item) {
-  const summary = $('#panel-summary');
-  const transcript = $('#panel-transcript');
-  const whatsapp = $('#panel-whatsapp');
-  summary.replaceChildren();
-  transcript.replaceChildren();
-  whatsapp.replaceChildren();
-
-  if (item.notes) {
-    for (const [heading, list] of [['أهم الأفكار', item.notes.points], ['الأدلة المذكورة', item.notes.evidence], ['الفوائد العملية', item.notes.lessons]]) {
-      if (!list?.length) continue;
-      const ul = el('ul');
-      for (const line of list) {
-        const li = el('li');
-        li.append(rich(line));
-        ul.append(li);
-      }
-      summary.append(el('h3', heading), ul);
-    }
-    const bubble = el('div', '', 'bubble');
-    // WhatsApp shows *text* as bold, so preview it the same way.
-    for (const piece of item.notes.whatsapp.split(/(\*[^*\n]+\*)/)) {
-      if (piece) bubble.append(/^\*.+\*$/.test(piece) ? el('strong', piece.slice(1, -1)) : piece);
-    }
-    whatsapp.append(bubble);
-  } else {
-    summary.append(missingNotes());
-    whatsapp.append(missingNotes());
+function bulletList(items) {
+  const ul = el('ul', '', 'points');
+  for (const line of items) {
+    const li = el('li');
+    li.append(rich(line));
+    ul.append(li);
   }
+  return ul;
+}
 
-  if (item.complete === false) transcript.append(el('p', 'ممكن آخر المقطع ما انكتب كامل.', 'note'));
+function renderSummary(item) {
+  const panel = $('#panel-summary');
+  panel.replaceChildren();
+  const n = item.notes;
+  if (!n) { panel.append(missingNotes()); return; }
+  if (n.overview) {
+    const p = el('p', '', 'overview');
+    p.append(rich(n.overview));
+    panel.append(p);
+  }
+  for (const [heading, list] of [['أهم الأفكار', n.points], ['الأدلة والاقتباسات', n.evidence], ['فوائد عملية', n.lessons]]) {
+    if (list?.length) panel.append(el('h3', heading), bulletList(list));
+  }
+}
+
+function renderTranscript(item) {
+  const panel = $('#panel-transcript');
+  panel.replaceChildren();
+  if (item.complete === false) panel.append(el('p', 'قد يكون آخر التسجيل لم يُكتب كاملاً.', 'note'));
   for (let para of item.transcript.split(/\n+/)) {
     if (!para.trim()) continue;
     const p = el('p');
     const q = para.match(/^\s*سؤال\s*[:：]\s*/);
     if (q) {
       p.className = 'question';
-      p.append(el('span', 'سؤال:', 'q-label'));
+      p.append(el('span', 'سؤال', 'q-label'));
       para = para.slice(q[0].length);
     }
     p.append(rich(para));
-    transcript.append(p);
+    panel.append(p);
   }
+  const hits = query ? panel.querySelectorAll('mark').length : 0;
+  $('#search-count').textContent = query ? (hits ? `${countLabel(hits, ['نتيجة واحدة', 'نتيجتان', 'نتائج', 'نتيجة'])}` : 'لا نتائج') : '';
+  if (hits) panel.querySelector('mark').scrollIntoView({ block: 'center', behavior: 'smooth' });
+}
+
+function renderPost(item) {
+  const panel = $('#panel-post');
+  panel.replaceChildren();
+  if (!item.notes) { panel.append(missingNotes()); return; }
+  const card = el('div', '', 'post-card');
+  // WhatsApp shows *text* as bold, so preview it the same way.
+  for (const piece of item.notes.post.split(/(\*[^*\n]+\*)/)) {
+    if (piece) card.append(/^\*.+\*$/.test(piece) ? el('strong', piece.slice(1, -1)) : piece);
+  }
+  panel.append(card, el('p', 'النجوم حول العنوان تجعله عريضاً في واتساب.', 'post-hint'));
+}
+
+function renderQuestions(item) {
+  const panel = $('#panel-questions');
+  panel.replaceChildren();
+  if (!item.notes?.questions?.length) { panel.append(missingNotes()); return; }
+  const wrap = el('div', '', 'qa');
+  for (const { question, answer } of item.notes.questions) {
+    const d = el('details');
+    const s = el('summary');
+    s.append(rich(question));
+    const a = el('p');
+    a.append(rich(answer));
+    d.append(s, a);
+    wrap.append(d);
+  }
+  panel.append(wrap);
+}
+
+function renderDetails(item) {
+  const words = countWords(item.transcript);
+  const rows = [
+    ['المصدر', SOURCE_LABEL[item.kind] || 'ملف'],
+    ['التاريخ', shortDate(item.date)],
+    item.duration ? ['المدة', durationLabel(item.duration)] : null,
+    ['عدد الكلمات', num(words)],
+    ['وقت القراءة', durationLabel(Math.max(60, words / 180 * 60))],
+  ].filter(Boolean);
+  $('#r-details').replaceChildren(...rows.map(([k, v]) => {
+    const div = el('div');
+    div.append(el('dt', k), el('dd', v));
+    return div;
+  }));
+}
+
+function notesText(n) {
+  const block = (heading, list) => (list?.length ? [heading, ...list.map(x => `• ${x}`), ''] : []);
+  return [n.title, '', n.overview, '', ...block('أهم الأفكار:', n.points), ...block('الأدلة والاقتباسات:', n.evidence), ...block('فوائد عملية:', n.lessons)]
+    .join('\n').trim();
+}
+
+function questionsText(n) {
+  return n.questions.map((q, i) => `${num(i + 1)}. ${q.question}\n${q.answer}`).join('\n\n');
 }
 
 function copyPayload() {
   if (tab === 'transcript') return shown.transcript;
   if (!shown.notes) return '';
-  return tab === 'summary' ? notesText(shown.notes) : shown.notes.whatsapp;
+  if (tab === 'summary') return notesText(shown.notes);
+  if (tab === 'post') return shown.notes.post;
+  return shown.notes.questions?.length ? questionsText(shown.notes) : '';
 }
 
-const COPY_LABEL = { summary: 'نسخ الملخص', transcript: 'نسخ الكلام', whatsapp: 'نسخ الرسالة' };
+const COPIED = { summary: 'تم نسخ الملخص', transcript: 'تم نسخ النص', post: 'تم نسخ المنشور', questions: 'تم نسخ الأسئلة' };
 
 function selectTab(name) {
   tab = name;
-  document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
-  for (const t of ['summary', 'transcript', 'whatsapp']) $(`#panel-${t}`).hidden = t !== name;
-  const copy = $('#copy');
-  copy.textContent = COPY_LABEL[name];
-  copy.dataset.label = COPY_LABEL[name];
-  copy.disabled = !copyPayload();
-  $('#share').disabled = !copyPayload();
+  $$('.tabs [role="tab"]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
+  for (const t of ['summary', 'transcript', 'post', 'questions']) $(`#panel-${t}`).hidden = t !== name;
+  $('#search-wrap').hidden = name !== 'transcript';
+  $('#search-count').hidden = name !== 'transcript';
+  $('.size-ctl').hidden = name === 'post';
+  const empty = !copyPayload();
+  $('#copy-btn').disabled = empty;
+  $('#share-btn').disabled = empty;
 }
 
 function showResult(item, startTab) {
   shown = item;
+  query = '';
+  $('#search').value = '';
+  $('#r-badge').hidden = !item.sample;
   $('#r-title').textContent = item.title;
-  $('#r-meta').textContent = `${metaFor(item, longDate)}، ${countLabel(countWords(item.transcript), WORD)}`;
-  renderPanels(item);
-  show('result');
-  selectTab(startTab || tab);
+  $('#r-meta').textContent = [longDate(item.date), item.duration ? durationLabel(item.duration) : ''].filter(Boolean).join('، ');
+  $('#delete-card').hidden = !!item.sample;
+  resetDelete();
+  renderSummary(item);
+  renderTranscript(item);
+  renderPost(item);
+  renderQuestions(item);
+  renderDetails(item);
+  showView('result');
+  selectTab(startTab || 'summary');
+}
+
+/* ================= export ================= */
+
+const escapeHtml = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+
+function fullText(item) {
+  const parts = [item.title, longDate(item.date), ''];
+  if (item.notes) parts.push('الملخص', '', notesText(item.notes), '', '');
+  parts.push('النص الكامل', '', item.transcript);
+  if (item.notes?.questions?.length) parts.push('', '', 'أسئلة المراجعة', '', questionsText(item.notes));
+  return parts.join('\n');
+}
+
+function wordDoc(item) {
+  const list = (h, xs) => (xs?.length ? `<h2>${h}</h2><ul>${xs.map(x => `<li>${escapeHtml(x)}</li>`).join('')}</ul>` : '');
+  const n = item.notes;
+  const body = [
+    `<h1>${escapeHtml(item.title)}</h1><p class="meta">${escapeHtml(longDate(item.date))}</p>`,
+    n ? `<h2>الخلاصة</h2><p>${escapeHtml(n.overview || '')}</p>${list('أهم الأفكار', n.points)}${list('الأدلة والاقتباسات', n.evidence)}${list('فوائد عملية', n.lessons)}` : '',
+    `<h2>النص الكامل</h2>${item.transcript.split(/\n+/).filter(Boolean).map(p => `<p>${escapeHtml(p)}</p>`).join('')}`,
+    n?.questions?.length ? `<h2>أسئلة المراجعة</h2>${n.questions.map(q => `<p><b>${escapeHtml(q.question)}</b><br>${escapeHtml(q.answer)}</p>`).join('')}` : '',
+  ].join('');
+  return `<html dir="rtl" lang="ar"><head><meta charset="utf-8"><title>${escapeHtml(item.title)}</title>
+<style>body{font-family:"Traditional Arabic","Simplified Arabic",Arial,sans-serif;font-size:16pt;line-height:1.8;direction:rtl}
+h1{font-size:22pt}h2{font-size:17pt;margin-top:18pt}.meta{color:#666;font-size:12pt}</style></head><body>${body}</body></html>`;
+}
+
+function download(name, content, type) {
+  const url = URL.createObjectURL(new Blob(['﻿', content], { type }));
+  const a = el('a');
+  a.href = url;
+  a.download = name;
+  document.body.append(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+
+function exportAs(kind) {
+  const base = shown.title.replace(/[\\/:*?"<>|]/g, '').slice(0, 60) || 'تفريغ';
+  if (kind === 'doc') download(`${base}.doc`, wordDoc(shown), 'application/msword');
+  else download(`${base}.txt`, fullText(shown), 'text/plain;charset=utf-8');
+  toast('تم تجهيز الملف');
+}
+
+/* ================= shared UI ================= */
+
+function showView(name) {
+  $$('.view').forEach(v => { v.hidden = v.id !== `view-${name}`; });
+  $('#nav-library').setAttribute('aria-current', name === 'library' ? 'page' : 'false');
+  window.scrollTo(0, 0);
+}
+
+function goHome() {
+  renderRecent();
+  showView('home');
+}
+
+function goLibrary() {
+  renderLibrary();
+  showView('library');
+}
+
+let toastTimer = 0;
+function toast(text) {
+  const t = $('#toast');
+  t.textContent = text;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    const ta = el('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.append(ta);
+    ta.select();
+    ta.setSelectionRange(0, text.length);
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch {}
+    ta.remove();
+    return ok;
+  }
+}
+
+function applyTheme() {
+  const { theme } = prefs();
+  if (theme === 'system') document.documentElement.removeAttribute('data-theme');
+  else document.documentElement.dataset.theme = theme;
+  const dark = theme === 'dark' || (theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
+  $('#theme-btn use').setAttribute('href', dark ? '#i-sun' : '#i-moon');
+  $$('[data-theme-choice]').forEach(b => b.setAttribute('aria-checked', String(b.dataset.themeChoice === theme)));
 }
 
 function applySize() {
@@ -1059,146 +1834,209 @@ function applySize() {
 }
 
 function changeSize(step) {
-  const size = Math.min(READ_SIZES.length - 1, Math.max(0, prefs().size + step));
-  save(PREFS, { ...prefs(), size });
+  setPref({ size: Math.min(READ_SIZES.length - 1, Math.max(0, prefs().size + step)) });
   applySize();
 }
 
-async function copyText(text, button) {
-  let ok = false;
-  try {
-    await navigator.clipboard.writeText(text);
-    ok = true;
-  } catch {
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    ta.setAttribute('readonly', '');
-    ta.style.cssText = 'position:fixed;opacity:0';
-    document.body.append(ta);
-    ta.select();
-    ta.setSelectionRange(0, text.length);
-    try { ok = document.execCommand('copy'); } catch {}
-    ta.remove();
-  }
-  button.textContent = ok ? 'تم النسخ ✓' : 'ما انسخ، حاولي مرة ثانية';
-  setTimeout(() => { button.textContent = button.dataset.label; }, 2200);
+// Destructive buttons ask for a second tap in place, instead of a browser dialog.
+function confirmInPlace(row, label, onConfirm) {
+  const original = [...row.childNodes];
+  const yes = el('button', label, 'btn danger');
+  const no = el('button', 'تراجع', 'btn');
+  yes.addEventListener('click', onConfirm);
+  no.addEventListener('click', () => row.replaceChildren(...original));
+  row.replaceChildren(yes, no);
 }
 
-/* ---------- screens ---------- */
+const deleteBtn = $('#delete-btn');
+const clearBtn = $('#clear-all');
 
-function show(id) {
-  document.querySelectorAll('main > section').forEach(s => { s.hidden = s.id !== id; });
-  window.scrollTo(0, 0);
+function resetDelete() {
+  if (!deleteBtn.isConnected) $('#delete-row').replaceChildren(deleteBtn);
 }
 
-function goHome() {
-  renderHistory();
-  show('home');
+function openSettings(forStart = false) {
+  $('#settings-callout').hidden = !forStart;
+  $('#key-input').value = '';
+  $('#key-input').type = 'password';
+  $('#key-input').placeholder = getKey() ? 'المفتاح محفوظ. الصق مفتاحاً جديداً لتغييره' : 'AIza…';
+  $('#key-status').textContent = '';
+  $('#key-status').className = 'status';
+  if (!clearBtn.isConnected) $('#clear-row').replaceChildren(clearBtn);
+  applyTheme();
+  const dlg = $('#settings');
+  if (!dlg.open) dlg.showModal();
+  if (forStart) $('#key-input').focus();
 }
 
-const isStandalone = () => navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
+/* ================= wiring ================= */
 
-function openSettings() {
-  const hasKey = !!getKey();
-  $('#key').value = '';
-  $('#key').placeholder = hasKey ? 'المفتاح محفوظ ✓' : 'الصق المفتاح هني';
-  $('#key-msg').textContent = '';
-  $('#setup-back').hidden = !hasKey;
-  $('#step-home').hidden = isStandalone();
-  $('#paste-key').hidden = !navigator.clipboard?.readText;
-  show('setup');
-}
+$('#brand').addEventListener('click', goHome);
+$('#nav-new').addEventListener('click', goHome);
+$('#nav-library').addEventListener('click', goLibrary);
+$('#see-all').addEventListener('click', goLibrary);
+$('#lib-new').addEventListener('click', goHome);
+$('#lib-empty-new').addEventListener('click', goHome);
+$('#lib-search').addEventListener('input', renderLibrary);
+$('#result-back').addEventListener('click', () => (shown?.sample ? goHome() : goLibrary()));
+$('#error-home').addEventListener('click', goHome);
+$('#demo-btn').addEventListener('click', () => showResult(SAMPLE, 'summary'));
+$('#settings-btn').addEventListener('click', () => openSettings(false));
+$('#settings-close').addEventListener('click', () => $('#settings').close());
+$('#settings').addEventListener('close', () => { pendingSource = null; });
 
-/* ---------- wiring ---------- */
+$('#theme-btn').addEventListener('click', () => {
+  const dark = document.documentElement.dataset.theme === 'dark'
+    || (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
+  setPref({ theme: dark ? 'light' : 'dark' });
+  applyTheme();
+});
+$$('[data-theme-choice]').forEach(b => b.addEventListener('click', () => { setPref({ theme: b.dataset.themeChoice }); applyTheme(); }));
+matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', applyTheme);
 
+// source tabs
+$$('.tool-tabs [role="tab"]').forEach(b => b.addEventListener('click', () => {
+  $$('.tool-tabs [role="tab"]').forEach(x => x.setAttribute('aria-selected', String(x === b)));
+  for (const s of ['upload', 'record', 'link']) $(`#panel-${s}`).hidden = s !== b.dataset.src;
+  if (b.dataset.src !== 'record' && rec.media) stopRecording(false);
+}));
+
+// upload
 $('#file').addEventListener('change', e => {
   const file = e.target.files[0];
   e.target.value = '';
-  if (file) run({ kind: 'file', file, name: file.name });
+  if (file) start({ kind: 'file', file, name: file.name });
 });
-
-$('#yt-toggle').addEventListener('click', e => {
-  const form = $('#yt-form');
-  form.hidden = !form.hidden;
-  e.currentTarget.setAttribute('aria-expanded', String(!form.hidden));
-  if (!form.hidden) $('#yt-url').focus();
-});
-
-$('#yt-form').addEventListener('submit', e => {
+const drop = $('#drop');
+['dragenter', 'dragover'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave', 'drop'].forEach(t => drop.addEventListener(t, () => drop.classList.remove('over')));
+drop.addEventListener('click', e => { if (!e.target.closest('label, input')) $('#file').click(); });
+drop.addEventListener('drop', e => {
   e.preventDefault();
-  const input = $('#yt-url');
-  const url = input.value.trim();
+  const file = e.dataTransfer.files[0];
+  if (file) start({ kind: 'file', file, name: file.name });
+});
+
+// record
+buildMeter();
+$('#rec-btn').addEventListener('click', () => (rec.media ? stopRecording(true) : startRecording()));
+$('#rec-stop').addEventListener('click', () => stopRecording(true));
+$('#rec-discard').addEventListener('click', () => { stopRecording(false); toast('تم تجاهل التسجيل'); });
+
+// youtube
+$('#link-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const url = $('#yt-url').value.trim();
   if (!YOUTUBE.test(url)) {
-    input.setCustomValidity('هذا مو رابط يوتيوب');
-    input.reportValidity();
+    $('#yt-hint').textContent = 'الرابط غير صحيح. الصق رابط فيديو من youtube.com أو youtu.be.';
+    $('#yt-hint').style.color = 'var(--danger)';
     return;
   }
-  input.value = '';
-  run({ kind: 'youtube', url, name: 'رابط يوتيوب' });
+  $('#yt-url').value = '';
+  start({ kind: 'youtube', url, name: 'فيديو يوتيوب' });
 });
-$('#yt-url').addEventListener('input', e => e.target.setCustomValidity(''));
+$('#yt-url').addEventListener('input', () => {
+  $('#yt-hint').textContent = 'يعمل مع الفيديوهات العامة على يوتيوب.';
+  $('#yt-hint').style.color = '';
+});
 
-$('#cancel').addEventListener('click', () => {
+// work
+$('#cancel-btn').addEventListener('click', () => {
   job?.abort();
+  toast('تم إلغاء التفريغ');
   goHome();
 });
 
-document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => selectTab(b.dataset.tab)));
-
-$('#copy').addEventListener('click', e => copyText(copyPayload(), e.currentTarget));
-
-$('#share').addEventListener('click', async () => {
-  try { await navigator.share({ text: copyPayload() }); }
-  catch (e) { if (!isAbort(e)) copyText(copyPayload(), $('#copy')); }
+// result
+$$('.tabs [role="tab"]').forEach(b => b.addEventListener('click', () => selectTab(b.dataset.tab)));
+$('#copy-btn').addEventListener('click', async () => {
+  toast(await copyText(copyPayload()) ? COPIED[tab] : 'تعذّر النسخ. حدّد النص وانسخه يدوياً.');
 });
-if (!navigator.share) {
-  $('#share').hidden = true;
-  $('#actions').classList.add('single');
-}
-
+$('#share-btn').addEventListener('click', async () => {
+  if (navigator.share) {
+    try { await navigator.share({ title: shown.title, text: copyPayload() }); return; }
+    catch (e) { if (isAbort(e)) return; }
+  }
+  toast(await copyText(copyPayload()) ? `${COPIED[tab]}، الصقه حيث تريد` : 'تعذّرت المشاركة');
+});
+$('#export-btn').addEventListener('click', e => {
+  e.stopPropagation();
+  const menu = $('#export-menu');
+  menu.hidden = !menu.hidden;
+  $('#export-btn').setAttribute('aria-expanded', String(!menu.hidden));
+});
+$$('[data-export]').forEach(b => b.addEventListener('click', () => {
+  $('#export-menu').hidden = true;
+  $('#export-btn').setAttribute('aria-expanded', 'false');
+  exportAs(b.dataset.export);
+}));
+document.addEventListener('click', e => {
+  if (!e.target.closest('.menu-wrap')) {
+    $('#export-menu').hidden = true;
+    $('#export-btn').setAttribute('aria-expanded', 'false');
+  }
+});
+let searchTimer = 0;
+$('#search').addEventListener('input', e => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    query = e.target.value.trim();
+    renderTranscript(shown);
+  }, 200);
+});
 $('#smaller').addEventListener('click', () => changeSize(-1));
 $('#bigger').addEventListener('click', () => changeSize(1));
-
-$('#delete').addEventListener('click', () => {
-  if (!confirm('تبين تحذفين هالمحاضرة؟')) return;
+deleteBtn.addEventListener('click', () => confirmInPlace($('#delete-row'), 'تأكيد الحذف', () => {
   removeItem(shown.id);
-  goHome();
-});
+  toast('تم حذف التفريغ');
+  goLibrary();
+}));
 
-$('#paste-key').addEventListener('click', async () => {
-  try { $('#key').value = (await navigator.clipboard.readText()).trim(); } catch {}
+// settings
+$('#key-toggle').addEventListener('click', () => {
+  const input = $('#key-input');
+  input.type = input.type === 'password' ? 'text' : 'password';
+  $('#key-toggle').setAttribute('aria-label', input.type === 'password' ? 'إظهار المفتاح' : 'إخفاء المفتاح');
 });
-
-$('#save-key').addEventListener('click', async e => {
-  const button = e.currentTarget;
-  const key = $('#key').value.trim();
-  const say = t => { $('#key-msg').textContent = t; };
-  if (!key) return say('الصق المفتاح أول.');
+$('#key-input').addEventListener('keydown', e => { if (e.key === 'Enter') $('#key-save').click(); });
+$('#key-save').addEventListener('click', async () => {
+  const button = $('#key-save');
+  const status = $('#key-status');
+  const key = $('#key-input').value.trim();
+  const say = (text, cls = '') => { status.textContent = text; status.className = `status ${cls}`; };
+  if (!key) return say('الصق المفتاح أولاً.', 'bad');
   button.disabled = true;
-  say('جاري التأكد من المفتاح…');
+  say('جاري التحقق من المفتاح…');
   try {
     await listModels(key);
-    if (!save(KEY, key)) return say('ما قدرنا نحفظ المفتاح على هالجهاز.');
+    if (!save(KEY, key)) return say('تعذّر حفظ المفتاح في هذا المتصفح.', 'bad');
     forget(MODELS);
-    say('✓ تمام، المفتاح شغال');
-    await sleep(900);
-    goHome();
+    say('تم حفظ المفتاح وهو يعمل', 'ok');
+    const next = pendingSource;
+    pendingSource = null;
+    await sleep(700);
+    $('#settings').close();
+    if (next) run(next);
   } catch (err) {
-    say(isKeyError(err) ? 'المفتاح غلط. تأكد إنك نسخته كامل.'
-      : err.status === 0 ? 'ما فيه إنترنت. جرب مرة ثانية.'
-      : `ما قدرنا نتأكد من المفتاح: ${err.message}`);
+    say(isKeyError(err) ? 'المفتاح غير صحيح. تأكد أنك نسخته كاملاً.'
+      : err.status === 0 ? 'لا يوجد اتصال بالإنترنت.'
+      : `تعذّر التحقق: ${err.message}`, 'bad');
   } finally {
     button.disabled = false;
   }
 });
+clearBtn.addEventListener('click', () => confirmInPlace($('#clear-row'), 'تأكيد حذف الكل', () => {
+  forget(HISTORY);
+  $('#clear-row').replaceChildren(clearBtn);
+  $('#settings').close();
+  toast('تم حذف كل التفريغات');
+  goHome();
+}));
 
-$('#back').addEventListener('click', goHome);
-$('#error-home').addEventListener('click', goHome);
-$('#setup-back').addEventListener('click', goHome);
-$('#settings-btn').addEventListener('click', openSettings);
-
+applyTheme();
 applySize();
-if (getKey()) goHome(); else openSettings();
+// #demo opens the worked example directly, so it can be shared as a link.
+if (location.hash === '#demo') showResult(SAMPLE, 'summary'); else goHome();
 </script>
 </body>
 </html>
